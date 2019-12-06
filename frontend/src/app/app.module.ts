@@ -15,7 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomepageComponent } from './homepage/homepage.component';
-import { HomepageToolbarComponent } from './homepage-toolbar/homepage-toolbar.component';
+import { HomepageToolbarComponent } from './homepage/homepage-toolbar/homepage-toolbar.component';
 
 @NgModule({
   declarations: [

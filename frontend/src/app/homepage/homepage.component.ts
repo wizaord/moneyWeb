@@ -6,6 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
+  model = {
+    left: true,
+    middle: false,
+    right: false
+  };
 
   constructor() { }
 

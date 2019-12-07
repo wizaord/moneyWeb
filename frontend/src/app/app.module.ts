@@ -10,6 +10,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { HomepageToolbarComponent } from './homepage/homepage-toolbar/homepage-toolbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MatCardModule } from '@angular/material/card';
     ReactiveFormsModule,
     FormsModule,
     MatToolbarModule,
-    MatCardModule
+    MatCardModule,
+    AngularFontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

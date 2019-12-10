@@ -8,4 +8,8 @@ export class AuthentificationService {
 
   constructor() {
   }
+
+  logout() {
+
+  }
 }

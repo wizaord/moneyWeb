@@ -12,6 +12,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UserHomeComponent } from './login/user-home/user-home.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorInterceptor } from './authentification/error-interceptor';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { UserHomeComponent } from './login/user-home/user-home.component';
     MatCardModule,
     AngularFontAwesomeModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

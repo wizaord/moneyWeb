@@ -13,29 +13,40 @@
         <h1><p class="text-center text-white">Envie de mieux gérer votre argent !</p></h1>
       </div>
     </div>
+    <form (ngSubmit)="onConnect()" #loginForm="ngForm">
+      <div class="row justify-content-center">
+        <div class="col-6">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input id="login" type="text" class="form-control"
+                   placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"
+                   required
+                   [(ngModel)]="loginInfo.login" name="login">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon2"><fa name="key"></fa></span>
+            </div>
+            <input id="password" type="password"
+                   class="form-control" placeholder="Your Password *" aria-label="Password"
+                   aria-describedby="basic-addon2"
+                   required
+                   [(ngModel)]="loginInfo.password" name="password">
+          </div>
+        </div>
+        <div class="col-6 align-self-center">
+          <button type="submit" class="btn btn-warning btn-lg" [disabled]="!loginForm.form.valid">Se connecter</button>
+        </div>
+      </div>
+    </form>
     <div class="row">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">@</span>
-        </div>
-        <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-               aria-describedby="basic-addon1">
-      </div>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon2"><fa name="key"></fa></span>
-        </div>
-        <input type="password" class="form-control" placeholder="Your Password *" aria-label="Password"
-               aria-describedby="basic-addon2">
+      <div class="col text-white">
+        <div class="text-white intro-lead-in">ou</div>
       </div>
     </div>
-    <div class="col-md-6">
-      <button type="submit" class="btn btn-warning btn-lg">Se connecter</button>
-    </div>
-    <div class="col-xs-12">
-      <div class="intro-lead-in">ou</div>
-    </div>
-    <div class="col-md-12">
+    <div class="col-md-12 align-self-center">
       <a href="#" class="btn btn-warning btn-lg active">Découvrir le site</a>
     </div>
   </div>

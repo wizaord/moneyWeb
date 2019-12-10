@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-homepage',
@@ -6,15 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-  model = {
-    left: true,
-    middle: false,
-    right: false
-  };
 
-  constructor() { }
+  loginInfo = {
+    login: '',
+    password: ''
+  };
 
   ngOnInit() {
   }
 
+  onConnect() {
+    console.log(this.diagnostic);
+  }
+
+  get diagnostic() { return JSON.stringify(this.loginInfo); }
 }

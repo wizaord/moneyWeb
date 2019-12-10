@@ -11,12 +11,14 @@ import {HomepageToolbarComponent} from './homepage/homepage-toolbar/homepage-too
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
+import { UserHomeComponent } from './login/user-home/user-home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    HomepageToolbarComponent
+    HomepageToolbarComponent,
+    UserHomeComponent
   ],
   imports: [
     NgbModule,

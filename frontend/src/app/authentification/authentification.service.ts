@@ -6,5 +6,6 @@ import { Injectable } from '@angular/core';
 export class AuthentificationService {
   currentUserValue: false;
 
-  constructor() { }
+  constructor() {
+  }
 }

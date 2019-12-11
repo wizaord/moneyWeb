@@ -37,7 +37,11 @@
           </div>
         </div>
         <div class="col-6 align-self-center">
-          <button type="submit" class="btn btn-warning btn-lg" [disabled]="!loginForm.form.valid">Se connecter</button>
+          <button type="submit" class="btn btn-warning btn-lg" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Se connecter
+          </button>
+          <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
         </div>
       </div>
     </form>

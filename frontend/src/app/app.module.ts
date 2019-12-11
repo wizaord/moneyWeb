@@ -12,15 +12,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UserHomeComponent } from './login/user-home/user-home.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor } from './authentification/error-interceptor';
+import { fakeBackendProvider } from './test/fake-backend-interceptor.service';
+import { JwtInterceptor } from './authentification/jwt-interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     HomepageToolbarComponent,
-    UserHomeComponent
+    UserHomeComponent,
   ],
   imports: [
     NgbModule,
@@ -31,10 +33,15 @@ import { ErrorInterceptor } from './authentification/error-interceptor';
     FormsModule,
     MatToolbarModule,
     MatCardModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    HttpClientModule
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider
   ],
   bootstrap: [AppComponent]
 })

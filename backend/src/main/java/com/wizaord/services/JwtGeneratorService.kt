@@ -24,7 +24,7 @@ class JwtGeneratorService {
     private val logger = LoggerFactory.getLogger(javaClass.canonicalName)
 
 
-    fun generateToken(username: String): String {
+    fun generateToken(username: String, roles : List<String> ? = listOf()): String {
         logger.info("Generating new JWT Token for $username")
 
         val pk = this.readPrivateKey(privateKeyFilePath)
@@ -34,17 +34,18 @@ class JwtGeneratorService {
         jsonWebSignature.keyIdHeaderValue = privateKeyFilePath
         jsonWebSignature.setHeader("typ", "JWT")
         jsonWebSignature.algorithmHeaderValue = AlgorithmIdentifiers.RSA_USING_SHA256
-        jsonWebSignature.payload = generateClaims(username).toJson()
+        jsonWebSignature.payload = generateClaims(username, roles!!).toJson()
         return jsonWebSignature.compactSerialization;
     }
 
-    private fun generateClaims(username: String): JwtClaims {
+    private fun generateClaims(username: String, roles: List<String>): JwtClaims {
         val jwtClaims = JwtClaims()
         jwtClaims.issuedAt = NumericDate.now()
         jwtClaims.expirationTime = NumericDate.fromSeconds(NumericDate.now().value + 3000)
         jwtClaims.issuer = this.iss
         jwtClaims.subject = username
         jwtClaims.setClaim("upn", username)
+        jwtClaims.setClaim("groups", roles)
         return jwtClaims
     }
 

@@ -9,7 +9,9 @@ import de.flapdoodle.embed.mongo.distribution.Version
 import io.quarkus.test.junit.QuarkusTest
 import de.flapdoodle.embed.process.runtime.Network;
 import io.restassured.RestAssured.given
+import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.notNullValue
 import org.jboss.logging.Logger
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -49,7 +51,7 @@ internal class AuthenticateTest {
 
 
     @Test
-    fun `when call authenticate endpoint then return empty jwtToken`() {
+    fun `when call authenticate endpoint then return user object with token`() {
 
         given()
                 .`when`()
@@ -58,6 +60,6 @@ internal class AuthenticateTest {
                     .post("/authenticate")
                 .then()
                     .statusCode(200)
-                    .body("token", `is`(""))
+                    .body("token", notNullValue())
     }
 }

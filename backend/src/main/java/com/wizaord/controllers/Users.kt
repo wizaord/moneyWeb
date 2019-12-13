@@ -24,13 +24,11 @@ class Users {
     @PermitAll
     @Produces(MediaType.TEXT_PLAIN)
     fun users(@Context securityContext: SecurityContext): String {
-        if (securityContext.isSecure) {
-            val caller: Principal = securityContext.userPrincipal
-            val name = caller.name
-            val hasJWT = this.jwt.claimNames.size != 0
-            return "hello ${name}, isSecure: ${securityContext.isSecure}, authScheme: ${securityContext.authenticationScheme}, hasJWT: ${hasJWT}"
-        }
-        return "nosecure"
+        val caller: Principal = securityContext.userPrincipal
+        val name = caller.name
+        val hasClaims = this.jwt.claimNames.size != 0
+        println(jwt.getClaim<String>("iss"))
+        return "hello ${name}, isSecure: ${securityContext.isSecure}, authScheme: ${securityContext.authenticationScheme}, hasJWT: ${hasClaims}"
     }
 
 }

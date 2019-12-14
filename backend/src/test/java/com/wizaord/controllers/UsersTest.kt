@@ -46,7 +46,7 @@ internal class UsersTest {
         given()
                 .header("Authorization", jwtToken)
                 .`when`()
-                .get("/users")
+                .get("moneyapi/users")
                 .then()
                 .statusCode(403)
     }
@@ -60,7 +60,7 @@ internal class UsersTest {
         given()
                 .header("Authorization", jwtToken)
                 .`when`()
-                .get("/users")
+                .get("moneyapi/users")
                 .then()
                 .statusCode(200)
     }

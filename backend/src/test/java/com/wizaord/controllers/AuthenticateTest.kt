@@ -29,7 +29,7 @@ internal class AuthenticateTest {
                 .`when`()
                 .body(UserConnect("login", "password"))
                 .contentType(MediaType.APPLICATION_JSON)
-                .post("/authenticate")
+                .post("moneyapi/authenticate")
                 .then()
                 .statusCode(200)
                 .body("token", notNullValue())

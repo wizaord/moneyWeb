@@ -7,6 +7,7 @@
     </appender>
 
     <logger name="com.wizaord" level="DEBUG"/>
+    <logger name="org.mongo" level="WARN"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>

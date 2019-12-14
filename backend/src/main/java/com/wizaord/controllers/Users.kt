@@ -14,7 +14,7 @@ import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.SecurityContext
 
-@Path("/users")
+@Path("/moneyapi/users")
 @RequestScoped
 class Users {
 

@@ -8,8 +8,3 @@ db.createUser({
             }
         ]
 })
-
-db.moneyUser.insert({
-    name: "admin",
-    pass: "password"
-})

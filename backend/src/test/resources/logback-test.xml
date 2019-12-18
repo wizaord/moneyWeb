@@ -7,13 +7,14 @@
     </appender>
 
     <logger name="com.wizaord" level="DEBUG"/>
-    <logger name="org.mongo" level="WARN"/>
+    <logger name="org.mongo" level="DEBUG"/>
+    <logger name="io.quarkus" level="INFO"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>
 
-    <root level="WARN">
+    <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
     </root>
 

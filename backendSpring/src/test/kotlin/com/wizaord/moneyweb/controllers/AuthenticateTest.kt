@@ -6,7 +6,6 @@ import com.wizaord.moneyweb.services.JwtService
 import com.wizaord.moneyweb.services.UserService
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
@@ -40,7 +39,6 @@ internal class AuthenticateTest(@Autowired val mockMvc: MockMvc) {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapToJson(UserConnect("username", "password"))))
                 .andExpect(status().isForbidden)
-
     }
 
     @Test
@@ -50,9 +48,9 @@ internal class AuthenticateTest(@Autowired val mockMvc: MockMvc) {
         val user = UserConnect("login", "password")
 
         given(userService.getUserByUsernameAndPassword(anyString(), anyString()))
-                .willReturn(User("login", "password", "email", "USER"))
+                .willReturn(User("id", "login", "password", "email", "USER"))
 
-        Mockito.`when`(jwtService.generateToken(anyString(), anyList())).thenReturn("MyJWTToken")
+        Mockito.`when`(jwtService.generateToken(anyString(), anyString())).thenReturn("MyJWTToken")
 
         // when
         this.mockMvc.perform(post(uri)
@@ -63,7 +61,6 @@ internal class AuthenticateTest(@Autowired val mockMvc: MockMvc) {
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.token", not(emptyOrNullString())))
                 .andExpect(jsonPath("$.token", `is`("MyJWTToken")))
-
     }
 
 }

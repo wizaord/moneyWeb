@@ -23,7 +23,7 @@ class Authenticate (
         val userFromDb = userService.getUserByUsernameAndPassword(user.username, user.password)
                 ?: return ResponseEntity(HttpStatus.FORBIDDEN)
 
-        return ResponseEntity.ok(JwtToken(jwtService.generateToken(userFromDb.username, listOf(userFromDb.role))))
+        return ResponseEntity.ok(JwtToken(jwtService.generateToken(userFromDb.username, userFromDb.role)))
     }
 }
 

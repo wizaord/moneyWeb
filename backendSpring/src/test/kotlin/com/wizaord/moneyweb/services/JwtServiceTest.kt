@@ -41,7 +41,7 @@ internal class JwtServiceTest {
 // given
 
         // when
-        val generateToken = jwtService.generateToken("username", listOf("ADMIN"))
+        val generateToken = jwtService.generateToken("username", "ADMIN")
 
         // then
         assertThat(generateToken).isNotEmpty()

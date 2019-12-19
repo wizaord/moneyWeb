@@ -20,12 +20,11 @@ class Authenticate (
     @ResponseBody
     fun authenticate(@RequestBody user: UserConnect): ResponseEntity<JwtToken>  {
         logger.info("Reception d'une demande d'auth pour l'utilisateur ${user.username}")
-        val user = userService.getUserByUsernameAndPassword(user.username, user.password)
+        val userFromDb = userService.getUserByUsernameAndPassword(user.username, user.password)
                 ?: return ResponseEntity(HttpStatus.FORBIDDEN)
 
-        return ResponseEntity.ok(JwtToken(jwtService.generateToken(user.username, listOf(user.role))))
+        return ResponseEntity.ok(JwtToken(jwtService.generateToken(userFromDb.username, listOf(userFromDb.role))))
     }
-
 }
 
 data class UserConnect(

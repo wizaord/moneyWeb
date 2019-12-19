@@ -48,8 +48,10 @@ internal class AuthenticateTest(@Autowired val mockMvc: MockMvc) {
         // given
         val uri = "/moneyapi/authenticate"
         val user = UserConnect("login", "password")
+
         given(userService.getUserByUsernameAndPassword(anyString(), anyString()))
                 .willReturn(User("login", "password", "email", "USER"))
+
         Mockito.`when`(jwtService.generateToken(anyString(), anyList())).thenReturn("MyJWTToken")
 
         // when

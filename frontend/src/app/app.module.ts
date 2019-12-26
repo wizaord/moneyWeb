@@ -14,8 +14,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UserHomeComponent } from './login/user-home/user-home.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor } from './authentification/error-interceptor';
-import { fakeBackendProvider } from './test/fake-backend-interceptor.service';
 import { JwtInterceptor } from './authentification/jwt-interceptor';
+import { AccountCreateComponent } from './account-create/account-create.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +23,7 @@ import { JwtInterceptor } from './authentification/jwt-interceptor';
     HomepageComponent,
     HomepageToolbarComponent,
     UserHomeComponent,
+    AccountCreateComponent,
   ],
   imports: [
     NgbModule,

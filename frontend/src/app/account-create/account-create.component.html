@@ -1,2 +1,95 @@
 <app-homepage-toolbar></app-homepage-toolbar>
-<p>account-create works!</p>
+
+<header id="page-top" [ngStyle]="{background: 'url(./assets/home/header-bg.jpg)'}">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1><p class="text-center text-white">Création de compte</p></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div *ngIf="warning" class="alert alert-warning" role="alert">
+          {{this.warning}}
+          <button type="button" class="close" (click)="removeWarning()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <form (ngSubmit)="onCreate()" #accountCreateForm="ngForm">
+      <div class="row justify-content-center">
+        <div class="col-6">
+          <div class="col-3 text-white">Name</div>
+          <div class="col-9">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="usernameInputGroup">@</span>
+              </div>
+              <input id="login" type="text" class="form-control"
+                     placeholder="Username" aria-label="Username" aria-describedby="usernameInputGroup"
+                     required
+                     [(ngModel)]="accountInfo.login" name=login #login="ngModel">
+              <div [hidden]="login.valid || login.pristine" class="alert alert-danger">Login is required</div>
+            </div>
+          </div>
+
+          <div class="col-3 text-white">Password</div>
+          <div class="col-9">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="passwordInputGroup"><fa name="key"></fa></span>
+              </div>
+              <input id="password" type="password"
+                     class="form-control" placeholder="Your Password *" aria-label="Password"
+                     aria-describedby="passwordInputGroup"
+                     required
+                     [(ngModel)]="accountInfo.password" name="password" #password="ngModel">
+              <div [hidden]="password.valid || password.pristine" class="alert alert-danger">Password is required</div>
+            </div>
+          </div>
+
+
+          <div class="col-3 text-white">Email</div>
+          <div class="col-9">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="mailInputGroup"><fa name="key"></fa></span>
+              </div>
+              <input id="email" type="email"
+                     class="form-control" placeholder="Your Email *" aria-label="Password"
+                     aria-describedby="mailInputGroup"
+                     pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                     required
+                     [(ngModel)]="accountInfo.mail" name="email" #email="ngModel">
+            </div>
+          </div>
+
+          <div class="card mt-4">
+            <h4 class="card-header">Family's users</h4>
+            <div class="card-body">
+              <h5 class="card-title">Please specify users of your family</h5>
+              <p class="card-text"></p>
+              <ul class="list-group">
+                <div *ngFor="let user of accountInfo.users" class="form-row">
+                  <app-user (userRemove)="removeUser(user)" [user]="user"></app-user>
+                </div>
+              </ul>
+              <div class="card-footer text-right">
+                <button type="button" class="btn btn-sm btn-primary" (click)="addUser()">Add a user</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 align-self-center">
+          <button type="submit" class="btn btn-warning btn-lg" [disabled]="loading || !accountCreateForm.form.valid">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Création en cours
+          </button>
+          <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+        </div>
+      </div>
+    </form>
+  </div>
+</header>

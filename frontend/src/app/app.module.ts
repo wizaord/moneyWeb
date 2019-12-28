@@ -16,6 +16,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor } from './authentification/error-interceptor';
 import { JwtInterceptor } from './authentification/jwt-interceptor';
 import { AccountCreateComponent } from './account-create/account-create.component';
+import { UserComponent } from './account-create/user/user.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,8 @@ import { AccountCreateComponent } from './account-create/account-create.componen
     HomepageToolbarComponent,
     UserHomeComponent,
     AccountCreateComponent,
+    UserComponent,
+    UserComponent,
   ],
   imports: [
     NgbModule,

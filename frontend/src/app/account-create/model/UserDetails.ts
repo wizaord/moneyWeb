@@ -1,0 +1,4 @@
+
+class UserDetails {
+  username: string;
+}

@@ -1,0 +1,15 @@
+<li class="list-group-item">
+  <div class="input-group">
+    <span class="input-group-prepend">
+      <span class="input-group-text">Username : </span>
+    </span>
+    <input type="text"
+           class="form-control" placeholder="New username"
+           required
+           [(ngModel)]="user.username">
+    <div class="input-group-append">
+      <button class="btn btn-danger " type="button" (click)="removeUser()"><i class="fa fa-trash-o"></i></button>
+    </div>
+  </div>
+
+</li>

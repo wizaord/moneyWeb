@@ -14,6 +14,7 @@ export class HomepageComponent implements OnInit {
     login: '',
     password: ''
   };
+
   loading = false;
   private returnUrl: string;
   private error = '';
@@ -28,7 +29,7 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit() {
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
   onConnect() {
@@ -42,7 +43,7 @@ export class HomepageComponent implements OnInit {
           this.router.navigate([this.returnUrl]);
         },
         error => {
-          console.log(error)
+          console.log(error);
           this.error = error;
           this.loading = false;
         });

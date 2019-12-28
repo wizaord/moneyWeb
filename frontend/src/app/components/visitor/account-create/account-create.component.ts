@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountDetails } from './model/AccountDetails';
-import { UserDetails } from './model/UserDetails';
+import { UserAccountDetails } from '../../../domain/user/UserAccountDetails';
+import { UserDetails } from '../../../domain/user/UserDetails';
 
 @Component({
   selector: 'app-account-create',
@@ -9,7 +9,7 @@ import { UserDetails } from './model/UserDetails';
 })
 export class AccountCreateComponent implements OnInit {
 
-  private accountInfo: AccountDetails;
+  private accountInfo: UserAccountDetails;
   private loading: false;
   private error = '';
   private warning = '';
@@ -19,7 +19,7 @@ export class AccountCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.accountInfo = new AccountDetails('', '', '');
+    this.accountInfo = new UserAccountDetails('', '', '');
     this.addUser();
   }
 
@@ -28,7 +28,7 @@ export class AccountCreateComponent implements OnInit {
   }
 
   addUser() {
-    this.accountInfo.addUser(new UserDetails());
+    this.accountInfo.addUser(new UserDetails('hello'));
   }
 
   removeUser(user: UserDetails) {

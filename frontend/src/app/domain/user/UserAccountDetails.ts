@@ -1,6 +1,6 @@
 import { UserDetails } from './UserDetails';
 
-export class AccountDetails {
+export class UserAccountDetails {
   login: string;
   password: string;
   mail: string;

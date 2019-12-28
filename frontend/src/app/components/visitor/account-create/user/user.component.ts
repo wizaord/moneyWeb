@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UserDetails } from '../model/UserDetails';
+import { UserDetails } from '../../../../domain/user/UserDetails';
 
 @Component({
   selector: 'app-user',

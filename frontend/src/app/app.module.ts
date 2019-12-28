@@ -6,17 +6,17 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HomepageComponent } from './homepage/homepage.component';
-import { HomepageToolbarComponent } from './homepage/homepage-toolbar/homepage-toolbar.component';
+import { HomepageComponent } from './components/visitor/homepage/homepage.component';
+import { HomepageToolbarComponent } from './components/visitor/homepage/homepage-toolbar/homepage-toolbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UserHomeComponent } from './login/user-home/user-home.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ErrorInterceptor } from './authentification/error-interceptor';
-import { JwtInterceptor } from './authentification/jwt-interceptor';
-import { AccountCreateComponent } from './account-create/account-create.component';
-import { UserComponent } from './account-create/user/user.component';
+import { ErrorInterceptor } from './services/authentification/error-interceptor';
+import { JwtInterceptor } from './services/authentification/jwt-interceptor';
+import { AccountCreateComponent } from './components/visitor/account-create/account-create.component';
+import { UserComponent } from './components/visitor/account-create/user/user.component';
 
 @NgModule({
   declarations: [

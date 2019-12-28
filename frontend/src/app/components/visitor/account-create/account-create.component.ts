@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountDetails } from './model/AccountDetails';
+import { UserDetails } from './model/UserDetails';
 
 @Component({
   selector: 'app-account-create',
@@ -7,15 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountCreateComponent implements OnInit {
 
-  accountInfo: AccountDetails = {
-    login: '',
-    password: '',
-    mail: '',
-    users: [{
-      username: ''
-    }]
-  };
-  loading: false;
+  private accountInfo: AccountDetails;
+  private loading: false;
   private error = '';
   private warning = '';
 
@@ -24,6 +19,8 @@ export class AccountCreateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.accountInfo = new AccountDetails('', '', '');
+    this.addUser();
   }
 
   onCreate() {
@@ -31,10 +28,7 @@ export class AccountCreateComponent implements OnInit {
   }
 
   addUser() {
-    const newUser: UserDetails = {
-      username: ''
-    };
-    this.accountInfo.users.push(newUser);
+    this.accountInfo.addUser(new UserDetails());
   }
 
   removeUser(user: UserDetails) {
@@ -42,10 +36,7 @@ export class AccountCreateComponent implements OnInit {
       this.warning = 'At least one user must be specified';
       return;
     }
-    const index = this.accountInfo.users.indexOf(user, 0);
-    if (index > -1) {
-      this.accountInfo.users.splice(index, 1);
-    }
+    this.accountInfo.removeUser(user);
   }
 
   removeWarning() {

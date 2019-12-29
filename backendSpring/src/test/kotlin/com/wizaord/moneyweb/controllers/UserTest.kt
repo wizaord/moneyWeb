@@ -77,4 +77,20 @@ internal class UserTest(@Autowired val mockMvc: MockMvc) {
                 .andExpect(status().isConflict)
     }
 
+    @Test
+    internal fun `when receive a user with two owners with the same name then return 406`() {
+        val userAccountNotValid = UserAccount("login", "password", "email",
+                listOf(AccountOwner("me"), AccountOwner("me2"), AccountOwner("me")))
+
+
+        // when
+        this.mockMvc.perform(post("/moneyapi/user/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(mapToJson(userAccountNotValid)))
+                .andExpect(status().isNotAcceptable)
+
+        // then
+        Mockito.verifyNoInteractions(userService)
+    }
 }

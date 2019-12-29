@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/moneyapi/user")
@@ -46,6 +47,7 @@ data class UserAccount(
             email.isEmpty() -> false
             owners.isEmpty() -> false
             owners.stream().filter { !it.isValid() }.count() > 0L -> false
+            owners.stream().filter { Collections.frequency(owners, it) > 1 }.count() > 0L -> false  // detection des doublons
             else -> true
         }
     }

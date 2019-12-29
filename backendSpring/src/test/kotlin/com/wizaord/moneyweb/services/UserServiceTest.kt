@@ -9,7 +9,9 @@ import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.given
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
+import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 internal class UserServiceTest {
@@ -59,15 +61,61 @@ internal class UserServiceTest {
     }
 
     @Test
-    internal fun `when create user already exist then return false`() {
+    internal fun `when create user already exist then return null`() {
         //given
         val userMongo = User("id", "login", "password", "email")
         given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(userMongo)
 
         // when
-        val isCreated = userService.createUser("login", "password", "email")
+        val userCreated = userService.createUser("login", "password", "email")
 
         // then
-        assertThat(isCreated).isFalse()
+        assertThat(userCreated).isNull()
+    }
+
+    @Test
+    internal fun `when create a user then return the user`() {
+        // given
+        val userMongo = User("id", "login", "password", "email")
+        given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(null)
+        given(userRepository.save(ArgumentMatchers.any(User::class.java))).willReturn(userMongo)
+
+        // when
+        val createUser = userService.createUser("login", "password", "email")
+
+        // then
+        assertThat(createUser).isNotNull
+        assertThat(createUser).isInstanceOf(User::class.java)
+    }
+
+    @Test
+    internal fun `when add owner then user is updated`() {
+        // given
+        val userMongo = User("id", "login", "password", "email")
+        given(userRepository.findById(ArgumentMatchers.anyString())).willReturn(Optional.of(userMongo))
+        given(userRepository.save(ArgumentMatchers.any(User::class.java))).willAnswer { i -> i.getArgument(0) }
+
+        // when
+        val userWithOwner = userService.addOwner("id", "owner")
+
+        // then
+        assertThat(userWithOwner.owners).isNotEmpty
+        Mockito.verify(userRepository).save(ArgumentMatchers.any(User::class.java))
+    }
+
+    @Test
+    internal fun `when add owner in a user with already this owner then do nothing`() {
+        // given
+        val userMongo = User("id", "login", "password", "email")
+        given(userRepository.findById(ArgumentMatchers.anyString())).willReturn(Optional.of(userMongo))
+        given(userRepository.save(ArgumentMatchers.any(User::class.java))).willAnswer { i -> i.getArgument(0) }
+
+        // when
+        val userWithOwner = userService.addOwner("id", "owner")
+        val userWithOwner2 = userService.addOwner("id", "owner")
+
+        // then
+        assertThat(userWithOwner.owners).isNotEmpty
+        Mockito.verify(userRepository).save(ArgumentMatchers.any(User::class.java))
     }
 }

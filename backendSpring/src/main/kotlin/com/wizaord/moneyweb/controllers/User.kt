@@ -23,10 +23,13 @@ class User(@Autowired var userService: UserService) {
             return ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if(!this.userService.createUser(user.login, user.password, user.email)) {
+        val createUser = this.userService.createUser(user.login, user.password, user.email)
+        if (createUser == null) {
             logger.info("User is already exist")
             return ResponseEntity(HttpStatus.CONFLICT)
         }
+
+        user.owners.forEach { owner: AccountOwner -> this.userService.addOwner(createUser.id!!, owner.ownerName) }
 
         logger.info("User successfully created")
         return ResponseEntity(user, HttpStatus.CREATED)

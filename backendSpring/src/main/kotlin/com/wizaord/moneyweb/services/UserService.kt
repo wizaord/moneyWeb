@@ -4,8 +4,10 @@ import com.wizaord.moneyweb.domain.User
 import com.wizaord.moneyweb.domain.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class UserService {
 
     @Autowired
@@ -19,13 +21,18 @@ class UserService {
         return null
     }
 
-    fun createUser(login: String, password: String, email: String): Boolean {
+    fun createUser(login: String, password: String, email: String): User? {
         val findByUsername = userRepository.findByUsername(login)
-        if (findByUsername != null) return false;
+        if (findByUsername != null) return null;
 
         val user = User(null, login, password, email)
-        userRepository.insert(user)
-        return true
+        return userRepository.save(user)
+    }
+
+    fun addOwner(userId: String, ownerName: String): User {
+        val user = userRepository.findById(userId).get()
+        if (user.addOwner(ownerName)) return userRepository.save(user)
+        return user;
     }
 
 }

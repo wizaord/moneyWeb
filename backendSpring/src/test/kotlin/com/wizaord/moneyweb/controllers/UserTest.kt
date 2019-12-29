@@ -13,7 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -28,14 +27,13 @@ internal class UserTest(@Autowired val mockMvc: MockMvc) {
         //given
         val userAccount = UserAccount("login", "password", "email", listOf(AccountOwner("me")))
         given(userService.createUser(anyString(), anyString(), anyString()))
-                .willReturn(true)
+                .willReturn(com.wizaord.moneyweb.domain.User("id", "login", "password", "email"))
 
         // when
         this.mockMvc.perform(post("/moneyapi/user/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(mapToJson(userAccount)))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isCreated)
                 .andExpect(jsonPath("$.login", Matchers.`is`(userAccount.login)))
 
@@ -44,9 +42,30 @@ internal class UserTest(@Autowired val mockMvc: MockMvc) {
     }
 
     @Test
+    internal fun `when create a user with owners then all owners are created`() {
+        //given
+        val userAccount = UserAccount("login", "password", "email",
+                listOf(AccountOwner("login"), AccountOwner("login2")))
+        given(userService.createUser(anyString(), anyString(), anyString()))
+                .willReturn(com.wizaord.moneyweb.domain.User("id", "login", "password", "email"))
+
+        // when
+        this.mockMvc.perform(post("/moneyapi/user/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(mapToJson(userAccount)))
+                .andExpect(status().isCreated)
+
+        // then
+        Mockito.verify(userService).createUser(anyString(), anyString(), anyString())
+        Mockito.verify(userService, Mockito.times(2)).addOwner(anyString(), anyString())
+    }
+
+    @Test
     internal fun `when receive a user not valid then return 406`() {
         //given
-        val userAccountNotValid = listOf(UserAccount("", "password", "email", listOf(AccountOwner("me"))),
+        val userAccountNotValid = listOf(
+                UserAccount("", "password", "email", listOf(AccountOwner("me"))),
                 UserAccount("username", "password", "", listOf(AccountOwner("me"))),
                 UserAccount("username", "", "email", listOf(AccountOwner("me"))),
                 UserAccount("username", "password", "email"))
@@ -67,7 +86,7 @@ internal class UserTest(@Autowired val mockMvc: MockMvc) {
         // given
         val userAccount = UserAccount("login", "password", "email", listOf(AccountOwner("me")))
         given(userService.createUser(anyString(), anyString(), anyString()))
-                .willReturn(false)
+                .willReturn(null)
 
         // when
         this.mockMvc.perform(post("/moneyapi/user/create")
@@ -81,7 +100,6 @@ internal class UserTest(@Autowired val mockMvc: MockMvc) {
     internal fun `when receive a user with two owners with the same name then return 406`() {
         val userAccountNotValid = UserAccount("login", "password", "email",
                 listOf(AccountOwner("me"), AccountOwner("me2"), AccountOwner("me")))
-
 
         // when
         this.mockMvc.perform(post("/moneyapi/user/create")

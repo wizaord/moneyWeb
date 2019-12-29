@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UserDetails } from '../../../../domain/user/UserDetails';
+import { AccountOwner } from '../../../../domain/user/AccountOwner';
 
 @Component({
   selector: 'app-user',
@@ -8,7 +8,7 @@ import { UserDetails } from '../../../../domain/user/UserDetails';
 })
 export class UserComponent implements OnInit {
 
-  @Input() user: UserDetails;
+  @Input() user: AccountOwner;
   @Output() userRemove = new EventEmitter();
 
   constructor() { }

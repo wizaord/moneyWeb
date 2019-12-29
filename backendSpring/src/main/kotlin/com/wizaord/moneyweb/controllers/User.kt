@@ -37,23 +37,23 @@ data class UserAccount(
         var login: String,
         var password: String,
         var email: String,
-        var users: List<Username> = listOf()
+        var owners: List<AccountOwner> = listOf()
 ) {
     fun isValid(): Boolean {
         return when {
             login.isEmpty() -> false
             password.isEmpty() -> false
             email.isEmpty() -> false
-            users.isEmpty() -> false
-            users.stream().filter { !it.isValid() }.count() > 0L -> false
+            owners.isEmpty() -> false
+            owners.stream().filter { !it.isValid() }.count() > 0L -> false
             else -> true
         }
     }
 }
 
 
-data class Username(var username: String) {
+data class AccountOwner(var ownerName: String) {
     fun isValid(): Boolean {
-        return username.isNotEmpty()
+        return ownerName.isNotEmpty()
     }
 }

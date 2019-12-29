@@ -30,11 +30,11 @@ export class UserService {
     if (userAccountDetails.password.trim().length === 0) {
       return false;
     }
-    if (userAccountDetails.users.length === 0) {
+    if (userAccountDetails.owners.length === 0) {
       return false;
     }
-    const nbUserWithSizeZero = userAccountDetails.users
-      .filter(user => user.username.trim().length === 0)
+    const nbUserWithSizeZero = userAccountDetails.owners
+      .filter(user => user.ownerName.trim().length === 0)
       .length;
     return !nbUserWithSizeZero;
   }

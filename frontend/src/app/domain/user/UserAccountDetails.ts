@@ -1,10 +1,10 @@
-import { UserDetails } from './UserDetails';
+import { AccountOwner } from './AccountOwner';
 
 export class UserAccountDetails {
   login: string;
   password: string;
   email: string;
-  users: UserDetails[] = [];
+  owners: AccountOwner[] = [];
 
   constructor(login: string, password: string, email: string) {
     this.login = login;
@@ -12,14 +12,14 @@ export class UserAccountDetails {
     this.email = email;
   }
 
-  addUser(user: UserDetails) {
-    this.users.push(user);
+  addUser(user: AccountOwner) {
+    this.owners.push(user);
   }
 
-  removeUser(user: UserDetails) {
-    const index = this.users.indexOf(user, 0);
+  removeUser(user: AccountOwner) {
+    const index = this.owners.indexOf(user, 0);
     if (index > -1) {
-      this.users.splice(index, 1);
+      this.owners.splice(index, 1);
     }
   }
 }

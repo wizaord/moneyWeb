@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserAccountDetails } from '../../../domain/user/UserAccountDetails';
-import { UserDetails } from '../../../domain/user/UserDetails';
+import { AccountOwner } from '../../../domain/user/AccountOwner';
 import { UserService } from '../../../services/user.service';
 
 @Component({
@@ -31,11 +31,11 @@ export class AccountCreateComponent implements OnInit {
   }
 
   addUser() {
-    this.accountInfo.addUser(new UserDetails('hello'));
+    this.accountInfo.addUser(new AccountOwner('hello'));
   }
 
-  removeUser(user: UserDetails) {
-    if (this.accountInfo.users.length <= 1) {
+  removeUser(user: AccountOwner) {
+    if (this.accountInfo.owners.length <= 1) {
       this.warning = 'At least one user must be specified';
       return;
     }

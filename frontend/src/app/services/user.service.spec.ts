@@ -2,7 +2,7 @@ import { getTestBed, TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
 import { UserAccountDetails } from '../domain/user/UserAccountDetails';
-import { UserDetails } from '../domain/user/UserDetails';
+import { AccountOwner } from '../domain/user/AccountOwner';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('UserService', () => {
@@ -67,7 +67,7 @@ describe('UserService', () => {
       );
     });
 
-    it('Create user without username is not valid', () => {
+    it('Create user without accountOwner is not valid', () => {
       // given
       const userAccountDetails = new UserAccountDetails('login', 'password', 'email');
 
@@ -79,11 +79,11 @@ describe('UserService', () => {
       );
     });
 
-    it('Create user with a empty username is not valid', () => {
+    it('Create user with a empty accountOwner is not valid', () => {
       // given
       const userAccountDetails = new UserAccountDetails('login', 'password', 'email');
-      userAccountDetails.addUser(new UserDetails(''));
-      userAccountDetails.addUser(new UserDetails('hello'));
+      userAccountDetails.addUser(new AccountOwner(''));
+      userAccountDetails.addUser(new AccountOwner('hello'));
 
       // when
       service.createUser(userAccountDetails).subscribe(
@@ -95,7 +95,7 @@ describe('UserService', () => {
 
     it('When create user, return user', () => {
       const userAccountDetails = new UserAccountDetails('login', 'password', 'email');
-      userAccountDetails.addUser(new UserDetails('hello'));
+      userAccountDetails.addUser(new AccountOwner('hello'));
 
       service.createUser(userAccountDetails).subscribe(
         user => {

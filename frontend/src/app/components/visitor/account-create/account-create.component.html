@@ -72,7 +72,7 @@
               <h5 class="card-title">Please specify users of your family</h5>
               <p class="card-text"></p>
               <ul class="list-group">
-                <div *ngFor="let user of accountInfo.users" class="form-row">
+                <div *ngFor="let user of accountInfo.owners" class="form-row">
                   <app-user (userRemove)="removeUser(user)" [user]="user"></app-user>
                 </div>
               </ul>

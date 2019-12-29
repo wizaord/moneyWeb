@@ -26,7 +26,7 @@ internal class UserTest(@Autowired val mockMvc: MockMvc) {
     @Test
     internal fun `when create a user the return the user`() {
         //given
-        val userAccount = UserAccount("login", "password", "email", listOf(Username("me")))
+        val userAccount = UserAccount("login", "password", "email", listOf(AccountOwner("me")))
         given(userService.createUser(anyString(), anyString(), anyString()))
                 .willReturn(true)
 
@@ -46,9 +46,9 @@ internal class UserTest(@Autowired val mockMvc: MockMvc) {
     @Test
     internal fun `when receive a user not valid then return 406`() {
         //given
-        val userAccountNotValid = listOf(UserAccount("", "password", "email", listOf(Username("me"))),
-                UserAccount("username", "password", "", listOf(Username("me"))),
-                UserAccount("username", "", "email", listOf(Username("me"))),
+        val userAccountNotValid = listOf(UserAccount("", "password", "email", listOf(AccountOwner("me"))),
+                UserAccount("username", "password", "", listOf(AccountOwner("me"))),
+                UserAccount("username", "", "email", listOf(AccountOwner("me"))),
                 UserAccount("username", "password", "email"))
 
 
@@ -65,7 +65,7 @@ internal class UserTest(@Autowired val mockMvc: MockMvc) {
     @Test
     internal fun `when receive a user already exist then return 502`() {
         // given
-        val userAccount = UserAccount("login", "password", "email", listOf(Username("me")))
+        val userAccount = UserAccount("login", "password", "email", listOf(AccountOwner("me")))
         given(userService.createUser(anyString(), anyString(), anyString()))
                 .willReturn(false)
 
@@ -76,4 +76,5 @@ internal class UserTest(@Autowired val mockMvc: MockMvc) {
                 .content(mapToJson(userAccount)))
                 .andExpect(status().isConflict)
     }
+
 }

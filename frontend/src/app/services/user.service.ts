@@ -13,7 +13,7 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  createUser(userAccountDetails: UserAccountDetails): Observable<UserAccountDetails> {
+  createUser(userAccountDetails: UserAccountDetails): Observable<UserAccountDetails>  {
     if (!this.validateUser(userAccountDetails)) {
       return throwError('User is not valid');
     }

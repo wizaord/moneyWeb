@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserAccountDetails } from '../../../domain/user/UserAccountDetails';
 import { AccountOwner } from '../../../domain/user/AccountOwner';
 import { UserService } from '../../../services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-account-create',
@@ -11,7 +12,7 @@ import { UserService } from '../../../services/user.service';
 export class AccountCreateComponent implements OnInit {
 
   private accountInfo: UserAccountDetails;
-  private loading: false;
+  private loading: boolean;
   private error = '';
   private warning = '';
 
@@ -25,9 +26,20 @@ export class AccountCreateComponent implements OnInit {
   }
 
   onCreate() {
+    this.clearMessages();
+    this.loading = true;
     this.userService.createUser(this.accountInfo)
-      .subscribe(userAccountDetails => this.warning = 'Account successfully created',
-        error => this.error = 'OUPS ' + error);
+      .subscribe(
+        userAccountDetails => {
+          this.warning = 'Account successfully created';
+          this.loading = false;
+        }
+        , error => this.handleError(error));
+  }
+
+  clearMessages() {
+    this.warning = undefined;
+    this.error = undefined;
   }
 
   addUser() {
@@ -44,5 +56,11 @@ export class AccountCreateComponent implements OnInit {
 
   removeWarning() {
     this.warning = '';
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.log(error);
+    this.error = 'Error while creating user account. Please verify your datas or contact us for help';
+    this.loading = false;
   }
 }

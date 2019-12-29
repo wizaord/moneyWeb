@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 
-@WebMvcTest
+@WebMvcTest(controllers = [Authenticate::class])
 internal class AuthenticateTest(@Autowired val mockMvc: MockMvc) {
 
     @MockBean

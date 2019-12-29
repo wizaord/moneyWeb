@@ -19,4 +19,13 @@ class UserService {
         return null
     }
 
+    fun createUser(login: String, password: String, email: String): Boolean {
+        val findByUsername = userRepository.findByUsername(login)
+        if (findByUsername != null) return false;
+
+        val user = User(null, login, password, email)
+        userRepository.insert(user)
+        return true
+    }
+
 }

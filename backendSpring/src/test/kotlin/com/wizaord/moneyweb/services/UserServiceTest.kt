@@ -57,4 +57,17 @@ internal class UserServiceTest {
         // then
         assertThat(userFromBdd).isNotNull
     }
+
+    @Test
+    internal fun `when create user already exist then return false`() {
+        //given
+        val userMongo = User("id", "login", "password", "email")
+        given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(userMongo)
+
+        // when
+        val isCreated = userService.createUser("login", "password", "email")
+
+        // then
+        assertThat(isCreated).isFalse()
+    }
 }

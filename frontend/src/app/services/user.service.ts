@@ -17,14 +17,14 @@ export class UserService {
     if (!this.validateUser(userAccountDetails)) {
       return throwError('User is not valid');
     }
-    return this.http.post<UserAccountDetails>(`${this.API_URL}/create`, JSON.stringify(userAccountDetails));
+    return this.http.post<UserAccountDetails>(`${this.API_URL}/create`, userAccountDetails);
   }
 
   private validateUser(userAccountDetails: UserAccountDetails): boolean {
     if (userAccountDetails.login.trim().length === 0) {
       return false;
     }
-    if (userAccountDetails.mail.trim().length === 0) {
+    if (userAccountDetails.email.trim().length === 0) {
       return false;
     }
     if (userAccountDetails.password.trim().length === 0) {

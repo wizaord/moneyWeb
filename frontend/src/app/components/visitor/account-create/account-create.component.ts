@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserAccountDetails } from '../../../domain/user/UserAccountDetails';
 import { UserDetails } from '../../../domain/user/UserDetails';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-account-create',
@@ -15,7 +16,7 @@ export class AccountCreateComponent implements OnInit {
   private warning = '';
 
 
-  constructor() {
+  constructor(private userService: UserService) {
   }
 
   ngOnInit() {
@@ -24,7 +25,9 @@ export class AccountCreateComponent implements OnInit {
   }
 
   onCreate() {
-    console.log(JSON.stringify(this.accountInfo));
+    this.userService.createUser(this.accountInfo)
+      .subscribe(userAccountDetails => this.warning = 'Account successfully created',
+        error => this.error = 'OUPS ' + error);
   }
 
   addUser() {

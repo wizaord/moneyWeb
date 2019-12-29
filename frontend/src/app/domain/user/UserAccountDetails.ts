@@ -3,13 +3,13 @@ import { UserDetails } from './UserDetails';
 export class UserAccountDetails {
   login: string;
   password: string;
-  mail: string;
+  email: string;
   users: UserDetails[] = [];
 
-  constructor(login: string, password: string, mail: string) {
+  constructor(login: string, password: string, email: string) {
     this.login = login;
     this.password = password;
-    this.mail = mail;
+    this.email = email;
   }
 
   addUser(user: UserDetails) {

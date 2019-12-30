@@ -74,10 +74,25 @@ internal class UserServiceTest {
     }
 
     @Test
+    internal fun `when create user already email exist then return null`() {
+        //given
+        val userMongo = User("id", "login", "password", "email")
+        given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(null)
+        given(userRepository.findByEmail(ArgumentMatchers.anyString())).willReturn(userMongo)
+
+        // when
+        val userCreated = userService.createUser("login", "password", "email")
+
+        // then
+        assertThat(userCreated).isNull()
+    }
+
+    @Test
     internal fun `when create a user then return the user`() {
         // given
         val userMongo = User("id", "login", "password", "email")
         given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(null)
+        given(userRepository.findByEmail(ArgumentMatchers.anyString())).willReturn(null)
         given(userRepository.save(ArgumentMatchers.any(User::class.java))).willReturn(userMongo)
 
         // when

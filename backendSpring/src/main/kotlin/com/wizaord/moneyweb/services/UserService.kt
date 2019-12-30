@@ -24,6 +24,8 @@ class UserService {
     fun createUser(login: String, password: String, email: String): User? {
         val findByUsername = userRepository.findByUsername(login)
         if (findByUsername != null) return null;
+        val findByEmail = userRepository.findByEmail(email)
+        if (findByEmail != null) return null
 
         val user = User(null, login, password, email)
         return userRepository.save(user)

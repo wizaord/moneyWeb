@@ -3,6 +3,8 @@ import { UserAccountDetails } from '../../../domain/user/UserAccountDetails';
 import { AccountOwner } from '../../../domain/user/AccountOwner';
 import { UserService } from '../../../services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../../services/authentification/authentication.service';
 
 @Component({
   selector: 'app-account-create',
@@ -17,10 +19,13 @@ export class AccountCreateComponent implements OnInit {
   private warning = '';
 
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private authentificationService: AuthenticationService,
+              private router: Router) {
   }
 
   ngOnInit() {
+    this.authentificationService.logout();
     this.accountInfo = new UserAccountDetails('', '', '');
     this.addUser();
   }
@@ -29,10 +34,11 @@ export class AccountCreateComponent implements OnInit {
     this.clearMessages();
     this.loading = true;
     this.userService.createUser(this.accountInfo)
+      .pipe()
       .subscribe(
         userAccountDetails => {
-          this.warning = 'Account successfully created';
-          this.loading = false;
+          this.authentificationService.login(userAccountDetails.login, userAccountDetails.password)
+            .subscribe( user => this.router.navigate(['/']));
         }
         , error => this.handleError(error));
   }
@@ -43,7 +49,7 @@ export class AccountCreateComponent implements OnInit {
   }
 
   addUser() {
-    this.accountInfo.addUser(new AccountOwner('hello'));
+    this.accountInfo.addUser(new AccountOwner('me'));
   }
 
   removeUser(user: AccountOwner) {

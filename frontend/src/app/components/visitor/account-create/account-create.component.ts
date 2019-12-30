@@ -34,13 +34,12 @@ export class AccountCreateComponent implements OnInit {
     this.clearMessages();
     this.loading = true;
     this.userService.createUser(this.accountInfo)
-      .pipe()
-      .subscribe(
-        userAccountDetails => {
-          this.authentificationService.login(userAccountDetails.login, userAccountDetails.password)
-            .subscribe( user => this.router.navigate(['/']));
-        }
-        , error => this.handleError(error));
+        .subscribe(
+          userAccountDetails => {
+            this.authentificationService.login(userAccountDetails.login, userAccountDetails.password)
+              .subscribe(user => this.router.navigate(['/']));
+          }
+          , error => this.handleError(error));
   }
 
   clearMessages() {
@@ -65,8 +64,12 @@ export class AccountCreateComponent implements OnInit {
   }
 
   private handleError(error: HttpErrorResponse) {
-    console.log(error);
-    this.error = 'Error while creating user account. Please verify your datas or contact us for help';
+    if (error.status === 409) {
+      this.warning = 'Name or Email already exist. Please specify another value.';
+    }
+    if (error.status === 406) {
+      this.warning = 'Your datas are not valid.';
+    }
     this.loading = false;
   }
 }

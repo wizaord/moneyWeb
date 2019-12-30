@@ -11,7 +11,7 @@
       <div class="col">
         <div *ngIf="warning" class="alert alert-warning" role="alert">
           {{this.warning}}
-          <button type="button" class="close" (click)="removeWarning()">
+          <button type="button" class="close" (click)="clearMessages()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>

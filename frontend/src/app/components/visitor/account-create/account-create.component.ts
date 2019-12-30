@@ -59,10 +59,6 @@ export class AccountCreateComponent implements OnInit {
     this.accountInfo.removeUser(user);
   }
 
-  removeWarning() {
-    this.warning = '';
-  }
-
   private handleError(error: HttpErrorResponse) {
     if (error.status === 409) {
       this.warning = 'Name or Email already exist. Please specify another value.';

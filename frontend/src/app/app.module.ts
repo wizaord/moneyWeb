@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomepageComponent } from './components/visitor/homepage/homepage.component';
-import { HomepageToolbarComponent } from './components/visitor/homepage/homepage-toolbar/homepage-toolbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -22,7 +21,6 @@ import { UserComponent } from './components/visitor/account-create/user/user.com
   declarations: [
     AppComponent,
     HomepageComponent,
-    HomepageToolbarComponent,
     UserHomeComponent,
     AccountCreateComponent,
     UserComponent,

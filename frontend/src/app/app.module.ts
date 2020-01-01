@@ -18,6 +18,7 @@ import { UserComponent } from './components/visitor/user-account-create/user/use
 import { AccountShowComponent } from './components/account/show/account-show.component';
 import { AccountManageComponent } from './components/account/manage/account-manage.component';
 import { UserHomepageComponent } from './components/homepage/user-homepage.component';
+import { AccountCreateComponent } from './components/account/manage/account-create/account-create.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { UserHomepageComponent } from './components/homepage/user-homepage.compo
     AccountShowComponent,
     AccountManageComponent,
     UserHomepageComponent,
+    AccountCreateComponent,
   ],
   imports: [
     NgbModule,

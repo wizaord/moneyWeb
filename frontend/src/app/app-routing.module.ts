@@ -6,6 +6,7 @@ import { UserAccountCreateComponent } from './components/visitor/user-account-cr
 import { AccountManageComponent } from './components/account/manage/account-manage.component';
 import { AccountShowComponent } from './components/account/show/account-show.component';
 import { UserHomepageComponent } from './components/homepage/user-homepage.component';
+import { AccountCreateComponent } from './components/account/manage/account-create/account-create.component';
 
 const routes: Routes = [
   { path: '', component: UserHomepageComponent, canActivate: [AuthGuard] },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'userAccountCreate', component: UserAccountCreateComponent },
   { path: 'accountShow', component: AccountShowComponent },
   { path: 'accountManage', component: AccountManageComponent },
+  { path: 'accountCreate', component: AccountCreateComponent },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }];

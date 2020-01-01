@@ -10,7 +10,7 @@ import { User } from './_models/user';
 })
 export class AppComponent {
   title = 'moneyWeb';
-
+  collapsed = true;
   private currentUser: User;
 
   constructor(

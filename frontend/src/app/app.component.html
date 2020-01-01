@@ -1,8 +1,23 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
-  <div class="navbar-nav">
-    <a class="nav-item nav-link" routerLink="/">Money Web</a>
-    <a class="nav-item nav-link" (click)="logout()">Logout</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="currentUser">
+  <a class="navbar-brand" href="#">Money Web</a>
+  <button class="navbar-toggler" type="button" aria-controls="navbarContent" [attr.aria-expanded]="!collapsed" aria-label="Toggle navigation" (click)="collapsed = !collapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="navbar-collapse" [class.collapse]="collapsed">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" ngbDropdown>
+        <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarAccount" role="button">
+          Account
+        </a>
+        <div ngbDropdownMenu aria-labelledby="navbarAccount" class="dropdown-menu">
+          <a ngbDropdownItem routerLink="/accountShow" (click)="$event.preventDefault()">Show</a>
+          <a ngbDropdownItem routerLink="/accountManage" (click)="$event.preventDefault()">Manage</a>
+        </div>
+      </li>
+    </ul>
+    <button class="btn btn-outline-primary my-2 my-sm-0" (click)="logout()">Logout</button>
   </div>
+
 </nav>
 <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="!currentUser">
   <div class="navbar-nav">

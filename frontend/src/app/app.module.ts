@@ -10,21 +10,25 @@ import { HomepageComponent } from './components/visitor/homepage/homepage.compon
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
-import { UserHomeComponent } from './login/user-home/user-home.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor } from './services/authentification/error-interceptor';
 import { JwtInterceptor } from './services/authentification/jwt-interceptor';
-import { AccountCreateComponent } from './components/visitor/account-create/account-create.component';
-import { UserComponent } from './components/visitor/account-create/user/user.component';
+import { UserAccountCreateComponent } from './components/visitor/user-account-create/user-account-create.component';
+import { UserComponent } from './components/visitor/user-account-create/user/user.component';
+import { AccountShowComponent } from './components/account/show/account-show.component';
+import { AccountManageComponent } from './components/account/manage/account-manage.component';
+import { UserHomepageComponent } from './components/homepage/user-homepage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    UserHomeComponent,
-    AccountCreateComponent,
+    UserAccountCreateComponent,
     UserComponent,
     UserComponent,
+    AccountShowComponent,
+    AccountManageComponent,
+    UserHomepageComponent,
   ],
   imports: [
     NgbModule,

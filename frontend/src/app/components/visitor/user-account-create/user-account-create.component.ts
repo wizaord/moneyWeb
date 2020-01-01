@@ -8,10 +8,10 @@ import { AuthenticationService } from '../../../services/authentification/authen
 
 @Component({
   selector: 'app-account-create',
-  templateUrl: './account-create.component.html',
-  styleUrls: ['./account-create.component.css']
+  templateUrl: './user-account-create.component.html',
+  styleUrls: ['./user-account-create.component.css']
 })
-export class AccountCreateComponent implements OnInit {
+export class UserAccountCreateComponent implements OnInit {
 
   private accountInfo: UserAccountDetails;
   private loading: boolean;

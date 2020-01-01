@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@WebMvcTest(controllers = [User::class])
-internal class UserTest(@Autowired val mockMvc: MockMvc) {
+@WebMvcTest(controllers = [UserController::class])
+internal class UserControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @MockBean
     lateinit var userService: UserService

@@ -10,7 +10,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/moneyapi/user")
-class User(@Autowired var userService: UserService) {
+class UserController(@Autowired var userService: UserService) {
 
     private val logger = LoggerFactory.getLogger(javaClass.canonicalName)
 

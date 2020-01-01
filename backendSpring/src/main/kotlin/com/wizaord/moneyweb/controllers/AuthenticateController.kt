@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/moneyapi")
-class Authenticate (
+class AuthenticateController (
         @Autowired var userService: UserService,
         @Autowired var jwtService: JwtService){
 

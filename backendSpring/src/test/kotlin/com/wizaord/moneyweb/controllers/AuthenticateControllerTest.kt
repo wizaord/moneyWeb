@@ -10,7 +10,8 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -20,14 +21,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 
-@WebMvcTest(controllers = [AuthenticateController::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 internal class AuthenticateControllerTest(@Autowired val mockMvc: MockMvc) {
+
+    @MockBean lateinit var jwtService: JwtService
 
     @MockBean
     lateinit var userService: UserService
 
-    @MockBean
-    lateinit var jwtService: JwtService
 
     @Test
     fun `fun authenticate - when authenticate with a not know user then return 403`() {

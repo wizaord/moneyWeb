@@ -53,4 +53,14 @@ internal class JwtServiceTest {
         assertThat(jwtToken.body.get("ROLE", String::class.java)).isEqualTo("ADMIN")
     }
 
+    @Test
+    internal fun `when token is valid then return true`() {
+        val generateToken = jwtService.generateToken("username")
+        assertThat(jwtService.isTokenValid(generateToken)).isTrue()
+    }
+
+    @Test
+    internal fun `when token is not valid then return false`() {
+        assertThat(jwtService.isTokenValid("youhouhou")).isFalse()
+    }
 }

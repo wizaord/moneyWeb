@@ -1,5 +1,7 @@
 package com.wizaord.moneyweb.services
 
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.io.Encoders
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
+import javax.xml.bind.DatatypeConverter
 
 @Service
 class JwtService {
@@ -28,7 +31,7 @@ class JwtService {
                 .setSubject(username)
                 .setIssuer(ISSUER)
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plus(3000, ChronoUnit.MILLIS)))
+                .setExpiration(Date.from(Instant.now().plus(3000, ChronoUnit.SECONDS)))
                 .setId(UUID.randomUUID().toString())
                 .addClaims(generateCustomClaims(role))
                 .signWith(SignatureAlgorithm.HS512, this.secretKey)
@@ -44,6 +47,25 @@ class JwtService {
         val customClaims = mutableMapOf<String, String>()
         customClaims["ROLE"] = role
         return customClaims
+    }
+
+    fun isTokenValid(jwtFromRequest: String): Boolean {
+        return decodeJwt(jwtFromRequest) != null
+    }
+
+    private fun decodeJwt(jwtToken: String): Jws<Claims>? {
+        try {
+            return Jwts.parser()
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(this.secretKey))
+                    .parseClaimsJws(jwtToken)
+        } catch (e: Exception) {
+            logger.warn("Unable to parse JWT token : {}", jwtToken)
+        }
+        return null
+    }
+
+    fun getUsernameFromToken(jwtToken: String): String? {
+        return decodeJwt(jwtToken)?.body?.subject
     }
 }
 

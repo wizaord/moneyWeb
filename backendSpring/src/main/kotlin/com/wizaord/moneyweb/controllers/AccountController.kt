@@ -1,9 +1,9 @@
 package com.wizaord.moneyweb.controllers
 
-import com.wizaord.moneyweb.configuration.security.UserAuthenticated
 import com.wizaord.moneyweb.domain.Account
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -22,7 +22,8 @@ class AccountController {
     @GetMapping("/plop")
     @ResponseBody
     fun getTest(): Account {
-        val UserAuthenticated = SecurityContextHolder.getContext().authentication.principal as UserAuthenticated
+        val userAuthenticated = SecurityContextHolder.getContext().authentication.principal as User
+        logger.info("log as {}", userAuthenticated.username)
         return Account("id", "name", Date())
     }
 

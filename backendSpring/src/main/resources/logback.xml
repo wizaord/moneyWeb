@@ -7,7 +7,7 @@
     </appender>
 
     <logger name="com.wizaord" level="INFO"/>
-    <logger name="org.springframework" level="DEBUG"/>
+    <logger name="org.springframework" level="INFO"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>

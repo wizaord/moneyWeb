@@ -1,6 +1,7 @@
 package com.wizaord.moneyweb.services
 
 import com.wizaord.moneyweb.domain.Account
+import com.wizaord.moneyweb.domain.AccountOwner
 import com.wizaord.moneyweb.domain.AccountRepository
 import com.wizaord.moneyweb.domain.UserRepository
 import org.slf4j.LoggerFactory
@@ -18,13 +19,15 @@ class AccountService(
 
     private val logger = LoggerFactory.getLogger(javaClass.canonicalName)
 
-    fun create(account: Account, ownerName: String): Account {
+    fun create(account: Account, ownersName: Set<AccountOwner>): Account {
         val currentUser = userService.getCurrentUser()
 
         val newAccount = accountRepository.save(account)
         logger.info("Nouveau compte créé avec l'ID {}", newAccount.id)
 
-        currentUser.getOwner(ownerName).accounts.add(newAccount.id!!)
+        ownersName.forEach {
+            currentUser.getOwner(it.name).accounts.add(newAccount.id!!)
+        }
         userRepository.save(currentUser)
 
         return newAccount

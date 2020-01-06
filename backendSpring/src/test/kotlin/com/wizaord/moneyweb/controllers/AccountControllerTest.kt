@@ -55,7 +55,7 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
         val accountCreate = AccountCreate("accountName", Date(), listOf("owner"))
         val accountCreated = Account("id", accountCreate.accountName, accountCreate.dateCreate)
         given(userService.isKnowOwner(ArgumentMatchers.anyString())).willReturn(true)
-        given(accountService.create(anyOrNull(), anyString()))
+        given(accountService.create(anyOrNull(), ArgumentMatchers.anySet()))
                 .willReturn(accountCreated)
 
         // when
@@ -67,6 +67,6 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
 
         // then
         verify(userService).isKnowOwner(anyString())
-        verify(accountService).create(anyOrNull(), anyString())
+        verify(accountService).create(anyOrNull(), ArgumentMatchers.anySet())
     }
 }

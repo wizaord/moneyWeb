@@ -30,20 +30,20 @@ internal class AccountServiceTest {
     lateinit var accountService: AccountService
 
     @Test
-    fun `when create an account, then account is created and relies to main user`() {
+    fun `when create an account, then account is created and relies to all users`() {
 
         // given
         val accountInput = Account(null, "accountName", Date())
         val accountOutput = Account("id", "accountName", Date())
-        val owner = "owner"
         val user = User("id", "username", "pass", "email")
-        user.addOwner(owner)
+        user.addOwner("owner1")
+        user.addOwner("owner2")
 
         given(userService.getCurrentUser()).willReturn(user)
         given(accountRepository.save(ArgumentMatchers.any(Account::class.java))).willReturn(accountOutput)
 
         // when
-        val accountCreated = accountService.create(accountInput, owner)
+        val accountCreated = accountService.create(accountInput, user.owners.toSet())
 
         // then
         assertThat(accountCreated).isNotNull
@@ -56,11 +56,7 @@ internal class AccountServiceTest {
         verify(userRepository).save(userArgumentCaptor.capture())
         val userUpdated = userArgumentCaptor.value
         assertThat(userUpdated).isNotNull
-        val accountOwner = userUpdated.owners.first { it.name == "owner" }
-        assertThat(accountOwner).isNotNull
-        assertThat(accountOwner.accounts).isNotNull
-        assertThat(accountOwner.accounts).hasSize(1)
-        assertThat(accountOwner.accounts.elementAt(0)).isEqualTo("id")
-
+        val nbOwnerUpdated = userUpdated.owners.filter { it.accounts.isNotEmpty() }.count()
+        assertThat(nbOwnerUpdated).isEqualTo(2)
     }
 }

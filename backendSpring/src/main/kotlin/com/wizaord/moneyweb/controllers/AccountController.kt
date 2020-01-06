@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.NOT_ACCEPTABLE
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.User
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -35,17 +33,9 @@ class AccountController(
         }
 
         val accountToCreate = Account(null, account.accountName, account.dateCreate)
-        val firstOwner = account.owners.first()
-        val accountCreated = accountService.create(accountToCreate, firstOwner)
+        val owners = account.owners.map { com.wizaord.moneyweb.domain.AccountOwner(it) }.toSet()
+        val accountCreated = accountService.create(accountToCreate, owners)
         return ResponseEntity(Account(accountCreated.id, account.accountName, account.dateCreate), HttpStatus.CREATED)
-    }
-
-    @GetMapping("/plop")
-    @ResponseBody
-    fun getTest(): Account {
-        val userAuthenticated = SecurityContextHolder.getContext().authentication.principal as User
-        logger.info("log as {}", userAuthenticated.username)
-        return Account("id", "name", Date())
     }
 
 }

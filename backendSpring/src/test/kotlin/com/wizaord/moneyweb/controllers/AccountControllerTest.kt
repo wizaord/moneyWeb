@@ -2,6 +2,7 @@ package com.wizaord.moneyweb.controllers
 
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.wizaord.moneyweb.domain.Account
+import com.wizaord.moneyweb.domain.AccountOwner
 import com.wizaord.moneyweb.helpers.mapToJson
 import com.wizaord.moneyweb.services.AccountService
 import com.wizaord.moneyweb.services.UserService
@@ -53,9 +54,9 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
     internal fun `create - when owners is know then call service create account`() {
         // given
         val accountCreate = AccountCreate("accountName", Date(), listOf("owner"))
-        val accountCreated = Account("id", accountCreate.accountName, accountCreate.dateCreate)
+        val accountCreated = Account("id", accountCreate.accountName, accountCreate.dateCreate, setOf(AccountOwner("owner")))
         given(userService.isKnowOwner(ArgumentMatchers.anyString())).willReturn(true)
-        given(accountService.create(anyOrNull(), ArgumentMatchers.anySet()))
+        given(accountService.create(anyOrNull()))
                 .willReturn(accountCreated)
 
         // when
@@ -67,6 +68,6 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
 
         // then
         verify(userService).isKnowOwner(anyString())
-        verify(accountService).create(anyOrNull(), ArgumentMatchers.anySet())
+        verify(accountService).create(anyOrNull())
     }
 }

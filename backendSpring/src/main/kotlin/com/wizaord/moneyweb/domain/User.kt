@@ -18,8 +18,3 @@ data class User(
     }
 }
 
-data class AccountOwner(
-        var name: String
-) {
-    var accounts = mutableSetOf<String>()
-}

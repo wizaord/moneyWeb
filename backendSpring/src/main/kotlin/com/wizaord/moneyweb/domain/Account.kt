@@ -6,5 +6,6 @@ import java.util.*
 data class Account(
         @Id var id: String?,
         var name: String,
-        var openDate: Date
+        var openDate: Date,
+        var owners: Set<AccountOwner>
         )

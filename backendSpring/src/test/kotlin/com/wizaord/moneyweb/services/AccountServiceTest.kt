@@ -33,17 +33,18 @@ internal class AccountServiceTest {
     fun `when create an account, then account is created and relies to all users`() {
 
         // given
-        val accountInput = Account(null, "accountName", Date())
-        val accountOutput = Account("id", "accountName", Date())
         val user = User("id", "username", "pass", "email")
         user.addOwner("owner1")
         user.addOwner("owner2")
+
+        val accountInput = Account(null, "accountName", Date(), user.owners)
+        val accountOutput = Account("id", "accountName", Date(), user.owners)
 
         given(userService.getCurrentUser()).willReturn(user)
         given(accountRepository.save(ArgumentMatchers.any(Account::class.java))).willReturn(accountOutput)
 
         // when
-        val accountCreated = accountService.create(accountInput, user.owners.toSet())
+        val accountCreated = accountService.create(accountInput)
 
         // then
         assertThat(accountCreated).isNotNull

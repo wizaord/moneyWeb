@@ -32,11 +32,17 @@ class AccountController(
             return ResponseEntity(NOT_ACCEPTABLE);
         }
 
-        val accountToCreate = Account(null, account.accountName, account.dateCreate)
         val owners = account.owners.map { com.wizaord.moneyweb.domain.AccountOwner(it) }.toSet()
-        val accountCreated = accountService.create(accountToCreate, owners)
-        return ResponseEntity(Account(accountCreated.id, account.accountName, account.dateCreate), HttpStatus.CREATED)
+        val accountToCreate = Account(null, account.accountName, account.dateCreate, owners)
+
+        val accountCreated = accountService.create(accountToCreate)
+
+        return ResponseEntity(Account(accountCreated.id, account.accountName, account.dateCreate, owners), HttpStatus.CREATED)
     }
+
+//    fun accounts(): List<Account> {
+//
+//    }
 
 }
 

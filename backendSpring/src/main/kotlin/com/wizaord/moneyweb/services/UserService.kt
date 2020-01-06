@@ -1,8 +1,10 @@
 package com.wizaord.moneyweb.services
 
 import com.wizaord.moneyweb.domain.User
+import com.wizaord.moneyweb.domain.UserAuthenticated
 import com.wizaord.moneyweb.domain.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,6 +14,14 @@ class UserService {
 
     @Autowired
     lateinit var userRepository: UserRepository
+
+    fun getAuthenticatedUser(): UserAuthenticated {
+        return SecurityContextHolder.getContext().authentication.principal as UserAuthenticated
+    }
+
+    fun getCurrentUser(): User {
+        return userRepository.findById(getAuthenticatedUser().userId).get()
+    }
 
     fun getUserByUsernameAndPassword(username: String, password: String): User? {
         val findByUsername = userRepository.findByUsername(username)
@@ -37,8 +47,11 @@ class UserService {
         return user;
     }
 
-    fun getCurrentUser(): User {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun isKnowOwner(ownerName: String): Boolean {
+        val currentUser = getCurrentUser()
+        return currentUser.owners
+                .filter { it.name == ownerName }
+                .count() > 0
     }
 
 }

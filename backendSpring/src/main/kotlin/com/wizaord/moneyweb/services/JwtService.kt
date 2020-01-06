@@ -26,14 +26,14 @@ class JwtService {
     @Value("\${moneyweb.jwt.secretKeyBase64}")
     lateinit var secretKey: String
 
-    fun generateToken(username: String, role: String = "USER"): String {
+    fun generateToken(userId: String, username: String): String {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuer(ISSUER)
                 .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(Date.from(Instant.now().plus(3000, ChronoUnit.SECONDS)))
                 .setId(UUID.randomUUID().toString())
-                .addClaims(generateCustomClaims(role))
+                .addClaims(generateCustomClaims(userId))
                 .signWith(SignatureAlgorithm.HS512, this.secretKey)
                 .compact()
     }
@@ -43,9 +43,9 @@ class JwtService {
         println(Encoders.BASE64.encode(keyPair.encoded))
     }
 
-    private fun generateCustomClaims(role: String): Map<String, String> {
+    private fun generateCustomClaims(userId: String): Map<String, String> {
         val customClaims = mutableMapOf<String, String>()
-        customClaims["ROLE"] = role
+        customClaims["USERID"] = userId
         return customClaims
     }
 
@@ -64,8 +64,12 @@ class JwtService {
         return null
     }
 
-    fun getUsernameFromToken(jwtToken: String): String? {
-        return decodeJwt(jwtToken)?.body?.subject
+    fun getUsernameFromToken(jwtToken: String): String {
+        return decodeJwt(jwtToken)!!.body!!.subject
+    }
+
+    fun getUserIdFromToken(jwtToken: String): String {
+        return decodeJwt(jwtToken)!!.body!!["USERID"].toString()
     }
 }
 

@@ -3,6 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { UserAccountDetails } from '../domain/user/UserAccountDetails';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { AccountOwner } from '../domain/user/AccountOwner';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class UserService {
       return throwError('User is not valid');
     }
     return this.http.post<UserAccountDetails>(`${this.API_URL}/create`, userAccountDetails);
+  }
+
+  getOwners(): Observable<AccountOwner[]> {
+    return this.http.get<AccountOwner[]>(`${this.API_URL}/owners`);
   }
 
   private validateUser(userAccountDetails: UserAccountDetails): boolean {

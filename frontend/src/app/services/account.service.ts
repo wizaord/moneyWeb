@@ -13,10 +13,11 @@ export class AccountService {
   constructor(private http: HttpClient) {
   }
 
-  createAccount(name: string, openDate: string): Observable<Account> {
+  createAccount(name: string, openDate: string, ownersSelected: string[]): Observable<Account> {
     const account = {
       accountName: name,
-      dateCreate: openDate
+      dateCreate: openDate,
+      owners: ownersSelected
     };
     return this.http.post<Account>(`${this.API_URL}/create`, account);
   }

@@ -1,5 +1,6 @@
 package com.wizaord.moneyweb.controllers
 
+import com.wizaord.moneyweb.domain.User
 import com.wizaord.moneyweb.helpers.mapToJson
 import com.wizaord.moneyweb.services.UserService
 import org.hamcrest.Matchers
@@ -29,7 +30,7 @@ internal class UserControllerTest(@Autowired val mockMvc: MockMvc) {
         //given
         val userAccount = UserAccount("login", "password", "email", listOf(AccountOwner("me")))
         given(userService.createUser(anyString(), anyString(), anyString()))
-                .willReturn(com.wizaord.moneyweb.domain.User("id", "login", "password", "email"))
+                .willReturn(User("id", "login", "password", "email"))
 
         // when
         this.mockMvc.perform(post("/moneyapi/user/create")
@@ -49,7 +50,7 @@ internal class UserControllerTest(@Autowired val mockMvc: MockMvc) {
         val userAccount = UserAccount("login", "password", "email",
                 listOf(AccountOwner("login"), AccountOwner("login2")))
         given(userService.createUser(anyString(), anyString(), anyString()))
-                .willReturn(com.wizaord.moneyweb.domain.User("id", "login", "password", "email"))
+                .willReturn(User("id", "login", "password", "email"))
 
         // when
         this.mockMvc.perform(post("/moneyapi/user/create")

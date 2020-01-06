@@ -20,11 +20,11 @@ internal class JwtServiceTest {
     }
 
     @Test
-    fun `when call generateToken with username then return generated token with USER role`() {
+    fun `generateToken - when call generateToken with username then return generated token with USER role`() {
         // given
 
         // when
-        val generateToken = jwtService.generateToken("username")
+        val generateToken = jwtService.generateToken("id", "username")
 
         // then
         assertThat(generateToken).isNotEmpty()
@@ -33,34 +33,17 @@ internal class JwtServiceTest {
         assertThat(jwtToken).isNotNull
         assertThat(jwtToken.body.issuer).isEqualTo(JwtService.ISSUER)
         assertThat(jwtToken.body.subject).isEqualTo("username")
-        assertThat(jwtToken.body.get("ROLE", String::class.java)).isEqualTo("USER")
+        assertThat(jwtToken.body.get("USERID")).isEqualTo("id")
     }
 
     @Test
-    fun `when call generateToken for administrator then return ADMIN role`() {
-// given
-
-        // when
-        val generateToken = jwtService.generateToken("username", "ADMIN")
-
-        // then
-        assertThat(generateToken).isNotEmpty()
-        val jwtToken = Jwts.parser().setSigningKey(jwtService.secretKey)
-                .parseClaimsJws(generateToken)
-        assertThat(jwtToken).isNotNull
-        assertThat(jwtToken.body.issuer).isEqualTo(JwtService.ISSUER)
-        assertThat(jwtToken.body.subject).isEqualTo("username")
-        assertThat(jwtToken.body.get("ROLE", String::class.java)).isEqualTo("ADMIN")
-    }
-
-    @Test
-    internal fun `when token is valid then return true`() {
-        val generateToken = jwtService.generateToken("username")
+    internal fun `isTokenValid - when token is valid then return true`() {
+        val generateToken = jwtService.generateToken("id", "username")
         assertThat(jwtService.isTokenValid(generateToken)).isTrue()
     }
 
     @Test
-    internal fun `when token is not valid then return false`() {
+    internal fun `isTokenValid - when token is not valid then return false`() {
         assertThat(jwtService.isTokenValid("youhouhou")).isFalse()
     }
 }

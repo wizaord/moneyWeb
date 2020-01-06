@@ -1,13 +1,11 @@
 package com.wizaord.moneyweb.configuration.security
 
+import com.wizaord.moneyweb.domain.UserAuthenticated
 import com.wizaord.moneyweb.services.JwtService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
@@ -30,12 +28,11 @@ class JwtAuthenticationFilter(
         val jwtFromRequest = getJwtFromRequest(httpServletRequest)
         if (jwtFromRequest != null && this.jwtService.isTokenValid(jwtFromRequest)) {
             val username = jwtService.getUsernameFromToken(jwtFromRequest)
-            val authorities = mutableListOf<GrantedAuthority>()
-            authorities.add(SimpleGrantedAuthority("USER"))
+            val userId = jwtService.getUserIdFromToken(jwtFromRequest)
 
-            val userAuthenticated = User(username, "", authorities)
+            val userAuthenticated = UserAuthenticated(userId, username)
 
-            val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(userAuthenticated, null, authorities)
+            val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(userAuthenticated, null, userAuthenticated.authorities)
             usernamePasswordAuthenticationToken.details = WebAuthenticationDetailsSource().buildDetails(httpServletRequest)
             SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
         }

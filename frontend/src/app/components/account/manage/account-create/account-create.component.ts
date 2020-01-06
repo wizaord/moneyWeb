@@ -3,6 +3,8 @@ import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstra
 import { AccountService } from '../../../../services/account.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AccountOwner } from '../../../../domain/user/AccountOwner';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-account-create',
@@ -15,13 +17,17 @@ export class AccountCreateComponent implements OnInit {
 
   private accountName: string;
   private openDate: NgbDateStruct;
+  private accountOwners: AccountOwner[] = [];
+  private ownersSelected: string[];
 
   constructor(private ngbDateParserFormatter: NgbDateParserFormatter,
               private router: Router,
-              private accountService: AccountService) { }
+              private accountService: AccountService,
+              private userService: UserService) { }
 
   ngOnInit() {
     this.accountName = '';
+    this.userService.getOwners().subscribe(owners => owners.forEach(owner => this.accountOwners.push(owner)));
   }
 
   onAccountCreate() {
@@ -29,7 +35,7 @@ export class AccountCreateComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.accountService.createAccount(this.accountName, this.ngbDateParserFormatter.format(this.openDate))
+    this.accountService.createAccount(this.accountName, this.ngbDateParserFormatter.format(this.openDate), this.ownersSelected)
       .subscribe(
           account => this.router.navigate(['/accountShow'])
         , error => this.handleError(error));

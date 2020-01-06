@@ -19,6 +19,8 @@ import { AccountShowComponent } from './components/account/show/account-show.com
 import { AccountManageComponent } from './components/account/manage/account-manage.component';
 import { UserHomepageComponent } from './components/homepage/user-homepage.component';
 import { AccountCreateComponent } from './components/account/manage/account-create/account-create.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { AccountCreateComponent } from './components/account/manage/account-crea
     MatToolbarModule,
     MatCardModule,
     AngularFontAwesomeModule,
-    HttpClientModule
+    HttpClientModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

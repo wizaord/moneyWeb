@@ -54,7 +54,7 @@ internal class AccountServiceTest {
 
         val userArgumentCaptor = ArgumentCaptor.forClass(User::class.java)
         verify(userRepository).save(userArgumentCaptor.capture())
-        val userUpdated = userArgumentCaptor.getValue()
+        val userUpdated = userArgumentCaptor.value
         assertThat(userUpdated).isNotNull
         val accountOwner = userUpdated.owners.first { it.name == "owner" }
         assertThat(accountOwner).isNotNull

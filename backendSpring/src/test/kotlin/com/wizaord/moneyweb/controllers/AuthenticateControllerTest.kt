@@ -50,7 +50,7 @@ internal class AuthenticateControllerTest(@Autowired val mockMvc: MockMvc) {
         val user = UserConnect("login", "password")
 
         given(userService.getUserByUsernameAndPassword(anyString(), anyString()))
-                .willReturn(User("id", "login", "password", "email", "USER"))
+                .willReturn(User("id", "login", "password", "email"))
 
         Mockito.`when`(jwtService.generateToken(anyString(), anyString())).thenReturn("MyJWTToken")
 

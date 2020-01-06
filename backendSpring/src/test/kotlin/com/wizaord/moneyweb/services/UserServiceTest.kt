@@ -1,6 +1,8 @@
 package com.wizaord.moneyweb.services
 
+import com.wizaord.moneyweb.domain.AccountOwner
 import com.wizaord.moneyweb.domain.User
+import com.wizaord.moneyweb.domain.UserAuthenticated
 import com.wizaord.moneyweb.domain.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -11,6 +13,9 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -18,6 +23,9 @@ internal class UserServiceTest {
 
     @Mock
     lateinit var userRepository: UserRepository
+
+    @Mock
+    lateinit var securityContext: SecurityContext
 
     @InjectMocks
     lateinit var userService: UserService
@@ -132,5 +140,39 @@ internal class UserServiceTest {
         // then
         assertThat(userWithOwner.owners).isNotEmpty
         Mockito.verify(userRepository).save(ArgumentMatchers.any(User::class.java))
+    }
+
+    @Test
+    internal fun `isKnowOwner - if owner is knew then return true`() {
+        // given
+        SecurityContextHolder.setContext(securityContext)
+        val user = User("id", "username", "password", "email")
+        user.owners.add(AccountOwner("owner"))
+        given(userRepository.findById(ArgumentMatchers.eq("id")))
+                .willReturn(Optional.of(user))
+        given(securityContext.authentication).willReturn(UsernamePasswordAuthenticationToken(UserAuthenticated("id", "username"), ""))
+
+        // when
+        val knowOwner = userService.isKnowOwner("owner")
+
+        // then
+        assertThat(knowOwner).isTrue()
+    }
+
+    @Test
+    internal fun `isKnowOwner - if owner is not knew then return false`() {
+        // given
+        SecurityContextHolder.setContext(securityContext)
+        val user = User("id", "username", "password", "email")
+        user.owners.add(AccountOwner("owner"))
+        given(userRepository.findById(ArgumentMatchers.eq("id")))
+                .willReturn(Optional.of(user))
+        given(securityContext.authentication).willReturn(UsernamePasswordAuthenticationToken(UserAuthenticated("id", "username"), ""))
+
+        // when
+        val knowOwner = userService.isKnowOwner("owner2")
+
+        // then
+        assertThat(knowOwner).isFalse()
     }
 }

@@ -35,6 +35,15 @@ class UserController(@Autowired var userService: UserService) {
         return ResponseEntity(user, HttpStatus.CREATED)
     }
 
+    @RequestMapping("/owners")
+    @ResponseBody
+    fun getOwners(): List<AccountOwner> {
+        val currentUser = this.userService.getCurrentUser()
+        return currentUser.owners.map { AccountOwner(it.name) }
+
+    }
+
+
 }
 
 data class UserAccount(

@@ -6,8 +6,7 @@ data class User(
         @Id var id: String?,
         var username: String,
         var password: String,
-        var email: String,
-        var role: String = "USER") {
+        var email: String) {
     var owners = mutableSetOf<AccountOwner>()
 
     fun addOwner(ownerName: String): Boolean {

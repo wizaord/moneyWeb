@@ -13,13 +13,18 @@ export class AccountService {
   constructor(private http: HttpClient) {
   }
 
-  createAccount(name: string, openDate: string, ownersSelected: string[]): Observable<Account> {
+  createAccount(name: string, bank: string, openDate: string, ownersSelected: string[]): Observable<Account> {
     const account = {
       accountName: name,
+      bankName: bank,
       dateCreate: openDate,
       owners: ownersSelected
     };
     return this.http.post<Account>(`${this.API_URL}/create`, account);
+  }
+
+  getAccounts(): Observable<Account[]> {
+    return this.http.get<Account[]>(`${this.API_URL}`);
   }
 
 }

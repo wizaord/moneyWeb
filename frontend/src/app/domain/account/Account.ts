@@ -1,5 +1,7 @@
 export class Account {
   id: string;
-  name: string;
-  openDate: Date;
+  accountName: string;
+  bankName: string;
+  dateCreate: Date;
+  owners: string[];
 }

@@ -26,6 +26,22 @@
           </div>
         </div>
 
+        <div class="col-3">Bank Name</div>
+        <div class="col-9">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="bankNameGroup">@</span>
+            </div>
+            <input type="text" class="form-control"
+                   placeholder="bankName" aria-label="bankName" aria-describedby="bankNameGroup"
+                   required
+                   [(ngModel)]="bankName" name=bankName #bankNameRef="ngModel">
+          </div>
+          <div [hidden]="bankNameRef.valid || bankNameRef.pristine" class="alert alert-danger">Bank name is
+            required
+          </div>
+        </div>
+
         <div class="col-3">Open date</div>
         <div class="col-9">
           <div class="form-group">

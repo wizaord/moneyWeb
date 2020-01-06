@@ -33,6 +33,7 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
+    console.log('Suppression du user du localStorage');
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }

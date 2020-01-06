@@ -12,9 +12,9 @@ const routes: Routes = [
   { path: '', component: UserHomepageComponent, canActivate: [AuthGuard] },
   { path: 'login', component: HomepageComponent },
   { path: 'userAccountCreate', component: UserAccountCreateComponent },
-  { path: 'accountShow', component: AccountShowComponent },
-  { path: 'accountManage', component: AccountManageComponent },
-  { path: 'accountCreate', component: AccountCreateComponent },
+  { path: 'accountShow', component: AccountShowComponent, canActivate: [AuthGuard] },
+  { path: 'accountManage', component: AccountManageComponent, canActivate: [AuthGuard] },
+  { path: 'accountCreate', component: AccountCreateComponent, canActivate: [AuthGuard] },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }];

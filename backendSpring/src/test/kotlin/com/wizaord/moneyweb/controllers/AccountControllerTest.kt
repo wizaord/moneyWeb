@@ -35,7 +35,7 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
     @Test
     internal fun `create - when owners is not know then return not acceptable`() {
         // given
-        val accountCreate = AccountCreate("accountName", Date(), listOf("owner", "owner2"))
+        val accountCreate = AccountCreate("accountName", "bank", Date(), listOf("owner", "owner2"))
         given(userService.isKnowOwner(ArgumentMatchers.anyString())).willReturn(true)
         given(userService.isKnowOwner(ArgumentMatchers.anyString())).willReturn(false)
 
@@ -53,8 +53,8 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
     @Test
     internal fun `create - when owners is know then call service create account`() {
         // given
-        val accountCreate = AccountCreate("accountName", Date(), listOf("owner"))
-        val accountCreated = Account("id", accountCreate.accountName, accountCreate.dateCreate, setOf(AccountOwner("owner")))
+        val accountCreate = AccountCreate("accountName", "bank", Date(), listOf("owner"))
+        val accountCreated = Account("id", accountCreate.accountName, "bank", accountCreate.dateCreate, setOf(AccountOwner("owner")))
         given(userService.isKnowOwner(ArgumentMatchers.anyString())).willReturn(true)
         given(accountService.create(anyOrNull()))
                 .willReturn(accountCreated)

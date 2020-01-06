@@ -2,13 +2,21 @@
   <table class="table table-striped">
     <thead>
     <tr>
+      <th scope="col">#</th>
       <th scope="col">Bank</th>
       <th scope="col">Name</th>
       <th scope="col">Amount</th>
+      <th scope="col">Owners</th>
     </tr>
     </thead>
     <tbody>
-
+      <tr *ngFor="let account of accounts; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{account.bankName}}</td>
+        <td>{{account.accountName}}</td>
+        <td>0</td>
+        <td>{{account.owners}}</td>
+      </tr>
     </tbody>
   </table>
 </div>

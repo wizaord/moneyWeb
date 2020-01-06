@@ -19,6 +19,7 @@ export class AccountCreateComponent implements OnInit {
   private openDate: NgbDateStruct;
   private accountOwners: AccountOwner[] = [];
   private ownersSelected: string[];
+  private bankName: string;
 
   constructor(private ngbDateParserFormatter: NgbDateParserFormatter,
               private router: Router,
@@ -27,6 +28,7 @@ export class AccountCreateComponent implements OnInit {
 
   ngOnInit() {
     this.accountName = '';
+    this.bankName = '';
     this.userService.getOwners().subscribe(owners => owners.forEach(owner => this.accountOwners.push(owner)));
   }
 
@@ -35,7 +37,8 @@ export class AccountCreateComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.accountService.createAccount(this.accountName, this.ngbDateParserFormatter.format(this.openDate), this.ownersSelected)
+    this.accountService.createAccount(this.accountName, this.bankName,
+                                      this.ngbDateParserFormatter.format(this.openDate), this.ownersSelected)
       .subscribe(
           account => this.router.navigate(['/accountShow'])
         , error => this.handleError(error));

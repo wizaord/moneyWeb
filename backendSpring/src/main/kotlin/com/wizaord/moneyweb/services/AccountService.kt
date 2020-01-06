@@ -25,11 +25,26 @@ class AccountService(
         logger.info("Nouveau compte créé avec l'ID {}", newAccount.id)
 
         account.owners.forEach {
-            currentUser.getOwner(it.name).accounts.add(newAccount.id!!)
+            currentUser.getOwner(it.name).addAccount(newAccount.id!!)
         }
         userRepository.save(currentUser)
 
         return newAccount
+    }
+
+    fun getAllUserAccounts(): List<Account> {
+        val currentUser = this.userService.getCurrentUser()
+
+        val accountsIds = currentUser.owners
+                .asSequence()
+                .map { it.accounts }
+                .flatten()
+                .distinct()
+        return accountsIds
+                .map {
+                    logger.info("Recuperation du compte avec id {} pour le user courant", it)
+                    this.accountRepository.findById(it).get() }
+                .toList()
     }
 
 }

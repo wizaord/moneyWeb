@@ -1,6 +1,5 @@
 package com.wizaord.moneyweb.controllers
 
-import com.wizaord.moneyweb.domain.Account
 import com.wizaord.moneyweb.services.AccountService
 import com.wizaord.moneyweb.services.UserService
 import org.slf4j.LoggerFactory
@@ -33,21 +32,46 @@ class AccountController(
         }
 
         val owners = account.owners.map { com.wizaord.moneyweb.domain.AccountOwner(it) }.toSet()
-        val accountToCreate = Account(null, account.accountName, account.dateCreate, owners)
+        val accountToCreate = com.wizaord.moneyweb.domain.Account(null, account.accountName, account.bankName, account.dateCreate, owners)
 
         val accountCreated = accountService.create(accountToCreate)
 
-        return ResponseEntity(Account(accountCreated.id, account.accountName, account.dateCreate, owners), HttpStatus.CREATED)
+        return ResponseEntity(Account.fromAccountDb(accountCreated), HttpStatus.CREATED)
     }
 
-//    fun accounts(): List<Account> {
-//
-//    }
+    @RequestMapping("")
+    @ResponseBody
+    fun accounts(): List<Account> {
+        logger.info("Demande de la liste de comptes")
+        return this.accountService.getAllUserAccounts()
+                .map(Account.Companion::fromAccountDb);
+    }
 
 }
 
 data class AccountCreate(var accountName: String,
+                         var bankName: String,
                          var dateCreate: Date,
                          var owners: List<String>) {
 
 }
+
+class Account(var id: String,
+              var accountName: String,
+              var bankName: String,
+              var dateCreate: Date,
+              var owners: List<String>) {
+
+    companion object {
+        fun fromAccountDb(account: com.wizaord.moneyweb.domain.Account): Account {
+            return Account(account.id!!,
+                    account.name,
+                    account.bankName,
+                    account.openDate,
+                    account.owners.map { it.name }.toList())
+        }
+    }
+}
+
+
+

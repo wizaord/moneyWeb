@@ -9,12 +9,7 @@ data class User(
         var email: String) {
     var owners = mutableSetOf<AccountOwner>()
 
-    fun addOwner(ownerName: String): Boolean {
-        return this.owners.add(AccountOwner(ownerName)) //To change body of created functions use File | Settings | File Templates.
-    }
-
-    fun getOwner(owner: String): AccountOwner {
-        return this.owners.first { it.name == owner }
-    }
+    fun addOwner(ownerName: String) = this.owners.add(AccountOwner(ownerName)) //To change body of created functions use File | Settings | File Templates.
+    fun getOwner(owner: String) = this.owners.first { it.name == owner }
 }
 

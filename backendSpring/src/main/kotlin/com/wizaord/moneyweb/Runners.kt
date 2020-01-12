@@ -4,12 +4,14 @@ import com.wizaord.moneyweb.domain.CategoryFamily
 import com.wizaord.moneyweb.domain.CategoryFamilyRepository
 import com.wizaord.moneyweb.domain.SubCategory
 import com.wizaord.moneyweb.services.CategoryService
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 import java.io.File
 import java.util.*
+import kotlin.system.exitProcess
 
 
 @Component
@@ -18,7 +20,14 @@ class RunnerLoaderCategories (
         @Autowired var categoryService: CategoryService
 ): CommandLineRunner {
 
+    private val logger = LoggerFactory.getLogger(RunnerLoaderCategories::class.java)
+
     override fun run(vararg args: String?) {
+        if (categoryService.getAll().isNotEmpty()) {
+            logger.error("Initialisation impossible car des categories existent")
+            exitProcess(1)
+        }
+
         val records: MutableList<CsvCategorie> = ArrayList()
         File(javaClass.classLoader.getResource("init" + File.separator + "categories.csv").file).forEachLine {
            val splitStr = it.split(";")
@@ -34,11 +43,10 @@ class RunnerLoaderCategories (
         records.filter { ! it.parentId.isNullOrEmpty() }
                 .forEach { itSub ->
                     val categoryFamily = categoriesFamily.first { it.id == itSub.parentId }
-                    categoryFamily.addSubCategory(SubCategory(itSub.name))
+                    categoryFamily.addSubCategory(SubCategory(itSub.name, itSub.id))
                 }
 
         // replacement de tous les Ids
-        categoriesFamily.map { it.id == UUID.randomUUID().toString() }
         categoriesFamily.forEach{ categoryService.createCategory(it)}
     }
 }

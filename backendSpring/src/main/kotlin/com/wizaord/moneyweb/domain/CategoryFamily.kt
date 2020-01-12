@@ -15,6 +15,7 @@ data class CategoryFamily(
         var subCategories: MutableSet<SubCategory> = mutableSetOf(),
         var id: String? = UUID.randomUUID().toString()
 ) {
+
     fun addSubCategory(category: SubCategory) {
         this.subCategories.add(category)
     }

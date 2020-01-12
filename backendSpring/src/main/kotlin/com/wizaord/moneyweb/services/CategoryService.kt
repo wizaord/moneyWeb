@@ -17,4 +17,8 @@ class CategoryService(
     fun createCategory(categoryFamily: CategoryFamily): CategoryFamily {
         return this.categoryFamilyRepository.save(categoryFamily)
     }
+
+    fun getAll(): List<CategoryFamily> {
+        return this.categoryFamilyRepository.findAll()
+    }
 }

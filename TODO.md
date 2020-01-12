@@ -1,7 +1,6 @@
 # En cours
 
 # Next
-En tant qu'admin, je souhaite migrer toutes les catégories de moneyPhp
 En tant qu'admin, je souhaite :
     - visualiser les catégories
     - Renommer une catégorie

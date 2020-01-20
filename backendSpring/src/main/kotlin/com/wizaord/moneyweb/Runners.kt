@@ -1,8 +1,12 @@
 package com.wizaord.moneyweb
 
+import com.wizaord.moneyweb.domain.AccountRepository
 import com.wizaord.moneyweb.domain.CategoryFamily
 import com.wizaord.moneyweb.domain.CategoryFamilyRepository
 import com.wizaord.moneyweb.domain.SubCategory
+import com.wizaord.moneyweb.init.AccountLoader
+import com.wizaord.moneyweb.init.CategoryLoader
+import com.wizaord.moneyweb.init.DebitCreditLoader
 import com.wizaord.moneyweb.services.CategoryService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,49 +15,35 @@ import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 import java.io.File
 import java.util.*
-import kotlin.system.exitProcess
 
 
 @Component
-@Profile("init-categorie")
-class RunnerLoaderCategories (
-        @Autowired var categoryService: CategoryService
+@Profile("init-database")
+class InitRunner (
+        @Autowired var categoryLoader: CategoryLoader,
+        @Autowired var categoryFamilyRepository: CategoryFamilyRepository,
+        @Autowired var accountRepository: AccountRepository,
+        @Autowired var accountLoader: AccountLoader,
+        @Autowired var debitCreditLoader: DebitCreditLoader
 ): CommandLineRunner {
-
-    private val logger = LoggerFactory.getLogger(RunnerLoaderCategories::class.java)
+    private val logger = LoggerFactory.getLogger(InitRunner::class.java)
 
     override fun run(vararg args: String?) {
-        if (categoryService.getAll().isNotEmpty()) {
-            logger.error("Initialisation impossible car des categories existent")
-            exitProcess(1)
-        }
+        categoryFamilyRepository.deleteAll()
+        accountRepository.deleteAll()
 
-        val records: MutableList<CsvCategorie> = ArrayList()
-        File(javaClass.classLoader.getResource("init" + File.separator + "categories.csv").file).forEachLine {
-           val splitStr = it.split(";")
-            records.add(CsvCategorie(splitStr[0], splitStr[1], splitStr[3], splitStr[2]))
-        }
+        // load categories
+        val categoryRecords = categoryLoader.readCategories()
+        categoryLoader.loadCategories(categoryRecords)
 
-        // extraction des categoriesFamily
-        val categoriesFamily = records.filter { it.parentId.isNullOrEmpty() }
-                .map { CategoryFamily(it.name, mutableSetOf(), it.id) }
-                .toList()
+        // load account
+        val accounts = accountLoader.readAccounts()
+        accountLoader.loadAccounts(accounts)
 
-        // peuplement des sous categories
-        records.filter { ! it.parentId.isNullOrEmpty() }
-                .forEach { itSub ->
-                    val categoryFamily = categoriesFamily.first { it.id == itSub.parentId }
-                    categoryFamily.addSubCategory(SubCategory(itSub.name, itSub.id))
-                }
+        // load transactions
+        val debitCredits = debitCreditLoader.readDebitCredits();
+//        val ventilations = debitCreditLoader.readVentilations();
 
-        // replacement de tous les Ids
-        categoriesFamily.forEach{ categoryService.createCategory(it)}
+        // load ventilations
     }
 }
-
-data class CsvCategorie(
-        var id: String,
-        var name: String,
-        var type: String,
-        var parentId: String? = null
-)

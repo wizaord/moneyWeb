@@ -1,4 +1,6 @@
 # En cours
+Charger les comptes de ancienMoney
+Charger les transactions de ancienMoney
 
 # Next
 En tant qu'admin, je souhaite :

@@ -8,5 +8,5 @@ data class Account(
         var name: String,
         var bankName: String,
         var openDate: Date,
-        var owners: Set<AccountOwner>
+        var owners: MutableSet<AccountOwner> = mutableSetOf()
         )

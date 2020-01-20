@@ -54,7 +54,7 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
     internal fun `create - when owners is know then call service create account`() {
         // given
         val accountCreate = AccountCreate("accountName", "bank", Date(), listOf("owner"))
-        val accountCreated = Account("id", accountCreate.accountName, "bank", accountCreate.dateCreate, setOf(AccountOwner("owner")))
+        val accountCreated = Account("id", accountCreate.accountName, "bank", accountCreate.dateCreate, mutableSetOf(AccountOwner("owner")))
         given(userService.isKnowOwner(ArgumentMatchers.anyString())).willReturn(true)
         given(accountService.create(anyOrNull()))
                 .willReturn(accountCreated)

@@ -14,7 +14,7 @@ export class AccountShowComponent implements OnInit {
   constructor(private accountService: AccountService) { }
 
   ngOnInit() {
-    this.accountService.getAccounts().subscribe(
+    this.accountService.getOpenedAccounts().subscribe(
       accounts => accounts.forEach(account => this.accounts.push(account))
     );
   }

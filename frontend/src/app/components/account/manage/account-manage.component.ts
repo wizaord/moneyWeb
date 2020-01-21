@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Account } from '../../../domain/account/Account';
+import { AccountService } from '../../../services/account.service';
 
 @Component({
   selector: 'app-manage',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountManageComponent implements OnInit {
 
-  constructor() { }
+  private accounts: Array<Account> = [];
+
+  constructor(private accountService: AccountService) { }
 
   ngOnInit() {
+    this.accountService.getAccounts().subscribe(
+      accounts => accounts.forEach(account => this.accounts.push(account))
+    );
+  }
+
+  get openedAccounts() {
+    return this.accounts.filter(a => a.isOpened);
+  }
+
+  get closedAccounts() {
+    return this.accounts.filter(a => ! a.isOpened);
   }
 
 }

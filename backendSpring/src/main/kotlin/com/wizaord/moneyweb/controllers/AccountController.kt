@@ -32,7 +32,7 @@ class AccountController(
         }
 
         val owners = account.owners.map { com.wizaord.moneyweb.domain.AccountOwner(it) }.toMutableSet()
-        val accountToCreate = com.wizaord.moneyweb.domain.Account(null, account.accountName, account.bankName, account.dateCreate, owners)
+        val accountToCreate = com.wizaord.moneyweb.domain.Account(null, account.accountName, account.bankName, account.dateCreate, true, owners)
 
         val accountCreated = accountService.create(accountToCreate)
 
@@ -60,6 +60,7 @@ class Account(var id: String,
               var accountName: String,
               var bankName: String,
               var dateCreate: Date,
+              var isOpened: Boolean,
               var owners: List<String>) {
 
     companion object {
@@ -68,6 +69,7 @@ class Account(var id: String,
                     account.name,
                     account.bankName,
                     account.openDate,
+                    account.isOpened,
                     account.owners.map { it.name }.toList())
         }
     }

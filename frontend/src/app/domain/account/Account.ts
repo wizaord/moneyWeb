@@ -3,5 +3,6 @@ export class Account {
   accountName: string;
   bankName: string;
   dateCreate: Date;
+  isOpened: boolean;
   owners: string[];
 }

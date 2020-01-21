@@ -32,8 +32,8 @@ internal class AccountServiceTest {
         user.addOwner("owner1")
         user.addOwner("owner2")
 
-        val accountInput = Account(null, "accountName", "bank", Date(), user.owners)
-        val accountOutput = Account("id", "accountName", "bank", Date(), user.owners)
+        val accountInput = Account(null, "accountName", "bank", Date(), true, user.owners)
+        val accountOutput = Account("id", "accountName", "bank", Date(), true, user.owners)
 
         given(userService.getCurrentUser()).willReturn(user)
         given(accountRepository.save(ArgumentMatchers.any(Account::class.java))).willReturn(accountOutput)
@@ -69,9 +69,9 @@ internal class AccountServiceTest {
         user.owners.add(accountOwner)
         user.owners.add(accountOwner2)
 
-        val account1 = Account("id", "name", "bank", Date(), mutableSetOf(accountOwner))
-        val account2 = Account("id2", "name2", "bank", Date(), mutableSetOf(accountOwner))
-        val account3 = Account("id3", "name2", "bank", Date(), mutableSetOf(accountOwner, accountOwner2))
+        val account1 = Account("id", "name", "bank", Date(), true, mutableSetOf(accountOwner))
+        val account2 = Account("id2", "name2", "bank", Date(), true, mutableSetOf(accountOwner))
+        val account3 = Account("id3", "name2", "bank", Date(), true, mutableSetOf(accountOwner, accountOwner2))
 
         given(this.userService.getCurrentUser()).willReturn(user)
         given(this.accountRepository.findById(eq("id"))).willReturn(Optional.of(account1))

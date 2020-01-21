@@ -3,9 +3,12 @@ package com.wizaord.moneyweb.controllers
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.wizaord.moneyweb.domain.Account
 import com.wizaord.moneyweb.domain.AccountOwner
+import com.wizaord.moneyweb.helpers.mapFromJson
 import com.wizaord.moneyweb.helpers.mapToJson
 import com.wizaord.moneyweb.services.AccountService
 import com.wizaord.moneyweb.services.UserService
+import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers
@@ -16,16 +19,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.web.client.RestTemplate
 import java.util.*
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension::class)
-internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
+internal class AccountControllerTest(
+        @Autowired val mockMvc: MockMvc) {
 
     @MockBean
     lateinit var userService: UserService
@@ -40,7 +47,7 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
         given(userService.isKnowOwner(ArgumentMatchers.anyString())).willReturn(false)
 
         // when
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/moneyapi/accounts/create")
+        this.mockMvc.perform(post("/moneyapi/accounts/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(mapToJson(accountCreate)))
@@ -54,13 +61,13 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
     internal fun `create - when owners is know then call service create account`() {
         // given
         val accountCreate = AccountCreate("accountName", "bank", Date(), listOf("owner"))
-        val accountCreated = Account("id", accountCreate.accountName, "bank", accountCreate.dateCreate, mutableSetOf(AccountOwner("owner")))
+        val accountCreated = Account("id", accountCreate.accountName, "bank", accountCreate.dateCreate, true, mutableSetOf(AccountOwner("owner")))
         given(userService.isKnowOwner(ArgumentMatchers.anyString())).willReturn(true)
         given(accountService.create(anyOrNull()))
                 .willReturn(accountCreated)
 
         // when
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/moneyapi/accounts/create")
+        this.mockMvc.perform(post("/moneyapi/accounts/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(mapToJson(accountCreate)))
@@ -70,4 +77,6 @@ internal class AccountControllerTest(@Autowired val mockMvc: MockMvc) {
         verify(userService).isKnowOwner(anyString())
         verify(accountService).create(anyOrNull())
     }
+
 }
+

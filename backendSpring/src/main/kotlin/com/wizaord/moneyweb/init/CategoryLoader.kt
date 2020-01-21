@@ -5,6 +5,7 @@ import com.wizaord.moneyweb.domain.SubCategory
 import com.wizaord.moneyweb.services.CategoryService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -13,16 +14,22 @@ class CategoryLoader(
         @Autowired var categoryService: CategoryService
 ) {
 
-    private val logger = LoggerFactory.getLogger(CategoryLoader::class.java)
+    @Value("\${moneyweb.init.initdatabase.fileLocation.categoriesFamily}")
+    lateinit var categoriesFamilyFilePath: String
 
-    fun loadCategories(categoryRecords: MutableList<CsvCategorie>) {
+    private val logger = LoggerFactory.getLogger(CategoryLoader::class.java)
+    private val categories: MutableList<CsvCategorie> = mutableListOf()
+
+    fun loadCategories() {
+        readCategories()
+
         // extraction des categoriesFamily
-        val categoriesFamily = categoryRecords.filter { it.parentId.isNullOrEmpty() }
+        val categoriesFamily = categories.filter { it.parentId.isNullOrEmpty() }
                 .map { CategoryFamily(it.name, mutableSetOf(), it.id) }
                 .toList()
 
         // peuplement des sous categories
-        categoryRecords.filter { !it.parentId.isNullOrEmpty() }
+        categories.filter { !it.parentId.isNullOrEmpty() }
                 .forEach { itSub ->
                     val categoryFamily = categoriesFamily.first { it.id == itSub.parentId }
                     categoryFamily.addSubCategory(SubCategory(itSub.name, itSub.id))
@@ -33,13 +40,11 @@ class CategoryLoader(
         logger.info("All categories have been loaded")
     }
 
-    fun readCategories(): MutableList<CsvCategorie> {
-        val records: MutableList<CsvCategorie> = mutableListOf()
-        File(javaClass.classLoader.getResource("init" + File.separator + "categories.csv").file).forEachLine {
+    fun readCategories() {
+        File(categoriesFamilyFilePath).forEachLine {
             val splitStr = it.split(";")
-            records.add(CsvCategorie(splitStr[0], splitStr[1], splitStr[3], splitStr[2]))
+            categories.add(CsvCategorie(splitStr[0], splitStr[1], splitStr[3], splitStr[2]))
         }
-        return records
     }
 }
 

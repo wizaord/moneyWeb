@@ -30,8 +30,18 @@ internal class DebitCreditLoaderTest {
         assertThat(transaction.isPointe).isTrue()
         assertThat(transaction.fromAccountId).isNull()
         assertThat(transaction.toAccountId).isEqualTo("33")
-        assertThat(transaction.ventilations).hasSize(1)
-        assertThat(transaction.ventilations[0].montant).isEqualTo(0.0)
+        assertThat(transaction.ventilations).hasSize(0)
+    }
 
+    @Test
+    fun `when CSV Ventilation Line is received then Ventilation is added to Transaction`() {
+        // given
+        val csvLine = listOf("146338","-100.00","149644","NULL","33")
+
+        // when
+        val ventilation = debitCreditLoader.transformVentilationLine(csvLine)
+
+        // then
+        assertThat(ventilation.montant).isEqualTo(100.0)
     }
 }

@@ -21,5 +21,6 @@ data class Transaction(
 
 
 data class Ventilation(
-        val montant: Double
+        val montant: Double,
+        val categorieId: String
 )

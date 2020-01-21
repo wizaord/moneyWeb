@@ -4,7 +4,9 @@ import com.wizaord.moneyweb.domain.Account
 import com.wizaord.moneyweb.domain.AccountOwner
 import com.wizaord.moneyweb.services.AccountService
 import com.wizaord.moneyweb.services.UserService
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.io.File
@@ -19,21 +21,28 @@ class AccountLoader(
         @Autowired val accountService: AccountService
 ) {
 
-    fun readAccounts(): List<Account> {
-        val records: MutableList<Account> = mutableListOf()
-        File(javaClass.classLoader.getResource("init" + File.separator + "comptebancaire.csv").file).forEachLine {
+    private val logger = LoggerFactory.getLogger(AccountLoader::class.java)
+    private val accounts: MutableList<Account> = mutableListOf()
+
+    @Value("\${moneyweb.init.initdatabase.fileLocation.accounts}")
+    lateinit var accountsFilePath: String
+
+    fun readAccounts() {
+        File(accountsFilePath).forEachLine {
             val splitStr = it.replace("\"", "").split(",")
-            records.add(Account(splitStr[0], splitStr[1], "TO_BE_DEFINED", createDateFromString(splitStr[4])))
+            accounts.add(Account(splitStr[0], splitStr[1], "TO_BE_DEFINED", createDateFromString(splitStr[4])))
         }
-        return records
     }
 
-    fun loadAccounts(accounts: List<Account>) {
+    fun loadAccounts() {
+        readAccounts()
+
         val me = userService.getUserByUsernameAndPassword("mouilleron", "Wizard38")
         accounts.forEach {account ->
             account.owners.add(AccountOwner(me!!.owners.elementAt(0).name))
             accountService.create(account, me)
         }
+        logger.info("All accounts have been loaded")
     }
 
     fun createDateFromString(dateSrt: String): Date {

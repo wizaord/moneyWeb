@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <div class="card" >
+      <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center">Menu</h5>
           <a routerLink="/accountCreate" class="btn btn-primary">Créer un compte</a>
@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="col-9">
-      <div class="card" >
+      <div class="card">
         <div class="card-body">
           <mat-card>
             <mat-card-title>Opened Accounts</mat-card-title>
@@ -22,6 +22,7 @@
                   <th scope="col">Name</th>
                   <th scope="col">Amount</th>
                   <th scope="col">Owners</th>
+                  <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,10 @@
                   <td>{{account.accountName}}</td>
                   <td>0</td>
                   <td>{{account.owners}}</td>
+                  <td>
+                    <i class="fa fa-folder-open"></i>
+                    <i class="fa fa-edit"></i>
+                  </td>
                 </tr>
                 </tbody>
               </table>
@@ -39,26 +44,32 @@
 
           <mat-card>
             <mat-card-title>Closed Accounts</mat-card-title>
-            <table class="table table-striped">
-              <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Bank</th>
-                <th scope="col">Name</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Owners</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let account of closedAccounts; index as i">
-                <th scope="row">{{ i + 1 }}</th>
-                <td>{{account.bankName}}</td>
-                <td>{{account.accountName}}</td>
-                <td>0</td>
-                <td>{{account.owners}}</td>
-              </tr>
-              </tbody>
-            </table>
+            <mat-card-content>
+              <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Bank</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Owners</th>
+                  <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let account of closedAccounts; index as i">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{account.bankName}}</td>
+                  <td>{{account.accountName}}</td>
+                  <td>0</td>
+                  <td>{{account.owners}}</td>
+                  <td>
+                    <i class="fa fa-trash"></i>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </mat-card-content>
           </mat-card>
 
         </div>

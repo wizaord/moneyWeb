@@ -7,7 +7,9 @@ class BankAccountManager {
 
     val bankAccounts = mutableListOf<BankAccount>()
 
+    @Throws(BankAccountWithTheSameNameException::class)
     fun registerAccount(bankAccount: BankAccount) {
+        accessToAccountByAccountName(bankAccount.name)?.apply { throw BankAccountWithTheSameNameException() }
         this.bankAccounts.add(bankAccount)
     }
 
@@ -16,3 +18,5 @@ class BankAccountManager {
     fun accessToAccountByAccountName(accountName: String)= accessToAccounts().firstOrNull { it.name == accountName }
 
 }
+
+class BankAccountWithTheSameNameException : Exception()

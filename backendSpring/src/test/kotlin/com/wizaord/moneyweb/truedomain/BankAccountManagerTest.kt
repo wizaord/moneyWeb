@@ -3,6 +3,7 @@ package com.wizaord.moneyweb.truedomain
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.fail
 import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
 
@@ -79,5 +80,21 @@ internal class BankAccountManagerTest {
 
         // then
         assertThat(accountRetrieve).isNull()
+    }
+
+    @Test
+    internal fun `I cannot create an account with the same name of another account`() {
+        // given
+        val accountCreate = BankAccount("name", "bank")
+        bankAccountManager.registerAccount(accountCreate)
+
+        val newBankAccount = BankAccount("name", "bank2")
+
+        try {// when
+            bankAccountManager.registerAccount(newBankAccount)
+            fail { "An exception should has been raised" }
+        } catch (e: BankAccountWithTheSameNameException) {
+
+        }
     }
 }

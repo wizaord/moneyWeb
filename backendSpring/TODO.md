@@ -6,7 +6,7 @@
 ~~Je peux visualiser tous mes comptes~~
 ~~Je peux visualiser les comptes d'une banque précise~~
 ~~Je peux visualiser un comptes par son nom~~
-Je ne peux pas créer un compte avec un nom deja existant
+~~Je ne peux pas créer un compte avec un nom deja existant~~
 
 Je peux charger des comptes depuis une ressource externe
 Je peux charger les comptes d'un utilisateur depuis une ressource externe

@@ -8,12 +8,14 @@
 ~~Je peux visualiser un comptes par son nom~~
 ~~Je ne peux pas créer un compte avec un nom deja existant~~
 
-Je peux charger des comptes depuis une ressource externe
-Je peux charger les comptes d'un utilisateur depuis une ressource externe
+~~Un compte est associé à une famille~~
+~~Un famille porte un nom~~
+Un compte appartient à 1 membre de la famille
+Un compte peut appartenir à plusieurs membre de la famille
 
-Un compte peut être associé à plusieurs personne
-Un compte ne peut être associé 2 fois à la même personne
-Je ne peux visualiser que les comptes qui m'appartienne
+Mes comptes peuvent être stockée dans une ressource externe. A la réception d'une commande, il faut que je raffraichisse mes comptes depuis cette ressource
+Au rafraichissement des ressources externes, je ne récupère que les comptes de ma famille
+
 Par defaut le solde du compte est 0
 Je peux modifier les personnes associé à un compte
 Un compte est toujours associé au minimum à 1 personne

@@ -1,17 +1,22 @@
 package com.wizaord.moneyweb.truedomain
 
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.fail
-import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
-internal class BankAccountManagerTest {
 
-    @InjectMocks
-    lateinit var bankAccountManager: BankAccountManager
+@ExtendWith(MockitoExtension::class)
+internal class FamilyBankAccountsTest {
+
+    lateinit var familyBankAccounts: FamilyBankAccounts
+
+    @BeforeEach
+    internal fun injectMocks() {
+        familyBankAccounts = FamilyBankAccounts("family")
+    }
 
     @Test
     internal fun `When I register an account, thus it exists in accountManager`() {
@@ -19,22 +24,22 @@ internal class BankAccountManagerTest {
         val bankAccount = BankAccount("name", "bankName")
 
         // when
-        bankAccountManager.registerAccount(bankAccount)
+        familyBankAccounts.registerAccount(bankAccount)
 
         // then
-        assertThat(bankAccountManager.bankAccounts).hasSize(1)
+        assertThat(familyBankAccounts.bankAccounts).hasSize(1)
     }
 
     @Test
     internal fun `When I register accounts, I can retrieve them`() {
         // given
         val bankAccount1 = BankAccount("name", "bankName")
-        bankAccountManager.registerAccount(bankAccount1)
+        familyBankAccounts.registerAccount(bankAccount1)
         val bankAccount2 = BankAccount("name2", "bankName")
-        bankAccountManager.registerAccount(bankAccount2)
+        familyBankAccounts.registerAccount(bankAccount2)
 
         // when
-        val bankAccounts = bankAccountManager.accessToAccounts()
+        val bankAccounts = familyBankAccounts.accessToAccounts()
 
         // then
         assertThat(bankAccounts).hasSize(2)
@@ -46,12 +51,12 @@ internal class BankAccountManagerTest {
     internal fun `If I ask to access to the bank attached to SG, the others bank accounts are not retrieved`() {
         // given
         val bankAccount1 = BankAccount("name", "SG")
-        bankAccountManager.registerAccount(bankAccount1)
+        familyBankAccounts.registerAccount(bankAccount1)
         val bankAccount2 = BankAccount("name2", "bankName2")
-        bankAccountManager.registerAccount(bankAccount2)
+        familyBankAccounts.registerAccount(bankAccount2)
 
         // when
-        val bankAccounts = bankAccountManager.accessToAccountsByBankname("SG")
+        val bankAccounts = familyBankAccounts.accessToAccountsByBankname("SG")
 
         // then
         assertThat(bankAccounts).hasSize(1)
@@ -62,10 +67,10 @@ internal class BankAccountManagerTest {
     internal fun `I can retrieve managed account based on his name`() {
         // given
         val bankAccount1 = BankAccount("name", "SG")
-        bankAccountManager.registerAccount(bankAccount1)
+        familyBankAccounts.registerAccount(bankAccount1)
 
         // when
-        val accountRetrieve = bankAccountManager.accessToAccountByAccountName("name")
+        val accountRetrieve = familyBankAccounts.accessToAccountByAccountName("name")
 
         // then
         assertThat(accountRetrieve).isEqualTo(bankAccount1)
@@ -76,7 +81,7 @@ internal class BankAccountManagerTest {
         // given
 
         // when
-        val accountRetrieve = bankAccountManager.accessToAccountByAccountName("name")
+        val accountRetrieve = familyBankAccounts.accessToAccountByAccountName("name")
 
         // then
         assertThat(accountRetrieve).isNull()
@@ -86,15 +91,28 @@ internal class BankAccountManagerTest {
     internal fun `I cannot create an account with the same name of another account`() {
         // given
         val accountCreate = BankAccount("name", "bank")
-        bankAccountManager.registerAccount(accountCreate)
+        familyBankAccounts.registerAccount(accountCreate)
 
         val newBankAccount = BankAccount("name", "bank2")
 
         try {// when
-            bankAccountManager.registerAccount(newBankAccount)
+            familyBankAccounts.registerAccount(newBankAccount)
             fail { "An exception should has been raised" }
         } catch (e: BankAccountWithTheSameNameException) {
 
         }
     }
+
+    @Test
+    internal fun `A family is identify by his name`() {
+        // given
+        val familyName = "family"
+
+        // when
+        val familyBankAccounts = FamilyBankAccounts(familyName)
+
+        // then
+        assertThat(familyBankAccounts.familyName).isEqualTo(familyName)
+    }
+
 }

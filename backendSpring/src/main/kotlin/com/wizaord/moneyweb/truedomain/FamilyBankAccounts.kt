@@ -3,7 +3,9 @@ package com.wizaord.moneyweb.truedomain
 import lombok.extern.slf4j.Slf4j
 
 @Slf4j
-class BankAccountManager {
+class FamilyBankAccounts(
+        val familyName: String
+) {
 
     val bankAccounts = mutableListOf<BankAccount>()
 

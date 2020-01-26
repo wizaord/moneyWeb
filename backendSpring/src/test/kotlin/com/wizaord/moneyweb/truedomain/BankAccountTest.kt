@@ -1,22 +1,26 @@
 package com.wizaord.moneyweb.truedomain
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.junit.jupiter.MockitoExtension
-import java.time.Instant
+import org.junit.jupiter.api.function.Executable
 import java.time.LocalDate
-import java.util.*
 
-@ExtendWith(MockitoExtension::class)
 internal class BankAccountTest {
 
+    lateinit var bankAccount : BankAccount
+
+    @BeforeEach
+    internal fun beforeEach() {
+        bankAccount = BankAccount("name", "bankName")
+    }
+
     @Test
-    internal fun `When I create a account with mandatory param, I can read theses param`() {
+    internal fun `constructor - When I create a account with mandatory param, I can read theses param`() {
         // given
 
         // when
-        val bankAccount = BankAccount("name", "bankName")
 
         // then
         assertThat(bankAccount.name).isEqualTo("name")
@@ -24,18 +28,17 @@ internal class BankAccountTest {
     }
 
     @Test
-    internal fun `When I create a bankAccount without date, the current day date is setted`() {
+    internal fun `constructor - When I create a bankAccount without date, the current day date is setted`() {
         // given
 
         // when
-        val bankAccount = BankAccount("name", "bankName")
 
         // then
         assertThat(bankAccount.dateCreation).isEqualTo(LocalDate.now())
     }
 
     @Test
-    internal fun `When I create a bankAccount with a specific date, the dateCreation is this date`() {
+    internal fun `constructor - When I create a bankAccount with a specific date, the dateCreation is this date`() {
         // given
         val oldDate = LocalDate.now().minusYears(3)
 
@@ -46,5 +49,5 @@ internal class BankAccountTest {
         assertThat(bankAccount.dateCreation).isEqualTo(oldDate)
     }
 
-
 }
+

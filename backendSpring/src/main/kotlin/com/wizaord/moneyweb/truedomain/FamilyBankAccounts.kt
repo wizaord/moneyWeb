@@ -7,18 +7,41 @@ class FamilyBankAccounts(
         val familyName: String
 ) {
 
-    val bankAccounts = mutableListOf<BankAccount>()
+    val bankAccountsOwners = mutableListOf<BankAccountOwners>()
+    val familyMembers = mutableListOf<FamilyMember>()
 
-    @Throws(BankAccountWithTheSameNameException::class)
-    fun registerAccount(bankAccount: BankAccount) {
+
+    @Throws(BankAccountWithTheSameNameException::class,
+            FamilyMemberNotKnowException::class)
+    fun registerAccount(bankAccount: BankAccount, owners: List<FamilyMember>) {
         accessToAccountByAccountName(bankAccount.name)?.apply { throw BankAccountWithTheSameNameException() }
-        this.bankAccounts.add(bankAccount)
+        if (!isMemberAreRegistered(owners)) {
+            throw FamilyMemberNotKnowException()
+        }
+
+        this.bankAccountsOwners.add(BankAccountOwners(bankAccount, owners.toMutableList()))
     }
 
-    fun accessToAccounts() = this.bankAccounts
-    fun accessToAccountsByBankname(bankName: String)= accessToAccounts().filter { it.bankName == bankName }
-    fun accessToAccountByAccountName(accountName: String)= accessToAccounts().firstOrNull { it.name == accountName }
+    @Throws(BankAccountWithTheSameNameException::class)
+    fun registerAccount(bankAccount: BankAccount) = registerAccount(bankAccount, familyMembers)
+
+    private fun isMemberAreRegistered(familyMembersToCheck: List<FamilyMember>): Boolean {
+        val nbUserNotRegistered = familyMembersToCheck
+                .filter { !this.familyMembers.contains(it) }
+                .count()
+        return nbUserNotRegistered == 0
+    }
+
+    fun accessToAccounts() = this.bankAccountsOwners
+    fun accessToAccountsByBankname(bankName: String) = accessToAccounts().filter { it.bankAccount.bankName == bankName }
+    fun accessToAccountByAccountName(accountName: String) = accessToAccounts().firstOrNull { it.bankAccount.name == accountName }
+
+    fun registerFamilyMember(familyMember: FamilyMember) = familyMembers.add(familyMember)
+    fun removeFamilyMember(familyMember: FamilyMember) = familyMembers.remove(familyMember)
 
 }
 
+data class FamilyMember(val username: String)
+
 class BankAccountWithTheSameNameException : Exception()
+class FamilyMemberNotKnowException : Exception()

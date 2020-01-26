@@ -32,16 +32,25 @@ class FamilyBankAccounts(
         return nbUserNotRegistered == 0
     }
 
-    fun accessToAccounts() = this.bankAccountsOwners
+    fun accessToAccounts() = this.bankAccountsOwners.toList()
     fun accessToAccountsByBankname(bankName: String) = accessToAccounts().filter { it.bankAccount.bankName == bankName }
+    fun accessToAccountsByFamilyMember(familyMember: FamilyMember) = accessToAccounts().filter { it.hasOwner(familyMember) }
     fun accessToAccountByAccountName(accountName: String) = accessToAccounts().firstOrNull { it.bankAccount.name == accountName }
 
-    fun registerFamilyMember(familyMember: FamilyMember) = familyMembers.add(familyMember)
-    fun removeFamilyMember(familyMember: FamilyMember) = familyMembers.remove(familyMember)
 
+    fun registerFamilyMember(familyMember: FamilyMember) = familyMembers.add(familyMember)
+
+    @Throws(FamilyMemberOwnerException::class)
+    fun removeFamilyMember(familyMember: FamilyMember) {
+        if (accessToAccountsByFamilyMember(familyMember).isNotEmpty()) {
+            throw FamilyMemberOwnerException()
+        }
+        familyMembers.remove(familyMember)
+    }
 }
 
 data class FamilyMember(val username: String)
 
 class BankAccountWithTheSameNameException : Exception()
 class FamilyMemberNotKnowException : Exception()
+class FamilyMemberOwnerException : Exception()

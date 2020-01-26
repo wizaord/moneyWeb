@@ -68,6 +68,20 @@ internal class FamilyBankAccountsTest {
     }
 
     @Test
+    internal fun `removeFamilyMember - It is not allowed to remove a familyMember if this member is owner of bankAccounts`() {
+        // given
+        val bankAccount = BankAccount("name", "bankName")
+        familyBankAccounts.registerAccount(bankAccount)
+
+        // when
+        Assertions.assertThrows(FamilyMemberOwnerException::class.java) {
+            familyBankAccounts.removeFamilyMember(FamilyMember("Do"))
+        }
+
+        // then
+    }
+
+    @Test
     internal fun `registerAccount - When I register an account with owner, thus it exists in bankAccountManager`() {
         // given
         val bankAccount = BankAccount("name", "bankName")

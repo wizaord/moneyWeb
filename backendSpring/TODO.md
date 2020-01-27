@@ -15,8 +15,8 @@
 ~~Un compte appartient par defaut à tous les membres de la famille~~
 ~~Je ne peux supprimer un membre de la famille si un compte lui est associé~~
 
-Mes comptes peuvent être stockée dans une ressource externe. A la réception d'une commande, il faut que je raffraichisse mes comptes depuis cette ressource
-Au rafraichissement des ressources externes, je ne récupère que les comptes de ma famille
+~~Mes comptes peuvent être stockée dans une ressource externe. A la réception d'une commande, il faut que je raffraichisse mes comptes depuis cette ressource~~
+~~Au rafraichissement des ressources externes, je ne récupère que les comptes de ma famille~~
 
 Par defaut le solde du compte est 0
 Je peux modifier les personnes associé à un compte

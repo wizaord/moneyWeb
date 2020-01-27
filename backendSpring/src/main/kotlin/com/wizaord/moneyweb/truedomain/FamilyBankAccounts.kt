@@ -1,12 +1,11 @@
 package com.wizaord.moneyweb.truedomain
 
-import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
 
-@Slf4j
-class FamilyBankAccounts(
+open class FamilyBankAccounts(
         val familyName: String
 ) {
-
+    private val logger = LoggerFactory.getLogger(this.javaClass)
     val bankAccountsOwners = mutableListOf<BankAccountOwners>()
     val familyMembers = mutableListOf<FamilyMember>()
 

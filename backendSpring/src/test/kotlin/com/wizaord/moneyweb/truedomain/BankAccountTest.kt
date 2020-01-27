@@ -49,5 +49,9 @@ internal class BankAccountTest {
         assertThat(bankAccount.dateCreation).isEqualTo(oldDate)
     }
 
+    @Test
+    internal fun `constructor - when BankAccount is created, solde is equal to 0`() {
+        assertThat(bankAccount.solde()).isEqualTo(0)
+    }
 }
 

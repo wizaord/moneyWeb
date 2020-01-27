@@ -1,7 +1,5 @@
 package com.wizaord.moneyweb.truedomain
 
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.given
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -50,6 +48,18 @@ internal class FamilyBankAccountsTest {
         // then
         assertThat(familyBankAccounts.familyMembers).contains(familyMember)
         assertThat(familyBankAccounts.familyMembers).hasSize(1)
+    }
+
+    @Test
+    internal fun `registerFamilyMember - I cannot register a new member with the same name as an existing member`() {
+        // given
+        val familyMember = FamilyMember("cedric")
+
+        // when
+        familyBankAccounts.registerFamilyMember(familyMember)
+        Assertions.assertThrows(FamilyMemberAlreadyExistException::class.java) {
+            familyBankAccounts.registerFamilyMember(familyMember)
+        }
     }
 
     @Test

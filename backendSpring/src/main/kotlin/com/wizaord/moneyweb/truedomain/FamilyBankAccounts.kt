@@ -36,8 +36,13 @@ open class FamilyBankAccounts(
     fun accessToAccountsByFamilyMember(familyMember: FamilyMember) = accessToAccounts().filter { it.hasOwner(familyMember) }
     fun accessToAccountByAccountName(accountName: String) = accessToAccounts().firstOrNull { it.bankAccount.name == accountName }
 
-
-    fun registerFamilyMember(familyMember: FamilyMember) = familyMembers.add(familyMember)
+    @Throws(FamilyMemberAlreadyExistException::class)
+    fun registerFamilyMember(familyMember: FamilyMember) {
+        if (isMemberAreRegistered(listOf(familyMember))) {
+            throw FamilyMemberAlreadyExistException()
+        }
+        familyMembers.add(familyMember)
+    }
 
     @Throws(FamilyMemberOwnerException::class)
     fun removeFamilyMember(familyMember: FamilyMember) {
@@ -52,4 +57,5 @@ data class FamilyMember(val username: String)
 
 class BankAccountWithTheSameNameException : Exception()
 class FamilyMemberNotKnowException : Exception()
+class FamilyMemberAlreadyExistException : Exception()
 class FamilyMemberOwnerException : Exception()

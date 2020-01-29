@@ -51,7 +51,32 @@ internal class BankAccountTest {
 
     @Test
     internal fun `constructor - when BankAccount is created, solde is equal to 0`() {
-        assertThat(bankAccount.solde()).isEqualTo(0)
+        assertThat(bankAccount.solde()).isEqualTo(0.0)
+    }
+
+    @Test
+    internal fun `addTransaction - When I add a debit, the solde is decreased of the amount of the debit`() {
+        // given
+        val debit = Debit(10.0)
+
+        // when
+        bankAccount.addTransaction(debit)
+
+        // then
+        assertThat(bankAccount.solde()).isEqualTo(-10.0)
+    }
+
+
+    @Test
+    internal fun `addTransaction - When I add a credit, the solde is incresed of the amount of the credit`() {
+        // given
+        val credit = Credit(10.0)
+
+        // when
+        bankAccount.addTransaction(credit)
+
+        // then
+        assertThat(bankAccount.solde()).isEqualTo(10.0)
     }
 }
 

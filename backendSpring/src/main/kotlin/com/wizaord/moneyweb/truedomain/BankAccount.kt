@@ -8,6 +8,16 @@ data class BankAccount(
         val bankName: String,
         val dateCreation: LocalDate? = LocalDate.now()) {
 
-    fun solde() = 0
+    private val transaction = mutableListOf<Transaction>()
+
+    fun solde(): Double {
+        return transaction
+                .map { it.amount }
+                .sum()
+    }
+
+    fun addTransaction(transaction: Transaction) {
+        this.transaction.add(transaction)
+    }
 }
 

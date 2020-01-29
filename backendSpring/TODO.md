@@ -20,8 +20,8 @@
 
 ~~Par defaut le solde du compte est 0~~
 
-Je peux ajouter un débit à mon compte
-Je peux ajouter un crédit à mon compte
+~~Je peux ajouter un débit à mon compte~~
+~~Je peux ajouter un crédit à mon compte~~
 QUand je demande mon solde du compte, celui ci correspond a la somme des débits et crédits
 Quand je paye avec un compte, son solde est diminué du montant du compte
 Quand j'ajoute un débit ou un crédit sur mon compte, celui ci est par défaut non pointé

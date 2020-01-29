@@ -8,21 +8,19 @@ data class BankAccount(
         val bankName: String,
         val dateCreation: LocalDate? = LocalDate.now()) {
 
-    private val transaction = mutableListOf<Transaction>()
+    private val transactions = mutableListOf<Transaction>()
 
     fun solde(): Double {
-        return transaction
+        return transactions
                 .map { it.amount }
                 .sum()
     }
 
-    fun addTransaction(transaction: Transaction) {
-        this.transaction.add(transaction)
-    }
+    fun addTransaction(transaction: Transaction) = this.transactions.add(transaction)
+    fun removeTransaction(transaction: Transaction) = transactions.remove(transaction)
 
     @Throws(NoSuchElementException::class)
-    fun getTransactionById(transactionId: String): Transaction {
-        return transaction.first { it.id == transactionId }
-    }
+    fun getTransactionById(transactionId: String): Transaction = transactions.first { it.id == transactionId }
+
 }
 

@@ -101,5 +101,20 @@ internal class BankAccountTest {
             bankAccount.getTransactionById("hello")
         }
     }
+
+    @Test
+    internal fun `removeTransaction - when I removeTransaction, the transactions is removed ^^`() {
+        // given
+        val transaction = Credit(10.0)
+        bankAccount.addTransaction(transaction)
+
+        // when
+        bankAccount.removeTransaction(transaction)
+
+        // then
+        assertThrows(NoSuchElementException::class.java) {
+            bankAccount.getTransactionById(transaction.id)
+        }
+    }
 }
 

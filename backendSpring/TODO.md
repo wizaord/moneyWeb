@@ -28,8 +28,7 @@
 ~~Je peux pointé ou dépointé un débit ou un crédit~~
 ~~Je peux retrouver une transaction depuis son ID depuis un compte~~
 
-Une transaction peut être ventilé
-La sommes des ventilation doit correspondre à la somme des transactions
+~~Une transaction est valide si la somme des ces ventilations correspond a son montant~~
 Un ventilation est rattaché à une catégorie
 
 Quand j'ajoute une ventilation, une catégorie par défaut est appliqué

@@ -22,10 +22,11 @@
 
 ~~Je peux ajouter un débit à mon compte~~
 ~~Je peux ajouter un crédit à mon compte~~
-QUand je demande mon solde du compte, celui ci correspond a la somme des débits et crédits
-Quand je paye avec un compte, son solde est diminué du montant du compte
-Quand j'ajoute un débit ou un crédit sur mon compte, celui ci est par défaut non pointé
-Je peux pointé ou dépointé un débit ou un crédit
+~~QUand je demande mon solde du compte, celui ci correspond a la somme des débits et crédits~~
+~~Quand je paye avec un compte, son solde est diminué du montant du compte~~
+~~Quand j'ajoute un débit ou un crédit sur mon compte, celui ci est par défaut non pointé~~
+~~Je peux pointé ou dépointé un débit ou un crédit~~
+~~Je peux retrouver une transaction depuis son ID depuis un compte~~
 
 Une transaction peut être ventilé
 La sommes des ventilation doit correspondre à la somme des transactions

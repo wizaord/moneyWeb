@@ -19,5 +19,10 @@ data class BankAccount(
     fun addTransaction(transaction: Transaction) {
         this.transaction.add(transaction)
     }
+
+    @Throws(NoSuchElementException::class)
+    fun getTransactionById(transactionId: String): Transaction {
+        return transaction.first { it.id == transactionId }
+    }
 }
 

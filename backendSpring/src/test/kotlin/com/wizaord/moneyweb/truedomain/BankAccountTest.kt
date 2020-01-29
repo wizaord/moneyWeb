@@ -1,10 +1,9 @@
 package com.wizaord.moneyweb.truedomain
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.function.Executable
 import java.time.LocalDate
 
 internal class BankAccountTest {
@@ -77,6 +76,30 @@ internal class BankAccountTest {
 
         // then
         assertThat(bankAccount.solde()).isEqualTo(10.0)
+    }
+
+    @Test
+    internal fun `getTransactionById - If the transaction is knew, then transaction is returned`() {
+        // given
+        val transaction = Credit(10.0)
+        bankAccount.addTransaction(transaction)
+
+        // when
+        val transactionById = bankAccount.getTransactionById(transaction.id)
+
+        // then
+        assertThat(transactionById).isNotNull
+        assertThat(transactionById).isEqualTo(transaction)
+    }
+
+    @Test
+    internal fun `getTransactionById - If the transaction is not knew, then NoSuchElementException is raised`() {
+        // given
+
+        // when
+        assertThrows(NoSuchElementException::class.java) {
+            bankAccount.getTransactionById("hello")
+        }
     }
 }
 

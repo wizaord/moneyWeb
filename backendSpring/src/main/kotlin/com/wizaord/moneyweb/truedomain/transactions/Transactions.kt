@@ -10,7 +10,7 @@ abstract class Transaction(
         val id: String = UUID.randomUUID().toString()
 ) {
 
-    val ventilations = mutableListOf<Ventilation>()
+    private val ventilations = mutableListOf<Ventilation>()
 
     fun point() {
         this.isPointe = true
@@ -21,6 +21,7 @@ abstract class Transaction(
 
     fun addVentilation(ventilation: Ventilation) = this.ventilations.add(ventilation)
     fun removeVentilation(ventilation: Ventilation) = this.ventilations.remove(ventilation)
+    fun getVentilations() = this.ventilations.toList()
 
     @Throws(NoSuchElementException::class)
     fun getVentilationById(id: String) = this.ventilations.first { it.id == id}

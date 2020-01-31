@@ -5,7 +5,13 @@ import java.util.*
 
 
 abstract class Ventilation(
-        var amount: Double,
-        var category: Category? = null,
-        var id: String = UUID.randomUUID().toString()
-)
+        val amount: Double,
+        private var category: Category? = null,
+        val id: String = UUID.randomUUID().toString()
+) {
+
+    fun getCategory(): Category? = this.category
+    fun setCategory(category: Category) {
+        this.category = category
+    }
+}

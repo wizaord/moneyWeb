@@ -20,8 +20,10 @@ class FamilyBankAccountsPersisted(val familyName: String,
     }
 
     private fun updateFamilyBankAccount(familyBankAccountsImpl: FamilyBankAccountsImpl) {
-        familyBankAccountsImpl.familyMembers.addAll(familyBankAccountsImpl.familyMembers)
-        familyBankAccountsImpl.bankAccountsOwners.addAll(familyBankAccountsImpl.bankAccountsOwners)
+//        familyBankAccountsImpl.getFamily().forEach {
+//            familyBankAccounts.registerFamilyMember(it)
+//        }
+//        familyBankAccounts.bankAccountsOwners.addAll(familyBankAccountsImpl.bankAccountsOwners)
     }
 
     override fun notifyFamilyBankAccountUpdate(familyBankAccountsImpl: FamilyBankAccountsImpl) {

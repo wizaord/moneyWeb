@@ -71,7 +71,7 @@ internal class BankAccountImplOwnersTest {
         bankAccountOwners.removeOwner(john)
 
         // then
-        assertThat(bankAccountOwners.owners).hasSize(1)
+        assertThat(bankAccountOwners.getOwners()).hasSize(1)
     }
 
     @Test

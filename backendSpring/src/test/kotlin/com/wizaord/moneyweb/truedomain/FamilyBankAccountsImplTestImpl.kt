@@ -1,5 +1,6 @@
 package com.wizaord.moneyweb.truedomain
 
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
@@ -55,8 +56,8 @@ internal class FamilyBankAccountsImplTestImpl {
         familyBankAccounts.registerFamilyMember(familyMember)
 
         // then
-        assertThat(familyBankAccounts.familyMembers).contains(familyMember)
-        assertThat(familyBankAccounts.familyMembers).hasSize(1)
+        assertThat(familyBankAccounts.getFamily()).contains(familyMember)
+        assertThat(familyBankAccounts.getFamily()).hasSize(1)
         verify(infrastructureBankAccountFamilyNotifications).notifyFamilyBankAccountUpdate(familyBankAccounts)
     }
 
@@ -89,14 +90,14 @@ internal class FamilyBankAccountsImplTestImpl {
     internal fun `removeFamilyMember - When I remove a member, member is removed`() {
         // given
         val refFamily = mutableListOf<FamilyMember>()
-        refFamily.addAll(familyBankAccountsImpl.familyMembers)
+        refFamily.addAll(familyBankAccountsImpl.getFamily())
         familyBankAccountsImpl.registerFamilyMember(FamilyMember("John"))
 
         // when
         familyBankAccountsImpl.removeFamilyMember(FamilyMember("John"))
 
         // then
-        assertThat(refFamily).isEqualTo(familyBankAccountsImpl.familyMembers)
+        assertThat(refFamily).isEqualTo(familyBankAccountsImpl.getFamily())
         verify(infrastructureBankAccountFamilyNotifications, times(2)).notifyFamilyBankAccountUpdate(familyBankAccountsImpl)
     }
 
@@ -157,7 +158,7 @@ internal class FamilyBankAccountsImplTestImpl {
 
         // then
         assertThat(familyBankAccountsImpl.bankAccountsOwners).hasSize(1)
-        assertThat(familyBankAccountsImpl.bankAccountsOwners[0].owners).hasSize(1)
+        assertThat(familyBankAccountsImpl.bankAccountsOwners[0].getOwners()).hasSize(1)
 
     }
 
@@ -225,6 +226,24 @@ internal class FamilyBankAccountsImplTestImpl {
         } catch (e: BankAccountWithTheSameNameException) {
 
         }
+    }
+
+    @Test
+    internal fun `changeBankAccountOwners - when owners are changed, notification is sent`() {
+        // given
+        val accountCreate = createDummyAccount()
+        val familyMemberJohn = FamilyMember("John")
+        val familyMemberDo = FamilyMember("Do")
+        familyBankAccountsImpl.registerFamilyMember(familyMemberJohn)
+        familyBankAccountsImpl.registerFamilyMember(familyMemberDo)
+        familyBankAccountsImpl.registerAccount(accountCreate, listOf(familyMemberJohn))
+
+        // when
+        familyBankAccountsImpl.changeBankAccountOwners(accountCreate.name, listOf(familyMemberDo, familyMemberJohn))
+        
+        // then
+        assertThat(familyBankAccountsImpl.accessToAccountByAccountName(accountCreate.name)!!.getOwners()).hasSize(2)
+        verify(infrastructureBankAccountFamilyNotifications, times(4)).notifyFamilyBankAccountUpdate(anyOrNull())
     }
 
     private fun createDummyAccount(): BankAccountImpl =

@@ -2,6 +2,8 @@ package com.wizaord.moneyweb.truedomain
 
 import com.wizaord.moneyweb.truedomain.transactions.Transaction
 import java.time.LocalDate
+import java.util.*
+import kotlin.NoSuchElementException
 
 data class BankAccountImpl(
         val name: String,

@@ -12,7 +12,7 @@ open class FamilyBankAccountsImpl(
 ): FamilyBankAccounts {
     private val logger = LoggerFactory.getLogger(this.javaClass)
     val bankAccountsOwners = mutableListOf<BankAccountOwners>()
-    val familyMembers = mutableListOf<FamilyMember>()
+    private val familyMembers = mutableListOf<FamilyMember>()
 
 
     @Throws(BankAccountWithTheSameNameException::class,
@@ -30,6 +30,12 @@ open class FamilyBankAccountsImpl(
     @Throws(BankAccountWithTheSameNameException::class)
     override fun registerAccount(bankAccountImpl: BankAccountImpl) {
         registerAccount(bankAccountImpl, familyMembers)
+    }
+
+    override fun changeBankAccountOwners(bankAccountName: String, owners: List<FamilyMember>) {
+        val accessToAccountByAccountName = accessToAccountByAccountName(bankAccountName) ?: throw NoSuchElementException()
+        accessToAccountByAccountName.replaceOwners(owners)
+        infrastructureBankAccountFamilyNotifications.notifyFamilyBankAccountUpdate(this)
     }
 
 
@@ -62,6 +68,8 @@ open class FamilyBankAccountsImpl(
         familyMembers.remove(familyMember)
         this.notifyBankAccountUpdated()
     }
+
+    override fun getFamily() = this.familyMembers.toList()
 
     private fun notifyBankAccountUpdated() {
         logger.info("FamilyAccount {} updated", familyName)

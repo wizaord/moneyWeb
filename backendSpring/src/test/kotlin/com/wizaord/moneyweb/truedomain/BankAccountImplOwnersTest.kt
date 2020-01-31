@@ -4,14 +4,20 @@ import com.wizaord.moneyweb.truedomain.exceptions.AccountWithoutOwnerException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
 
-internal class BankAccountOwnersTest {
+@ExtendWith(MockitoExtension::class)
+internal class BankAccountImplOwnersTest {
 
+    @Mock
+    lateinit var infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications
 
     @Test
     internal fun `constructor - An BankAccountOwners has at least one owner`() {
         // given
-        val bankAccount = BankAccount("name", "bank")
+        val bankAccount = BankAccountImpl("name", "bank", infrastructureBankAccountNotifications)
         val familyMember = FamilyMember("John")
 
         // when
@@ -27,7 +33,7 @@ internal class BankAccountOwnersTest {
         // given
         val familyMember = FamilyMember("John")
         val familyMember2 = FamilyMember("JohnDo")
-        val bankAccount = BankAccount("name", "username")
+        val bankAccount = BankAccountImpl("name", "username", infrastructureBankAccountNotifications)
         val bankAccountOwners = BankAccountOwners(bankAccount, mutableListOf(familyMember))
 
         // then
@@ -43,7 +49,7 @@ internal class BankAccountOwnersTest {
         val familyMembers = mutableListOf(
                 FamilyMember("John"),
                 FamilyMember("Do"))
-        val bankAccount = BankAccount("name", "username")
+        val bankAccount = BankAccountImpl("name", "username", infrastructureBankAccountNotifications)
 
         // when
         val bankAccountOwners = BankAccountOwners(bankAccount, familyMembers)
@@ -56,7 +62,7 @@ internal class BankAccountOwnersTest {
     @Test
     internal fun `removeOwner - When function is called, owner is removed from bankAccount`() {
         // given
-        val bankAccount = BankAccount("name", "username")
+        val bankAccount = BankAccountImpl("name", "username", infrastructureBankAccountNotifications)
         val john = FamilyMember("John")
         val john2 = FamilyMember("John2")
         val bankAccountOwners = BankAccountOwners(bankAccount, mutableListOf(john, john2))
@@ -71,7 +77,7 @@ internal class BankAccountOwnersTest {
     @Test
     internal fun `removeOwner - You cannot remove all owners from an account`() {
         // given
-        val bankAccount = BankAccount("name", "username")
+        val bankAccount = BankAccountImpl("name", "username", infrastructureBankAccountNotifications)
         val familyMember = FamilyMember("John")
         val bankAccountOwners = BankAccountOwners(bankAccount, mutableListOf(familyMember))
 
@@ -84,7 +90,7 @@ internal class BankAccountOwnersTest {
     @Test
     internal fun `removeOwner - When a not know familyOwner is removed from a BankAccountOwners, then do nothing`() {
         // given
-        val bankAccount = BankAccount("name", "username")
+        val bankAccount = BankAccountImpl("name", "username", infrastructureBankAccountNotifications)
         val familyMember = FamilyMember("John")
         val bankAccountOwners = BankAccountOwners(bankAccount, mutableListOf(familyMember))
 

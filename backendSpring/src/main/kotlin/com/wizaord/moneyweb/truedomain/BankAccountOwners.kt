@@ -3,7 +3,7 @@ package com.wizaord.moneyweb.truedomain
 import com.wizaord.moneyweb.truedomain.exceptions.AccountWithoutOwnerException
 
 data class BankAccountOwners(
-        val bankAccount: BankAccount,
+        val bankAccountImpl: BankAccountImpl,
         val owners: MutableList<FamilyMember>) {
 
     fun hasOwner(familyMember: FamilyMember) = this.owners.contains(familyMember)

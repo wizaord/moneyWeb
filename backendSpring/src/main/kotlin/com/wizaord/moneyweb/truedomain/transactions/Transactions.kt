@@ -5,7 +5,7 @@ import java.util.*
 import kotlin.NoSuchElementException
 
 abstract class Transaction(
-        var amount: Double,
+        val amount: Double,
         var isPointe: Boolean = false,
         val id: String = UUID.randomUUID().toString()
 ) {

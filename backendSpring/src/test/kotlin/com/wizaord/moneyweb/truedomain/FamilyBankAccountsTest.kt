@@ -1,5 +1,9 @@
 package com.wizaord.moneyweb.truedomain
 
+import com.wizaord.moneyweb.truedomain.exceptions.BankAccountWithTheSameNameException
+import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberAlreadyExistException
+import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberNotKnowException
+import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberOwnerException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach

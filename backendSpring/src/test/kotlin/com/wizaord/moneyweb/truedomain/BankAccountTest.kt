@@ -1,5 +1,7 @@
 package com.wizaord.moneyweb.truedomain
 
+import com.wizaord.moneyweb.truedomain.transactions.Credit
+import com.wizaord.moneyweb.truedomain.transactions.Debit
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -116,5 +118,6 @@ internal class BankAccountTest {
             bankAccount.getTransactionById(transaction.id)
         }
     }
+
 }
 

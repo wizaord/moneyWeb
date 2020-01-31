@@ -36,4 +36,11 @@
 ~~Un ventilation est rattachée à une catégorie ou une sous categorie~~
 
 Quand j'ajoute une ventilation avec le même descriptif, je recherche parmis les autres ventilations la catégories
- 
+
+Quand un owner est ajouté, le mécanisme de persistence est notifié
+Quand un owner est retiré, le mécanisme de persistence est notifié
+Quand un owner est modifié, le mécanisme de persistence est notifié
+Quand un compte est créé, modifié, supprimé, le mécanisme de persistence est notifié
+Quand une transaction est ajouté à un compte, le mécanisme de persistence est notifié
+Quand une transaction est modifié, le mécanisme de persistence est notifié
+Quand une transaction est supprimé, le mécanisme de persistence est notifié

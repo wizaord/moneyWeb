@@ -1,5 +1,9 @@
 package com.wizaord.moneyweb.truedomain
 
+import com.wizaord.moneyweb.truedomain.exceptions.BankAccountWithTheSameNameException
+import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberAlreadyExistException
+import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberNotKnowException
+import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberOwnerException
 import org.slf4j.LoggerFactory
 
 open class FamilyBankAccounts(
@@ -53,9 +57,4 @@ open class FamilyBankAccounts(
     }
 }
 
-data class FamilyMember(val username: String)
 
-class BankAccountWithTheSameNameException : Exception()
-class FamilyMemberNotKnowException : Exception()
-class FamilyMemberAlreadyExistException : Exception()
-class FamilyMemberOwnerException : Exception()

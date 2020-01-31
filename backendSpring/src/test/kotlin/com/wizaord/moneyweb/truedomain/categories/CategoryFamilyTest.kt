@@ -1,5 +1,7 @@
-package com.wizaord.moneyweb.truedomain
+package com.wizaord.moneyweb.truedomain.categories
 
+import com.wizaord.moneyweb.truedomain.categories.Category
+import com.wizaord.moneyweb.truedomain.categories.CategoryFamily
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

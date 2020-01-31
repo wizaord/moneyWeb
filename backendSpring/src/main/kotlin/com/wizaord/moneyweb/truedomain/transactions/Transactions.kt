@@ -1,8 +1,8 @@
-package com.wizaord.moneyweb.truedomain
+package com.wizaord.moneyweb.truedomain.transactions
 
+import com.wizaord.moneyweb.truedomain.transactions.ventilations.Ventilation
 import java.util.*
 import kotlin.NoSuchElementException
-import kotlin.math.absoluteValue
 
 abstract class Transaction(
         var amount: Double,
@@ -30,15 +30,3 @@ abstract class Transaction(
     }
 
 }
-
-abstract class Ventilation(
-        var amount: Double,
-        var category: Category? = null,
-        var id: String = UUID.randomUUID().toString()
-)
-
-class DebitVentilation(amount: Double): Ventilation(amount.absoluteValue * -1)
-class CreditVentilation(amount: Double): Ventilation(amount)
-
-class Debit(amount: Double) : Transaction(amount.absoluteValue * -1)
-class Credit(amount: Double) : Transaction(amount.absoluteValue)

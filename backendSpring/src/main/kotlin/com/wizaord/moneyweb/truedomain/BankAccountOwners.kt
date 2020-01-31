@@ -1,5 +1,7 @@
 package com.wizaord.moneyweb.truedomain
 
+import com.wizaord.moneyweb.truedomain.exceptions.AccountWithoutOwnerException
+
 data class BankAccountOwners(
         val bankAccount: BankAccount,
         val owners: MutableList<FamilyMember>) {
@@ -15,4 +17,3 @@ data class BankAccountOwners(
 
 }
 
-class AccountWithoutOwnerException : Exception()

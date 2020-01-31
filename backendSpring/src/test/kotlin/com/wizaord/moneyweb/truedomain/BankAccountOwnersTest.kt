@@ -1,5 +1,6 @@
 package com.wizaord.moneyweb.truedomain
 
+import com.wizaord.moneyweb.truedomain.exceptions.AccountWithoutOwnerException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

@@ -1,5 +1,6 @@
 package com.wizaord.moneyweb.truedomain
 
+import com.wizaord.moneyweb.truedomain.transactions.Transaction
 import java.time.LocalDate
 
 

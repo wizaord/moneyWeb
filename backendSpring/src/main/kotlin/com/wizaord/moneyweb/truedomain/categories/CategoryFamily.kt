@@ -1,11 +1,7 @@
-package com.wizaord.moneyweb.truedomain
+package com.wizaord.moneyweb.truedomain.categories
 
 import java.util.*
 
-open class Category(
-        var name: String,
-        var id: String? = UUID.randomUUID().toString()
-)
 
 class CategoryFamily(
         name: String,

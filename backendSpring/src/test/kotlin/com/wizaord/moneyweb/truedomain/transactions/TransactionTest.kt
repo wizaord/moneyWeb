@@ -1,5 +1,7 @@
-package com.wizaord.moneyweb.truedomain
+package com.wizaord.moneyweb.truedomain.transactions
 
+import com.wizaord.moneyweb.truedomain.transactions.ventilations.CreditVentilation
+import com.wizaord.moneyweb.truedomain.transactions.ventilations.DebitVentilation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -16,15 +18,6 @@ internal class TransactionTest {
         assertThat(transaction.isPointe).isFalse()
     }
 
-    @Test
-    internal fun `constructor ventilation - by default no category is specified`() {
-        // when
-        val ventilation = CreditVentilation(10.0)
-
-        // then
-        assertThat(ventilation.category).isNull()
-
-    }
 
     @Test
     internal fun `mark - when I point a transaction, the transaction is pointed`() {

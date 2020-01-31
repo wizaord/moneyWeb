@@ -1,6 +1,5 @@
 package com.wizaord.moneyweb.truedomain
 
-import com.wizaord.moneyweb.domain.Ventilation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -15,6 +14,16 @@ internal class TransactionTest {
 
         // then
         assertThat(transaction.isPointe).isFalse()
+    }
+
+    @Test
+    internal fun `constructor ventilation - by default no category is specified`() {
+        // when
+        val ventilation = CreditVentilation(10.0)
+
+        // then
+        assertThat(ventilation.category).isNull()
+
     }
 
     @Test

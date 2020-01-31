@@ -15,7 +15,7 @@
 ~~Un compte appartient par defaut à tous les membres de la famille~~
 ~~Je ne peux supprimer un membre de la famille si un compte lui est associé~~
 
-~~Mes comptes peuvent être stockée dans une ressource externe. A la réception d'une commande, il faut que je raffraichisse mes comptes depuis cette ressource~~
+~~Mes comptes peuvent être stockées dans une ressource externe. A la réception d'une commande, il faut que je raffraichisse mes comptes depuis cette ressource~~
 ~~Au rafraichissement des ressources externes, je ne récupère que les comptes de ma famille~~
 
 ~~Par defaut le solde du compte est 0~~
@@ -25,15 +25,15 @@
 ~~QUand je demande mon solde du compte, celui ci correspond a la somme des débits et crédits~~
 ~~Quand je paye avec un compte, son solde est diminué du montant du compte~~
 ~~Quand j'ajoute un débit ou un crédit sur mon compte, celui ci est par défaut non pointé~~
-~~Je peux pointé ou dépointé un débit ou un crédit~~
+~~Je peux pointer ou dépointer un débit ou un crédit~~
 ~~Je peux retrouver une transaction depuis son ID depuis un compte~~
 
 ~~Une transaction est valide si la somme des ces ventilations correspond a son montant~~
-~~Une categorie est identifié par un nom~~
+~~Une categorie est identifiée par un nom~~
 ~~Une categorie peut possèder plusieurs sous categories~~
 
-Un ventilation est rattaché à une catégorie ou une sous categorie
+~~Par defaut une ventilation n'est rattachée à aucune categorie~~
+~~Un ventilation est rattachée à une catégorie ou une sous categorie~~
 
-Quand j'ajoute une ventilation, une catégorie par défaut est appliqué
 Quand j'ajoute une ventilation avec le même descriptif, je recherche parmis les autres ventilations la catégories
  

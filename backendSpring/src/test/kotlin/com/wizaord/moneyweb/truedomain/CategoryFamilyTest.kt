@@ -27,7 +27,7 @@ internal class CategoryFamilyTest {
     @Test
     internal fun `addCategories - when a add a subcategory, thus the subcategory can be retrieve`() {
         // given
-        val subCategory = SubCategory("subCate")
+        val subCategory = Category("subCate")
 
         // when
         categoryFamily.addSubCategory(subCategory)

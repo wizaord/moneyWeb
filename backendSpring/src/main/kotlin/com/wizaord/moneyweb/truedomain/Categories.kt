@@ -2,18 +2,18 @@ package com.wizaord.moneyweb.truedomain
 
 import java.util.*
 
-data class SubCategory(
+open class Category(
         var name: String,
         var id: String? = UUID.randomUUID().toString()
 )
 
-data class CategoryFamily(
-        var name: String,
-        var id: String? = UUID.randomUUID().toString()
-) {
+class CategoryFamily(
+        name: String,
+        id: String? = UUID.randomUUID().toString()
+) : Category(name, id) {
 
-    private val subCategories: MutableList<SubCategory> = mutableListOf()
+    private val categories: MutableList<Category> = mutableListOf()
 
-    fun addSubCategory(category: SubCategory) = this.subCategories.add(category)
-    fun getSubCategories() = this.subCategories
+    fun addSubCategory(category: Category) = this.categories.add(category)
+    fun getSubCategories() = this.categories
 }

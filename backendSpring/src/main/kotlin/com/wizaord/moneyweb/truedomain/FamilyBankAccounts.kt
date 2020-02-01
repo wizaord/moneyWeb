@@ -1,9 +1,11 @@
 package com.wizaord.moneyweb.truedomain
 
+import com.wizaord.moneyweb.truedomain.categories.Category
 import com.wizaord.moneyweb.truedomain.exceptions.BankAccountWithTheSameNameException
 import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberAlreadyExistException
 import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberNotKnowException
 import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberOwnerException
+import com.wizaord.moneyweb.truedomain.transactions.Transaction
 
 interface FamilyBankAccounts {
     @Throws(BankAccountWithTheSameNameException::class, FamilyMemberNotKnowException::class)
@@ -25,4 +27,6 @@ interface FamilyBankAccounts {
     @Throws(FamilyMemberOwnerException::class)
     fun removeFamilyMember(familyMember: FamilyMember)
     fun getFamily(): List<FamilyMember>
+
+//    fun getCategoryConfiguredByPreviousFamilyTransaction(transaction: Transaction): Category?
 }

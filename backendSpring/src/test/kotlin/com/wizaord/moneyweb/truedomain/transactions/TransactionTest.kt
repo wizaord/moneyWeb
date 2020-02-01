@@ -12,7 +12,7 @@ internal class TransactionTest {
         // given
 
         // when
-        val transaction = Credit(10.0)
+        val transaction = Credit("lib", "libBank", "desc", 10.0)
 
         // then
         assertThat(transaction.isPointe).isFalse()
@@ -22,7 +22,7 @@ internal class TransactionTest {
     @Test
     internal fun `mark - when I point a transaction, the transaction is pointed`() {
         // give
-        val transaction = Credit(10.0)
+        val transaction = Credit("lib", "libBank", "desc", 10.0)
 
         // when
         transaction.point()
@@ -35,7 +35,7 @@ internal class TransactionTest {
     @Test
     internal fun `unmark - when I unpoint a transaction, the transaction is unpointed`() {
         // give
-        val transaction = Credit(10.0)
+        val transaction = Credit("lib", "libBank", "desc", 10.0)
 
         // when
         transaction.unpoint()
@@ -48,7 +48,7 @@ internal class TransactionTest {
     @Test
     internal fun `ìsValid - A debit transaction is valided if the sum of the ventilations is equal to the transaction amount`() {
         // given
-        val transaction = Debit(12.3)
+        val transaction = Debit("lib", "libBank", "desc", 12.3)
         transaction.addVentilation(DebitVentilation(10.0))
         transaction.addVentilation(DebitVentilation(2.3))
 
@@ -62,7 +62,7 @@ internal class TransactionTest {
     @Test
     internal fun `ìsValid - A debit transaction is not valid if the sum of the ventilations is not equal to the transaction amount`() {
         // given
-        val transaction = Debit(12.3)
+        val transaction = Debit("lib", "libBank", "desc", 12.3)
         transaction.addVentilation(DebitVentilation(10.0))
         transaction.addVentilation(DebitVentilation(2.2))
 
@@ -76,7 +76,7 @@ internal class TransactionTest {
     @Test
     internal fun `ìsValid - A credit transaction is valided if the sum of the ventilations is equal to the transaction amount`() {
         // given
-        val transaction = Credit(12.3)
+        val transaction = Credit("lib", "libBank", "desc", 12.3)
         transaction.addVentilation(CreditVentilation(10.0))
         transaction.addVentilation(CreditVentilation(2.3))
 
@@ -90,7 +90,7 @@ internal class TransactionTest {
     @Test
     internal fun `getVentilationById`() {
         // given
-        val transaction = Credit(12.3)
+        val transaction = Credit("lib", "libBank", "desc", 12.3)
         val ventilation = CreditVentilation(12.3)
         transaction.addVentilation(ventilation)
 
@@ -104,7 +104,7 @@ internal class TransactionTest {
     @Test
     internal fun `removeVentilation - when I remove a ventilation, thus ventilation is removed`() {
         // given
-        val transaction = Credit(12.3)
+        val transaction = Credit("lib", "libBank", "desc", 12.3)
         val ventilation = CreditVentilation(12.3)
         transaction.addVentilation(ventilation)
 

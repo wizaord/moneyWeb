@@ -69,7 +69,7 @@ internal class BankAccountImplTest {
     @Test
     internal fun `addTransaction - When I add a debit, the solde is decreased of the amount of the debit`() {
         // given
-        val debit = Debit(10.0)
+        val debit = Debit("lib", "libBank", "desc", 10.0)
 
         // when
         bankAccountImpl.addTransaction(debit)
@@ -83,7 +83,7 @@ internal class BankAccountImplTest {
     @Test
     internal fun `addTransaction - When I add a credit, the solde is incresed of the amount of the credit`() {
         // given
-        val credit = Credit(10.0)
+        val credit = Credit("lib", "libBank", "desc", 10.0)
 
         // when
         bankAccountImpl.addTransaction(credit)
@@ -96,7 +96,7 @@ internal class BankAccountImplTest {
     @Test
     internal fun `getTransactionById - If the transaction is knew, then transaction is returned`() {
         // given
-        val transaction = Credit(10.0)
+        val transaction = Credit("lib", "libBank", "desc", 10.0)
         bankAccountImpl.addTransaction(transaction)
 
         // when
@@ -120,7 +120,7 @@ internal class BankAccountImplTest {
     @Test
     internal fun `removeTransaction - when I removeTransaction, the transactions is removed ^^`() {
         // given
-        val transaction = Credit(10.0)
+        val transaction = Credit("lib", "libBank", "desc", 10.0)
         bankAccountImpl.addTransaction(transaction)
 
         // when
@@ -136,7 +136,7 @@ internal class BankAccountImplTest {
     @Test
     internal fun `updateTransaction - When transaction is updated, infra is called`() {
         // given
-        val transaction = Credit(10.0)
+        val transaction = Credit("lib", "libBank", "desc", 10.0)
         bankAccountImpl.addTransaction(transaction)
         transaction.addVentilation(CreditVentilation(10.0))
 

@@ -198,7 +198,7 @@ internal class FamilyBankAccountsImplTestImpl {
         val accountRetrieve = familyBankAccountsImpl.accessToAccountByAccountName("name")
 
         // then
-        assertThat(accountRetrieve?.bankAccountImpl).isEqualTo(bankAccount)
+        assertThat(accountRetrieve?.bankAccount).isEqualTo(bankAccount)
     }
 
     @Test
@@ -239,14 +239,14 @@ internal class FamilyBankAccountsImplTestImpl {
         familyBankAccountsImpl.registerAccount(accountCreate, listOf(familyMemberJohn))
 
         // when
-        familyBankAccountsImpl.changeBankAccountOwners(accountCreate.name, listOf(familyMemberDo, familyMemberJohn))
+        familyBankAccountsImpl.changeBankAccountOwners(accountCreate.getName(), listOf(familyMemberDo, familyMemberJohn))
         
         // then
-        assertThat(familyBankAccountsImpl.accessToAccountByAccountName(accountCreate.name)!!.getOwners()).hasSize(2)
+        assertThat(familyBankAccountsImpl.accessToAccountByAccountName(accountCreate.getName())!!.getOwners()).hasSize(2)
         verify(infrastructureBankAccountFamilyNotifications, times(4)).notifyFamilyBankAccountUpdate(anyOrNull())
     }
 
-    private fun createDummyAccount(): BankAccountImpl =
+    private fun createDummyAccount(): BankAccount =
             BankAccountImpl("name", "bankName", infrastructureBankAccountNotifications)
 
 }

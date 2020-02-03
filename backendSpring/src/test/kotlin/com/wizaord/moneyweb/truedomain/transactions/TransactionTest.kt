@@ -115,4 +115,43 @@ internal class TransactionTest {
         assertThat(transaction.getVentilations()).hasSize(0)
 
     }
+
+    @Test
+    internal fun `matchWith - transaction with the same banklibelle, return 0,9`() {
+        // given
+        val transaction = Credit("lib", "libBank", "desc", 12.3)
+        val transactionMatch = Credit("lib2", "libBank", "desc", 12.3)
+
+        // when
+        val matchPoint = transaction.matchWith(transactionMatch)
+
+        // then
+        assertThat(matchPoint).isEqualTo(0.9)
+    }
+
+    @Test
+    internal fun `matchWith - transaction with the same bankDescription, return 0,8`() {
+        // given
+        val transaction = Credit("lib", "libBank", "desc", 12.3)
+        val transactionMatch = Credit("lib2", "libBank2", "desc", 12.3)
+
+        // when
+        val matchPoint = transaction.matchWith(transactionMatch)
+
+        // then
+        assertThat(matchPoint).isEqualTo(0.8)
+    }
+
+    @Test
+    internal fun `matchWith - transaction with the nothing equals, return 0,0`() {
+        // given
+        val transaction = Credit("lib", "libBank", "desc", 12.3)
+        val transactionMatch = Credit("lib2", "libBank2", "desc2", 12.3)
+
+        // when
+        val matchPoint = transaction.matchWith(transactionMatch)
+
+        // then
+        assertThat(matchPoint).isEqualTo(0.0)
+    }
 }

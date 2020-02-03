@@ -1,13 +1,12 @@
 package com.wizaord.moneyweb.truedomain
 
 import com.wizaord.moneyweb.truedomain.transactions.Transaction
+import com.wizaord.moneyweb.truedomain.transactions.TransactionMatch
 import java.time.LocalDate
-import java.util.*
-import kotlin.NoSuchElementException
 
 data class BankAccountImpl(
-        val name: String,
-        val bankName: String,
+        val accountName: String,
+        val bankDefinition: String,
         private val infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications,
         val dateCreation: LocalDate? = LocalDate.now()) : BankAccount {
 
@@ -18,6 +17,9 @@ data class BankAccountImpl(
                 .map { it.amount }
                 .sum()
     }
+
+    override fun getName() = this.accountName
+    override fun getBankName() = this.bankDefinition
 
     override fun addTransaction(transaction: Transaction) {
         this.transactions.add(transaction)
@@ -37,6 +39,9 @@ data class BankAccountImpl(
     }
 
     override fun getTransactions(): List<Transaction> = transactions.toList()
+    override fun getTransactionsMatched(transaction: Transaction): List<TransactionMatch> {
+        return this.transactions.map { TransactionMatch(it, it.matchWith(transaction)) }
+    }
 
     @Throws(NoSuchElementException::class)
     override fun getTransactionById(transactionId: String): Transaction = transactions.first { it.id == transactionId }

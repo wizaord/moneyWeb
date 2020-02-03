@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.wizaord.moneyweb.truedomain.transactions.Credit
 import com.wizaord.moneyweb.truedomain.transactions.Debit
+import com.wizaord.moneyweb.truedomain.transactions.TransactionMatch
 import com.wizaord.moneyweb.truedomain.transactions.ventilations.CreditVentilation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -21,11 +22,11 @@ internal class BankAccountImplTest {
     @Mock
     lateinit var infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications
 
-    lateinit var bankAccountImpl : BankAccountImpl
+    lateinit var bankAccount : BankAccountImpl
 
     @BeforeEach
     internal fun beforeEach() {
-        bankAccountImpl = BankAccountImpl("name", "bankName", infrastructureBankAccountNotifications)
+        bankAccount = BankAccountImpl("name", "bankName", infrastructureBankAccountNotifications)
     }
 
     @Test
@@ -35,8 +36,8 @@ internal class BankAccountImplTest {
         // when
 
         // then
-        assertThat(bankAccountImpl.name).isEqualTo("name")
-        assertThat(bankAccountImpl.bankName).isEqualTo("bankName")
+        assertThat(bankAccount.accountName).isEqualTo("name")
+        assertThat(bankAccount.bankDefinition).isEqualTo("bankName")
     }
 
     @Test
@@ -46,7 +47,7 @@ internal class BankAccountImplTest {
         // when
 
         // then
-        assertThat(bankAccountImpl.dateCreation).isEqualTo(LocalDate.now())
+        assertThat(bankAccount.dateCreation).isEqualTo(LocalDate.now())
     }
 
     @Test
@@ -63,7 +64,7 @@ internal class BankAccountImplTest {
 
     @Test
     internal fun `constructor - when BankAccount is created, solde is equal to 0`() {
-        assertThat(bankAccountImpl.solde()).isEqualTo(0.0)
+        assertThat(bankAccount.solde()).isEqualTo(0.0)
     }
 
     @Test
@@ -72,10 +73,10 @@ internal class BankAccountImplTest {
         val debit = Debit("lib", "libBank", "desc", 10.0)
 
         // when
-        bankAccountImpl.addTransaction(debit)
+        bankAccount.addTransaction(debit)
 
         // then
-        assertThat(bankAccountImpl.solde()).isEqualTo(-10.0)
+        assertThat(bankAccount.solde()).isEqualTo(-10.0)
         verify(infrastructureBankAccountNotifications).notifyNewTransaction(debit)
     }
 
@@ -86,10 +87,10 @@ internal class BankAccountImplTest {
         val credit = Credit("lib", "libBank", "desc", 10.0)
 
         // when
-        bankAccountImpl.addTransaction(credit)
+        bankAccount.addTransaction(credit)
 
         // then
-        assertThat(bankAccountImpl.solde()).isEqualTo(10.0)
+        assertThat(bankAccount.solde()).isEqualTo(10.0)
         verify(infrastructureBankAccountNotifications).notifyNewTransaction(credit)
     }
 
@@ -97,10 +98,10 @@ internal class BankAccountImplTest {
     internal fun `getTransactionById - If the transaction is knew, then transaction is returned`() {
         // given
         val transaction = Credit("lib", "libBank", "desc", 10.0)
-        bankAccountImpl.addTransaction(transaction)
+        bankAccount.addTransaction(transaction)
 
         // when
-        val transactionById = bankAccountImpl.getTransactionById(transaction.id)
+        val transactionById = bankAccount.getTransactionById(transaction.id)
 
         // then
         assertThat(transactionById).isNotNull
@@ -113,7 +114,7 @@ internal class BankAccountImplTest {
 
         // when
         assertThrows(NoSuchElementException::class.java) {
-            bankAccountImpl.getTransactionById("hello")
+            bankAccount.getTransactionById("hello")
         }
     }
 
@@ -121,14 +122,14 @@ internal class BankAccountImplTest {
     internal fun `removeTransaction - when I removeTransaction, the transactions is removed ^^`() {
         // given
         val transaction = Credit("lib", "libBank", "desc", 10.0)
-        bankAccountImpl.addTransaction(transaction)
+        bankAccount.addTransaction(transaction)
 
         // when
-        bankAccountImpl.removeTransaction(transaction)
+        bankAccount.removeTransaction(transaction)
 
         // then
         assertThrows(NoSuchElementException::class.java) {
-            bankAccountImpl.getTransactionById(transaction.id)
+            bankAccount.getTransactionById(transaction.id)
         }
         verify(infrastructureBankAccountNotifications).notifyRemoveTransaction(transaction)
     }
@@ -137,17 +138,31 @@ internal class BankAccountImplTest {
     internal fun `updateTransaction - When transaction is updated, infra is called`() {
         // given
         val transaction = Credit("lib", "libBank", "desc", 10.0)
-        bankAccountImpl.addTransaction(transaction)
         transaction.addVentilation(CreditVentilation(10.0))
+        bankAccount.addTransaction(transaction)
 
         // when
-        bankAccountImpl.updateTransaction(transaction)
+        bankAccount.updateTransaction(transaction)
 
         // then
-        assertThat(bankAccountImpl.getTransactions()[0].getVentilations()).hasSize(1)
+        assertThat(bankAccount.getTransactions()[0].getVentilations()).hasSize(1)
 
         verify(infrastructureBankAccountNotifications).notifyRemoveTransaction(anyOrNull())
         verify(infrastructureBankAccountNotifications, times(2)).notifyNewTransaction(transaction)
+    }
+
+    @Test
+    internal fun `getTransactionMatched - transaction with the same userlibelle, return 1,0`() {
+        // given
+        val transaction = Credit("lib", "libBank", "desc", 10.0)
+        bankAccount.addTransaction(transaction)
+
+        // when
+        val transactionsMatched = bankAccount.getTransactionsMatched(transaction)
+
+        //then
+        assertThat(transactionsMatched).hasSize(1)
+        assertThat(transactionsMatched[0]).isEqualTo(TransactionMatch(transaction, 1.0))
     }
 
 }

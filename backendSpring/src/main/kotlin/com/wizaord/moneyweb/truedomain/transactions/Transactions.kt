@@ -1,6 +1,7 @@
 package com.wizaord.moneyweb.truedomain.transactions
 
 import com.wizaord.moneyweb.truedomain.transactions.ventilations.Ventilation
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -10,6 +11,7 @@ abstract class Transaction(
         val bankLibelle: String,
         val bankDetail: String?,
         var isPointe: Boolean = false,
+        var dateCreation: LocalDateTime = LocalDateTime.now(),
         val id: String = UUID.randomUUID().toString()
 ) {
 
@@ -18,6 +20,7 @@ abstract class Transaction(
     fun point() {
         this.isPointe = true
     }
+
     fun unpoint() {
         this.isPointe = false
     }
@@ -27,10 +30,19 @@ abstract class Transaction(
     fun getVentilations() = this.ventilations.toList()
 
     @Throws(NoSuchElementException::class)
-    fun getVentilationById(id: String) = this.ventilations.first { it.id == id}
+    fun getVentilationById(id: String) = this.ventilations.first { it.id == id }
 
     fun isValid(): Boolean {
         return amount == ventilations.sumByDouble { it.amount }
+    }
+
+    fun matchWith(transaction: Transaction): Double {
+        return when {
+            transaction.userLibelle == this.userLibelle -> 1.0
+            transaction.bankLibelle == this.bankLibelle -> 0.9
+            transaction.bankDetail == this.bankDetail -> 0.8
+            else -> 0.0
+        }
     }
 
 }

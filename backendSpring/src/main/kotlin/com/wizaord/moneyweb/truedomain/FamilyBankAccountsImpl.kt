@@ -4,6 +4,7 @@ import com.wizaord.moneyweb.truedomain.exceptions.BankAccountWithTheSameNameExce
 import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberAlreadyExistException
 import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberNotKnowException
 import com.wizaord.moneyweb.truedomain.exceptions.FamilyMemberOwnerException
+import com.wizaord.moneyweb.truedomain.transactions.Transaction
 import org.slf4j.LoggerFactory
 
 open class FamilyBankAccountsImpl(
@@ -17,19 +18,19 @@ open class FamilyBankAccountsImpl(
 
     @Throws(BankAccountWithTheSameNameException::class,
             FamilyMemberNotKnowException::class)
-    override fun registerAccount(bankAccountImpl: BankAccountImpl, owners: List<FamilyMember>) {
-        accessToAccountByAccountName(bankAccountImpl.name)?.apply { throw BankAccountWithTheSameNameException() }
+    override fun registerAccount(bankAccount: BankAccount, owners: List<FamilyMember>) {
+        accessToAccountByAccountName(bankAccount.getName())?.apply { throw BankAccountWithTheSameNameException() }
         if (!isMemberAreRegistered(owners)) {
             throw FamilyMemberNotKnowException()
         }
 
-        this.bankAccountsOwners.add(BankAccountOwners(bankAccountImpl, owners.toMutableList()))
+        this.bankAccountsOwners.add(BankAccountOwners(bankAccount, owners.toMutableList()))
         this.notifyBankAccountUpdated()
     }
 
     @Throws(BankAccountWithTheSameNameException::class)
-    override fun registerAccount(bankAccountImpl: BankAccountImpl) {
-        registerAccount(bankAccountImpl, familyMembers)
+    override fun registerAccount(bankAccount: BankAccount) {
+        registerAccount(bankAccount, familyMembers)
     }
 
     override fun changeBankAccountOwners(bankAccountName: String, owners: List<FamilyMember>) {
@@ -47,9 +48,9 @@ open class FamilyBankAccountsImpl(
     }
 
     override fun accessToAccounts() = this.bankAccountsOwners.toList()
-    override fun accessToAccountsByBankname(bankName: String) = accessToAccounts().filter { it.bankAccountImpl.bankName == bankName }
+    override fun accessToAccountsByBankname(bankName: String) = accessToAccounts().filter { it.bankAccount.getBankName() == bankName }
     override fun accessToAccountsByFamilyMember(familyMember: FamilyMember) = accessToAccounts().filter { it.hasOwner(familyMember) }
-    override fun accessToAccountByAccountName(accountName: String) = accessToAccounts().firstOrNull { it.bankAccountImpl.name == accountName }
+    override fun accessToAccountByAccountName(accountName: String) = accessToAccounts().firstOrNull { it.bankAccount.getName() == accountName }
 
     @Throws(FamilyMemberAlreadyExistException::class)
     override fun registerFamilyMember(familyMember: FamilyMember) {
@@ -70,6 +71,16 @@ open class FamilyBankAccountsImpl(
     }
 
     override fun getFamily() = this.familyMembers.toList()
+
+    override fun getCategoryConfiguredByPreviousFamilyTransaction(transaction: Transaction): Transaction? {
+        return this.bankAccountsOwners
+                .asSequence()
+                .map { it.bankAccount.getTransactionsMatched(transaction) }
+                .flatten()
+                .sortedBy { it.matchPoint }
+                .map { it.transaction }
+                .first()
+    }
 
     private fun notifyBankAccountUpdated() {
         logger.info("FamilyAccount {} updated", familyName)

@@ -5,7 +5,7 @@
   </button>
   <div class="navbar-collapse" [class.collapse]="collapsed">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" ngbDropdown>
+      <li class="nav-item active" ngbDropdown>
         <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarAccount" role="button">
           Account
         </a>
@@ -13,6 +13,9 @@
           <a ngbDropdownItem routerLink="/accountShow" (click)="$event.preventDefault()">Show</a>
           <a ngbDropdownItem routerLink="/accountManage" (click)="$event.preventDefault()">Manage</a>
         </div>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/family">Family <span class="sr-only">(current)</span></a>
       </li>
     </ul>
     <button class="btn btn-outline-primary my-2 my-sm-0" (click)="logout()">Logout</button>

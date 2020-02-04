@@ -21,6 +21,7 @@ import { UserHomepageComponent } from './components/homepage/user-homepage.compo
 import { AccountCreateComponent } from './components/account/manage/account-create/account-create.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { FamilyComponent } from './components/family/family/family.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MatSelectModule } from '@angular/material/select';
     AccountManageComponent,
     UserHomepageComponent,
     AccountCreateComponent,
+    FamilyComponent,
   ],
   imports: [
     NgbModule,

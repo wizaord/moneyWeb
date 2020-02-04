@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">Family</h5>
+          <a routerLink="/accountCreate" class="btn btn-primary">New Member</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-9">
+      <div class="card">
+        <div class="card-body">
+          <mat-card>
+            <mat-card-title>Members</mat-card-title>
+            <mat-card-content>
+              <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let member of members; index as i">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{member.name}}</td>
+                  <td>
+                    <i class="fa fa-folder-open"></i>
+                    <i class="fa fa-edit"></i>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

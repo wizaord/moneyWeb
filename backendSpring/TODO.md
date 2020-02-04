@@ -44,4 +44,4 @@ Quand un compte est créé, modifié, supprimé, le mécanisme de persistence es
 Quand une transaction est modifié, le mécanisme de persistence est notifié
 Quand une transaction est supprimé, le mécanisme de persistence est notifié~~
 
-Quand j'ajoute une ventilation avec le même descriptif, je recherche parmis les autres ventilations la catégories
+~~Quand j'ajoute une ventilation avec le même descriptif, je recherche parmis les autres ventilations la catégories~~

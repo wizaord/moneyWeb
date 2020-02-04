@@ -7,6 +7,7 @@ import { AccountManageComponent } from './components/account/manage/account-mana
 import { AccountShowComponent } from './components/account/show/account-show.component';
 import { UserHomepageComponent } from './components/homepage/user-homepage.component';
 import { AccountCreateComponent } from './components/account/manage/account-create/account-create.component';
+import { FamilyComponent } from './components/family/family/family.component';
 
 const routes: Routes = [
   { path: '', component: UserHomepageComponent, canActivate: [AuthGuard] },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'accountShow', component: AccountShowComponent, canActivate: [AuthGuard] },
   { path: 'accountManage', component: AccountManageComponent, canActivate: [AuthGuard] },
   { path: 'accountCreate', component: AccountCreateComponent, canActivate: [AuthGuard] },
+  { path: 'family', component: FamilyComponent, canActivate: [AuthGuard] },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }];

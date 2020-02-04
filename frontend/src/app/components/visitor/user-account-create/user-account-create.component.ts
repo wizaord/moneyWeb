@@ -27,7 +27,6 @@ export class UserAccountCreateComponent implements OnInit {
   ngOnInit() {
     this.authentificationService.logout();
     this.accountInfo = new UserAccountDetails('', '', '');
-    this.addUser();
   }
 
   onCreate() {
@@ -45,18 +44,6 @@ export class UserAccountCreateComponent implements OnInit {
   clearMessages() {
     this.warning = undefined;
     this.error = undefined;
-  }
-
-  addUser() {
-    this.accountInfo.addUser(new AccountOwner('me'));
-  }
-
-  removeUser(user: AccountOwner) {
-    if (this.accountInfo.owners.length <= 1) {
-      this.warning = 'At least one user must be specified';
-      return;
-    }
-    this.accountInfo.removeUser(user);
   }
 
   private handleError(error: HttpErrorResponse) {

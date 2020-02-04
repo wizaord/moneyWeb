@@ -1,9 +1,9 @@
 package com.wizaord.moneyweb.controllers
 
-import com.wizaord.moneyweb.domain.User
+import com.wizaord.moneyweb.infrastructure.User
 import com.wizaord.moneyweb.helpers.mapToJson
+import com.wizaord.moneyweb.services.AuthentificationService
 import com.wizaord.moneyweb.services.JwtService
-import com.wizaord.moneyweb.services.UserService
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyString
@@ -28,13 +28,13 @@ internal class AuthenticateControllerTest(@Autowired val mockMvc: MockMvc) {
     @MockBean lateinit var jwtService: JwtService
 
     @MockBean
-    lateinit var userService: UserService
+    lateinit var authentificationService: AuthentificationService
 
 
     @Test
     fun `fun authenticate - when authenticate with a not know user then return 403`() {
         // given
-        given(userService.getUserByUsernameAndPassword(anyString(), anyString())).willReturn(null)
+        given(authentificationService.getUserByUsernameAndPassword(anyString(), anyString())).willReturn(null)
 
         // when
         this.mockMvc.perform(post("/moneyapi/authenticate")
@@ -49,7 +49,7 @@ internal class AuthenticateControllerTest(@Autowired val mockMvc: MockMvc) {
         val uri = "/moneyapi/authenticate"
         val user = UserConnect("login", "password")
 
-        given(userService.getUserByUsernameAndPassword(anyString(), anyString()))
+        given(authentificationService.getUserByUsernameAndPassword(anyString(), anyString()))
                 .willReturn(User("id", "login", "password", "email"))
 
         Mockito.`when`(jwtService.generateToken(anyString(), anyString())).thenReturn("MyJWTToken")

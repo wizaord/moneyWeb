@@ -4,6 +4,7 @@ import { UserAccountDetails } from '../domain/user/UserAccountDetails';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AccountOwner } from '../domain/user/AccountOwner';
+import { AuthenticationService } from './authentification/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +22,6 @@ export class UserService {
     return this.http.post<UserAccountDetails>(`${this.API_URL}/create`, userAccountDetails);
   }
 
-  getOwners(): Observable<AccountOwner[]> {
-    return this.http.get<AccountOwner[]>(`${this.API_URL}/owners`);
-  }
-
   private validateUser(userAccountDetails: UserAccountDetails): boolean {
     if (userAccountDetails.login.trim().length === 0) {
       return false;
@@ -35,12 +32,6 @@ export class UserService {
     if (userAccountDetails.password.trim().length === 0) {
       return false;
     }
-    if (userAccountDetails.owners.length === 0) {
-      return false;
-    }
-    const nbUserWithSizeZero = userAccountDetails.owners
-      .filter(user => user.ownerName.trim().length === 0)
-      .length;
-    return !nbUserWithSizeZero;
+    return true;
   }
 }

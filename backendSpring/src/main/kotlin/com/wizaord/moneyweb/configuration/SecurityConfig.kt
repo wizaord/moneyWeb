@@ -53,7 +53,8 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                         "/**/*.css",
                         "/**/*.js")
                     .permitAll()
-                .antMatchers("/moneyapi/authenticate")
+                .antMatchers("/moneyapi/authenticate",
+                        "/moneyapi/user/create")
                     .permitAll()
                 .anyRequest()
                     .authenticated()

@@ -29,7 +29,7 @@ export class AccountCreateComponent implements OnInit {
   ngOnInit() {
     this.accountName = '';
     this.bankName = '';
-    this.userService.getOwners().subscribe(owners => owners.forEach(owner => this.accountOwners.push(owner)));
+    // this.userService.getOwners().subscribe(owners => owners.forEach(owner => this.accountOwners.push(owner)));
   }
 
   onAccountCreate() {

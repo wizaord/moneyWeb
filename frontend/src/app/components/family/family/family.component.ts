@@ -8,7 +8,7 @@ import { FamilyService } from '../../../services/family.service';
   styleUrls: ['./family.component.css']
 })
 export class FamilyComponent implements OnInit {
-  members: AccountOwner[];
+  members: AccountOwner[] = [];
 
   constructor(private familyService: FamilyService) { }
 

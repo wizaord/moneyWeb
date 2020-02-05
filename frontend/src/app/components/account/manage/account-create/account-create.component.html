@@ -58,8 +58,8 @@
           <mat-form-field>
             <mat-label>Please select the owner</mat-label>
             <mat-select [(ngModel)]="ownersSelected" name="ownersSelected" multiple>
-              <mat-option *ngFor="let owner of accountOwners" [value]="owner.ownerName">
-                {{owner.ownerName}}
+              <mat-option *ngFor="let owner of accountOwners" [value]="owner.name">
+                {{owner.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>

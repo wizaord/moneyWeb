@@ -1,8 +1,8 @@
 export class AccountOwner {
-  ownerName: string;
+  name: string;
 
-  constructor(ownerName: string = '') {
-    this.ownerName = ownerName;
+  constructor(name: string = '') {
+    this.name = name;
   }
 
 }

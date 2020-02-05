@@ -1,10 +1,11 @@
 package com.wizaord.moneyweb.services
 
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 import com.wizaord.moneyweb.domain.FamilyMember
-import com.wizaord.moneyweb.infrastructure.FamilyBankAccontsRepository
-import com.wizaord.moneyweb.infrastructure.FamilyBankAccount
-import org.assertj.core.api.Assertions
+import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
+import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccountsRepository
+import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccount
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -18,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 internal class FamilyBankAccountsCreateServiceTest {
 
     @Mock
-    lateinit var familyBankAccontsRepository: FamilyBankAccontsRepository
+    lateinit var familyBankAccountPersistence: FamilyBankAccountPersistence
 
     @InjectMocks
     lateinit var familyBankAccountsCreateService: FamilyBankAccountsCreateService
@@ -26,7 +27,7 @@ internal class FamilyBankAccountsCreateServiceTest {
     @Test
     internal fun `initFamily - when function is called, then family is created with nothing but with one owner`() {
         // given
-        given(familyBankAccontsRepository.save(ArgumentMatchers.any(FamilyBankAccount::class.java))).willAnswer { i -> i.arguments[0] }
+        given(familyBankAccountPersistence.initFamily(anyOrNull())).willAnswer { i -> i.arguments[0] }
         // when
         val familyCreated = familyBankAccountsCreateService.initFamily("family")
 

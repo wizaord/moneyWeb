@@ -7,13 +7,14 @@ import com.wizaord.moneyweb.domain.exceptions.FamilyMemberOwnerException
 import com.wizaord.moneyweb.domain.transactions.Transaction
 import org.slf4j.LoggerFactory
 
-class FamilyBankAccountsImpl(
+data class FamilyBankAccountsImpl(
         val familyName: String,
         private val infrastructureBankAccountFamilyNotifications: InfrastructureBankAccountFamilyNotifications? = null
 ): FamilyBankAccounts {
     private val logger = LoggerFactory.getLogger(this.javaClass)
     val bankAccountsOwners = mutableListOf<BankAccountOwners>()
     private val familyMembers = mutableListOf<FamilyMember>()
+    private var notificationActivated = true
 
 
     @Throws(BankAccountWithTheSameNameException::class,
@@ -83,8 +84,18 @@ class FamilyBankAccountsImpl(
     }
 
     private fun notifyBankAccountUpdated() {
-        logger.info("FamilyAccount {} updated", familyName)
-        this.infrastructureBankAccountFamilyNotifications?.notifyFamilyBankAccountUpdate(this)
+        if (notificationActivated) {
+            this.infrastructureBankAccountFamilyNotifications?.notifyFamilyBankAccountUpdate(this)
+        }
+
+    }
+
+    fun deactivateNotifications() {
+        notificationActivated = false
+    }
+
+    fun activateNotifications() {
+        notificationActivated = true
     }
 }
 

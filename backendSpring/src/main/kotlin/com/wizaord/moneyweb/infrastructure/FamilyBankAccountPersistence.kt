@@ -1,9 +1,9 @@
-package com.wizaord.moneyweb.services
+package com.wizaord.moneyweb.infrastructure
 
-import com.wizaord.moneyweb.domain.FamilyBankAccounts
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 
 interface FamilyBankAccountPersistence {
     fun loadFamilyBankAccountByFamilyName(familyName: String): FamilyBankAccountsImpl?
+    fun initFamily(familyBankAccountsImpl: FamilyBankAccountsImpl): FamilyBankAccountsImpl
 
 }

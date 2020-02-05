@@ -1,4 +1,5 @@
 # En cours
+En tant que User, je souhaite visualiser, ajouter, supprimer, editer les membres de ma famille
 En tant que User, je souhaite clore un compte
 En tant que User, je souhaite réouvrir un compte
 En tant que User, je souhaite pouvoir supprimer un compte clos

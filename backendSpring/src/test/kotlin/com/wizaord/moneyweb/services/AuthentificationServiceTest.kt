@@ -1,7 +1,7 @@
 package com.wizaord.moneyweb.services
 
-import com.wizaord.moneyweb.infrastructure.User
-import com.wizaord.moneyweb.infrastructure.UserRepository
+import com.wizaord.moneyweb.infrastructure.domain.User
+import com.wizaord.moneyweb.infrastructure.domain.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

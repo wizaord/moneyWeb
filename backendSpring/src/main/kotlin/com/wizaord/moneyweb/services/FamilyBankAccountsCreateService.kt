@@ -2,8 +2,9 @@ package com.wizaord.moneyweb.services
 
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 import com.wizaord.moneyweb.domain.FamilyMember
-import com.wizaord.moneyweb.infrastructure.FamilyBankAccontsRepository
-import com.wizaord.moneyweb.infrastructure.FamilyBankAccount
+import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
+import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccountsRepository
+import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccount
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class FamilyBankAccountsCreateService(
-        @Autowired val familyBankAccontsRepository: FamilyBankAccontsRepository
+        @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence
 ) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -22,10 +23,7 @@ class FamilyBankAccountsCreateService(
         val familyBankAccountsImpl = FamilyBankAccountsImpl(familyName)
         familyBankAccountsImpl.registerFamilyMember(FamilyMember(familyName))
 
-        val familyBankInfra = familyBankAccontsRepository.save(FamilyBankAccount(familyBankAccountsImpl))
-
-        return familyBankInfra.toDomain()
-
+        return familyBankAccountPersistence.initFamily(familyBankAccountsImpl)
     }
 
 }

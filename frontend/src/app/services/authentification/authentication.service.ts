@@ -33,7 +33,7 @@ export class AuthenticationService {
 
         const userToStore = new User();
         userToStore.username = username;
-        userToStore.token = token;
+        userToStore.token = token.token;
 
         localStorage.setItem('currentUser', JSON.stringify(userToStore));
         this.currentUserSubject.next(userToStore);

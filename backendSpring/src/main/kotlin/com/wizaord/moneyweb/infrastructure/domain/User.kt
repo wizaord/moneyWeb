@@ -1,4 +1,4 @@
-package com.wizaord.moneyweb.infrastructure
+package com.wizaord.moneyweb.infrastructure.domain
 
 import org.springframework.data.annotation.Id
 

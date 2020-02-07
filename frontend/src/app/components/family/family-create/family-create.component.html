@@ -1,0 +1,35 @@
+<div class="container">
+  <form (ngSubmit)="onCreate()" #familyMembreCreateForm="ngForm">
+    <div class="row">
+      <div class="col">
+        <div class="card mt-4">
+          <h4 class="card-header">Family's users</h4>
+          <div class="card-body">
+            <h5 class="card-title">Please specify the name of the new member of your family</h5>
+            <div class="card-text">
+              <div class="input-group">
+                <span class="input-group-prepend">
+                  <span class="input-group-text">Username : </span>
+                </span>
+                <input type="text"
+                       class="form-control" placeholder="New username"
+                       required
+                       [(ngModel)]="user.name" name=username #userNameRef="ngModel">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <a [routerLink]="['/family/show']" class="btn btn-warning btn-lg">Cancel</a>
+      </div>
+      <div class="col-2">
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]=" !familyMembreCreateForm.form.valid">
+          Create
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

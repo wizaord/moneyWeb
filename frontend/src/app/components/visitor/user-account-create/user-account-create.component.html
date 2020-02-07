@@ -63,22 +63,6 @@
                      [(ngModel)]="accountInfo.email" name="email" #email="ngModel">
             </div>
           </div>
-
-<!--          <div class="card mt-4">-->
-<!--            <h4 class="card-header">Family's users</h4>-->
-<!--            <div class="card-body">-->
-<!--              <h5 class="card-title">Please specify users of your family</h5>-->
-<!--              <p class="card-text"></p>-->
-<!--              <ul class="list-group">-->
-<!--                <div *ngFor="let user of accountInfo.owners" class="form-row">-->
-<!--                  <app-user (userRemove)="removeUser(user)" [user]="user"></app-user>-->
-<!--                </div>-->
-<!--              </ul>-->
-<!--              <div class="card-footer text-right">-->
-<!--                <button type="button" class="btn btn-sm btn-primary" (click)="addUser()">Add a user</button>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
         </div>
         <div class="col-6 align-self-center">
           <button type="submit" class="btn btn-warning btn-lg" [disabled]="loading || !accountCreateForm.form.valid">

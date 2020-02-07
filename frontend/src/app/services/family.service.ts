@@ -20,4 +20,9 @@ export class FamilyService {
     return this.http.get<AccountOwner[]>(`${this.API_URL}/${familyName}/owners`);
   }
 
+  createOwner(owner: AccountOwner): Observable<AccountOwner> {
+    const familyName = this.authenticationService.currentUserValue.username;
+    const apiUrl = `${this.API_URL}/${familyName}/owners`;
+    return this.http.post<AccountOwner>(apiUrl, owner);
+  }
 }

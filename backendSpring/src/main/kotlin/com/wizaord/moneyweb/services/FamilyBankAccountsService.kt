@@ -1,6 +1,7 @@
 package com.wizaord.moneyweb.services
 
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
+import com.wizaord.moneyweb.domain.FamilyMember
 import com.wizaord.moneyweb.domain.InfrastructureBankAccountFamilyNotifications
 import com.wizaord.moneyweb.domain.InfrastructureBankAccountNotifications
 import com.wizaord.moneyweb.domain.transactions.Transaction
@@ -39,8 +40,12 @@ class FamilyBankAccountsService(val familyName: String,
     }
 
 
-    fun getOwners() = familyBankAccounts.getFamily()
+    fun owners() = familyBankAccounts.getFamily()
 
+    fun ownerCreate(newFamilyMember: FamilyMember): FamilyMember {
+        familyBankAccounts.registerFamilyMember(newFamilyMember)
+        return newFamilyMember
+    }
 
     override fun notifyFamilyBankAccountUpdate(familyBankAccountsImpl: FamilyBankAccountsImpl) {
         logger.info("FamilyAccount has been updated")
@@ -53,5 +58,6 @@ class FamilyBankAccountsService(val familyName: String,
     override fun notifyRemoveTransaction(transaction: Transaction) {
         logger.info("Transaction has been deleted")
     }
+
 
 }

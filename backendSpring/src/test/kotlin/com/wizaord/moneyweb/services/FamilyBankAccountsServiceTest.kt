@@ -2,12 +2,14 @@ package com.wizaord.moneyweb.services
 
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 import com.wizaord.moneyweb.domain.FamilyMember
 import com.wizaord.moneyweb.domain.InfrastructureBankAccountFamilyNotifications
 import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
@@ -22,6 +24,11 @@ internal class FamilyBankAccountsServiceTest {
     @Mock
     lateinit var infrastructureBankAccountFamilyNotifications: InfrastructureBankAccountFamilyNotifications
 
+    lateinit var familyBankAccountsService: FamilyBankAccountsService
+    @BeforeEach
+    internal fun init() {
+        familyBankAccountsService = FamilyBankAccountsService("family", familyBankAccountPersistence)
+    }
 
     @Test
     internal fun `constructor - when bean is initialized, FamilyBankAccounts is loaded and notification are disabled`() {
@@ -47,12 +54,12 @@ internal class FamilyBankAccountsServiceTest {
         familyBank.registerFamilyMember(FamilyMember("You"))
 
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService("family", familyBankAccountPersistence)
 
         // when
-        val owners = familyBankAccountsService.getOwners()
+        val owners = familyBankAccountsService.owners()
 
         // then
         assertThat(owners).isNotNull.isNotEmpty.hasSize(2).contains(FamilyMember("Me"), FamilyMember("You"))
     }
+
 }

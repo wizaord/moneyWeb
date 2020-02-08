@@ -1,10 +1,8 @@
 package com.wizaord.moneyweb.controllers
 
-import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
+import com.wizaord.moneyweb.domain.FamilyMember
 import com.wizaord.moneyweb.services.FamilyBankAccountServiceFactory
-import com.wizaord.moneyweb.services.FamilyBankAccountsService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationContext
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -13,15 +11,25 @@ class FamilyController(
         @Autowired private val familyBankAccountServiceFactory: FamilyBankAccountServiceFactory
 ) {
 
-
     @GetMapping("{familyName}/owners")
     @ResponseBody
     fun getOwners(@PathVariable familyName: String): List<Owner> {
         val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
-        return familyService.getOwners().map { Owner(it.username) }
+        return familyService.owners().map { Owner(it.username) }
     }
 
+    @PostMapping("{familyName}/owners")
+    @ResponseBody
+    fun createOwner(@PathVariable familyName: String, @RequestBody owner: Owner): Owner {
+        val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
+        return Owner.fromDomain(familyService.ownerCreate(owner.toDomain()))
+    }
 
-    data class Owner(val name: String)
+}
 
+data class Owner(val name: String) {
+    companion object {
+        fun fromDomain(familyMember: FamilyMember) = Owner(familyMember.username)
+    }
+    fun toDomain() = FamilyMember(name)
 }

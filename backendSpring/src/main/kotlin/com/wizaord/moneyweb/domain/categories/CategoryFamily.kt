@@ -5,7 +5,7 @@ import java.util.*
 
 class CategoryFamily(
         name: String,
-        id: String? = UUID.randomUUID().toString()
+        id: String = UUID.randomUUID().toString()
 ) : Category(name, id) {
 
     private val categories: MutableList<Category> = mutableListOf()

@@ -15,7 +15,7 @@ export class AccountShowComponent implements OnInit {
 
   ngOnInit() {
     this.accountService.getOpenedAccounts().subscribe(
-      accounts => accounts.forEach(account => this.accounts.push(account))
+      account => this.accounts.push(account)
     );
   }
 

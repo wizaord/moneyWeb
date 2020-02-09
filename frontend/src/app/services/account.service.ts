@@ -4,14 +4,16 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../domain/account/Account';
 import { concatAll, concatMap, filter, flatMap, toArray } from 'rxjs/operators';
+import { AuthenticationService } from './authentification/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  API_URL = `${environment.apiUrl}/accounts`;
+  API_URL = `${environment.apiUrl}/family`;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private authenticationService: AuthenticationService) {
   }
 
   createAccount(name: string, bank: string, openDate: string, ownersSelected: string[]): Observable<Account> {
@@ -25,15 +27,16 @@ export class AccountService {
   }
 
   getAccounts(): Observable<Account[]> {
-    return this.http.get<Account[]>(`${this.API_URL}`);
+    const familyName = this.authenticationService.currentUserValue.username;
+    const apiUrl = `${this.API_URL}/${familyName}/accounts`;
+    return this.http.get<Account[]>(apiUrl);
   }
 
-  getOpenedAccounts(): Observable<Account[]> {
-    return this.http.get<Account[]>(`${this.API_URL}`)
+  getOpenedAccounts(): Observable<Account> {
+    return this.getAccounts()
       .pipe(
-        flatMap(x => x),
+        flatMap(account => account),
         filter(account => account.isOpened),
-        toArray()
       );
   }
 

@@ -1,17 +1,25 @@
 package com.wizaord.moneyweb.controllers
 
+import com.wizaord.moneyweb.configuration.toDate
+import com.wizaord.moneyweb.domain.BankAccountImpl
+import com.wizaord.moneyweb.domain.BankAccountOwners
+import com.wizaord.moneyweb.services.FamilyBankAccountServiceFactory
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
-//@RestController
-//@RequestMapping("/moneyapi/accounts")
-//class AccountController(
-//        @Autowired var userService: UserService,
-//        @Autowired var accountService: AccountService
-//) {
-//
-//    private val logger = LoggerFactory.getLogger(javaClass.canonicalName)
-//
+@RestController
+@RequestMapping("/moneyapi/family/{familyName}/accounts")
+class AccountController(
+        @Autowired private val familyBankAccountServiceFactory: FamilyBankAccountServiceFactory
+) {
+
+    private val logger = LoggerFactory.getLogger(javaClass.canonicalName)
+
 //    @PostMapping("/create")
 //    @ResponseBody
 //    fun create(@RequestBody account: AccountCreate): ResponseEntity<Account> {
@@ -31,42 +39,40 @@ import org.springframework.web.bind.annotation.RestController
 //
 //        return ResponseEntity(Account.fromAccountDb(accountCreated), HttpStatus.CREATED)
 //    }
-//
-//    @RequestMapping("")
-//    @ResponseBody
-//    fun accounts(): List<Account> {
-//        logger.info("Demande de la liste de comptes")
-//        return this.accountService.getAllUserAccounts()
-//                .map(Account.Companion::fromAccountDb);
-//    }
-//
-//}
-//
-//data class AccountCreate(var accountName: String,
-//                         var bankName: String,
-//                         var dateCreate: Date,
-//                         var owners: List<String>) {
-//
-//}
-//
-//class Account(var id: String,
-//              var accountName: String,
-//              var bankName: String,
-//              var dateCreate: Date,
-//              var isOpened: Boolean,
-//              var owners: List<String>) {
-//
-//    companion object {
-//        fun fromAccountDb(account: com.wizaord.moneyweb.infrastructure.Account): Account {
-//            return Account(account.id!!,
-//                    account.name,
-//                    account.bankName,
-//                    account.openDate,
-//                    account.isOpened,
-//                    account.owners.map { it.name }.toList())
-//        }
-//    }
-//}
+
+    @RequestMapping("")
+    @ResponseBody
+    fun accounts(@PathVariable familyName: String): List<Account> {
+        val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
+        return familyService.bankAccounts().map { Account.fromDomain(it) }
+
+    }
+
+}
+
+data class AccountCreate(var accountName: String,
+                         var bankName: String,
+                         var dateCreate: Date,
+                         var owners: List<String>) {
+
+}
+
+class Account(var accountName: String,
+              var bankName: String,
+              var dateCreate: Date,
+              var isOpened: Boolean,
+              var owners: List<String>) {
+
+    companion object {
+        fun fromDomain(bao: BankAccountOwners): Account {
+            val bankAccount = bao.bankAccount as BankAccountImpl
+            return Account(bankAccount.getName(), bankAccount.getBankName(), bankAccount.dateCreation.toDate(),
+                    bankAccount.isOpen, bao.getOwners().map { it.username })
+        }
+    }
+}
+
+
 
 
 

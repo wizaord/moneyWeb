@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component
 @Component
 class InitRunner (
         @Autowired var categoryLoader: CategoryLoader,
-        @Autowired var categoryFamilyRepository: CategoryFamilyRepository
+        @Autowired var categoryFamilyRepository: CategoryFamilyRepository,
+        @Autowired var accountLoader: AccountLoader
         ): CommandLineRunner {
     private val logger = LoggerFactory.getLogger(InitRunner::class.java)
 
@@ -26,10 +27,10 @@ class InitRunner (
 
         cleanDatabase()
         categoryLoader.loadCategories()
-//
-//        // load account
-//        accountLoader.loadAccounts()
-//
+
+        // load account
+        accountLoader.loadAccounts()
+
 //        // load transactions
 //        debitCreditLoader.loadDebitCredit()
 //        debitCreditLoader.loadDetailMontant()

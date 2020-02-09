@@ -1,15 +1,13 @@
 package com.wizaord.moneyweb.services
 
-import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
-import com.wizaord.moneyweb.domain.FamilyMember
-import com.wizaord.moneyweb.domain.InfrastructureBankAccountFamilyNotifications
-import com.wizaord.moneyweb.domain.InfrastructureBankAccountNotifications
+import com.wizaord.moneyweb.domain.*
 import com.wizaord.moneyweb.domain.transactions.Transaction
 import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 
 @Component
 @Scope("prototype")
@@ -40,6 +38,11 @@ class FamilyBankAccountsService(val familyName: String,
     }
 
 
+    fun accountRegister(name: String, bankName: String, createDate: LocalDate = LocalDate.now()) {
+        val newBankAccount = BankAccountImpl(name, bankName, this, createDate)
+        familyBankAccounts.registerAccount(newBankAccount)
+    }
+
     fun owners() = familyBankAccounts.getFamily()
 
     fun ownerCreate(newFamilyMember: FamilyMember): FamilyMember {
@@ -59,6 +62,7 @@ class FamilyBankAccountsService(val familyName: String,
     override fun notifyRemoveTransaction(transaction: Transaction) {
         logger.info("Transaction has been deleted")
     }
+
 
 
 }

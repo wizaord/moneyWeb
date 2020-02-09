@@ -7,7 +7,7 @@ import java.time.LocalDate
 data class BankAccountImpl(
         val accountName: String,
         val bankDefinition: String,
-        private val infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications?,
+        private val infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications? = null,
         val dateCreation: LocalDate = LocalDate.now()) : BankAccount {
 
     private val transactions = mutableListOf<Transaction>()

@@ -49,6 +49,7 @@ class FamilyBankAccountsService(val familyName: String,
 
     override fun notifyFamilyBankAccountUpdate(familyBankAccountsImpl: FamilyBankAccountsImpl) {
         logger.info("FamilyAccount has been updated")
+        this.familyBankAccountPersistence.updateFamily(familyBankAccountsImpl)
     }
 
     override fun notifyNewTransaction(transaction: Transaction) {

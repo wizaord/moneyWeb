@@ -24,11 +24,6 @@ internal class FamilyBankAccountsServiceTest {
     @Mock
     lateinit var infrastructureBankAccountFamilyNotifications: InfrastructureBankAccountFamilyNotifications
 
-    lateinit var familyBankAccountsService: FamilyBankAccountsService
-    @BeforeEach
-    internal fun init() {
-        familyBankAccountsService = FamilyBankAccountsService("family", familyBankAccountPersistence)
-    }
 
     @Test
     internal fun `constructor - when bean is initialized, FamilyBankAccounts is loaded and notification are disabled`() {
@@ -54,6 +49,7 @@ internal class FamilyBankAccountsServiceTest {
         familyBank.registerFamilyMember(FamilyMember("You"))
 
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+        val familyBankAccountsService = FamilyBankAccountsService("family", familyBankAccountPersistence)
 
         // when
         val owners = familyBankAccountsService.owners()

@@ -7,8 +7,8 @@ import java.time.LocalDate
 data class BankAccountImpl(
         val accountName: String,
         val bankDefinition: String,
-        private val infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications,
-        val dateCreation: LocalDate? = LocalDate.now()) : BankAccount {
+        private val infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications?,
+        val dateCreation: LocalDate = LocalDate.now()) : BankAccount {
 
     private val transactions = mutableListOf<Transaction>()
 
@@ -23,12 +23,12 @@ data class BankAccountImpl(
 
     override fun addTransaction(transaction: Transaction) {
         this.transactions.add(transaction)
-        infrastructureBankAccountNotifications.notifyNewTransaction(transaction)
+        infrastructureBankAccountNotifications?.notifyNewTransaction(transaction)
     }
 
     override fun removeTransaction(transaction: Transaction) {
         transactions.remove(transaction)
-        infrastructureBankAccountNotifications.notifyRemoveTransaction(transaction)
+        infrastructureBankAccountNotifications?.notifyRemoveTransaction(transaction)
     }
 
     @Throws(NoSuchElementException::class)

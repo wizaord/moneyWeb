@@ -5,5 +5,5 @@ import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 interface FamilyBankAccountPersistence {
     fun loadFamilyBankAccountByFamilyName(familyName: String): FamilyBankAccountsImpl?
     fun initFamily(familyBankAccountsImpl: FamilyBankAccountsImpl): FamilyBankAccountsImpl
-
+    fun updateFamily(familyBankAccountsImpl: FamilyBankAccountsImpl): FamilyBankAccountsImpl
 }

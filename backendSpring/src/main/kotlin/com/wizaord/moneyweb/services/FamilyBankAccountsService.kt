@@ -43,6 +43,9 @@ class FamilyBankAccountsService(val familyName: String,
         familyBankAccounts.registerAccount(newBankAccount)
     }
 
+    fun accountClose(bankAccountName: String) = this.familyBankAccounts.accessToAccountByAccountName(bankAccountName)?.bankAccount?.close()
+    fun accountOpen(bankAccountName: String) = this.familyBankAccounts.accessToAccountByAccountName(bankAccountName)?.bankAccount?.open()
+
     fun owners() = familyBankAccounts.getFamily()
 
     fun ownerCreate(newFamilyMember: FamilyMember): FamilyMember {

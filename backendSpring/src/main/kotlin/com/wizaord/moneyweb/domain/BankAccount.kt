@@ -10,6 +10,9 @@ interface BankAccount {
     fun getName(): String
     fun getBankName(): String
 
+    fun open()
+    fun close()
+
     fun addTransaction(transaction: Transaction)
     fun removeTransaction(transaction: Transaction)
     @Throws(java.util.NoSuchElementException::class)

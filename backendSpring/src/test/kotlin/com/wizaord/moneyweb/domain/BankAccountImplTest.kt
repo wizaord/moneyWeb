@@ -22,7 +22,7 @@ internal class BankAccountImplTest {
     @Mock
     lateinit var infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications
 
-    lateinit var bankAccount : BankAccountImpl
+    lateinit var bankAccount: BankAccountImpl
 
     @BeforeEach
     internal fun beforeEach() {
@@ -163,6 +163,30 @@ internal class BankAccountImplTest {
         //then
         assertThat(transactionsMatched).hasSize(1)
         assertThat(transactionsMatched[0]).isEqualTo(TransactionMatch(transaction, 1.0))
+    }
+
+    @Test
+    internal fun `open - when I open a bankAccount the bank accout is opened`() {
+        // given
+        bankAccount.isOpen = false;
+
+        // when
+        bankAccount.open()
+
+        // then
+        assertThat(bankAccount.isOpen).isTrue()
+    }
+
+    @Test
+    internal fun `close - when I close a bankAccount the bank accout is closed`() {
+        // given
+        bankAccount.isOpen = true;
+
+        // when
+        bankAccount.close()
+
+        // then
+        assertThat(bankAccount.isOpen).isFalse()
     }
 
 }

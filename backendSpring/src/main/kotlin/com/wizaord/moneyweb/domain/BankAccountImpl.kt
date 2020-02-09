@@ -8,7 +8,8 @@ data class BankAccountImpl(
         val accountName: String,
         val bankDefinition: String,
         private val infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications? = null,
-        val dateCreation: LocalDate = LocalDate.now()) : BankAccount {
+        val dateCreation: LocalDate = LocalDate.now(),
+        var isOpen: Boolean = true) : BankAccount {
 
     private val transactions = mutableListOf<Transaction>()
 
@@ -20,6 +21,14 @@ data class BankAccountImpl(
 
     override fun getName() = this.accountName
     override fun getBankName() = this.bankDefinition
+
+    override fun open() {
+        this.isOpen = true
+    }
+
+    override fun close() {
+        this.isOpen = false
+    }
 
     override fun addTransaction(transaction: Transaction) {
         this.transactions.add(transaction)

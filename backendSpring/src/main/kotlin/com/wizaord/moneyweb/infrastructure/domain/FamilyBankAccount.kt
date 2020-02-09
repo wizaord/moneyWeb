@@ -25,6 +25,8 @@ class FamilyBankAccount(
     fun toDomain(): FamilyBankAccountsImpl {
         val familyBankAccountsImpl = FamilyBankAccountsImpl(familyId)
         familyMembers.forEach { familyBankAccountsImpl.registerFamilyMember(it.toDomain()) }
+        bankAccountsOwners.forEach { familyBankAccountsImpl.registerAccount(
+                it.account.toDomain(), it.owners.map { owner -> owner.toDomain() }) }
         return familyBankAccountsImpl
     }
 
@@ -57,14 +59,20 @@ data class BankAccountOwners(val owners: List<FamilyMember>,
 
 data class BankAccount(val name: String,
                        val bankName: String,
-                       val dateCreation: LocalDate) {
+                       val dateCreation: LocalDate,
+                       val isOpened: Boolean) {
 
     companion object {
         fun fromDomain(bankAccount: BankAccountImpl): BankAccount {
             return BankAccount(bankAccount.accountName,
                     bankAccount.bankDefinition,
-                    bankAccount.dateCreation)
+                    bankAccount.dateCreation,
+                    bankAccount.isOpen)
         }
+    }
+
+    fun toDomain(): BankAccountImpl {
+        return BankAccountImpl(name, bankName, dateCreation = dateCreation, isOpen = isOpened)
     }
 
 }

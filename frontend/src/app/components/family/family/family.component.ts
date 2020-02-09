@@ -18,4 +18,8 @@ export class FamilyComponent implements OnInit {
     );
   }
 
+  get membersSorted() {
+    return this.members.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
 }

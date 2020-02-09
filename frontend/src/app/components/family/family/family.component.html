@@ -23,7 +23,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let member of members; index as i">
+                <tr *ngFor="let member of membersSorted; index as i">
                   <th scope="row">{{ i + 1 }}</th>
                   <td>{{member.name}}</td>
                   <td>

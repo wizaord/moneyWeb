@@ -14,7 +14,8 @@ class InitRunner (
         @Autowired var categoryLoader: CategoryLoader,
         @Autowired var categoryFamilyRepository: CategoryFamilyRepository,
         @Autowired var accountLoader: AccountLoader,
-        @Autowired var familyBankAccountsRepository: FamilyBankAccountsRepository
+        @Autowired var familyBankAccountsRepository: FamilyBankAccountsRepository,
+        @Autowired var debitCreditLoader: DebitCreditLoader
         ): CommandLineRunner {
     private val logger = LoggerFactory.getLogger(InitRunner::class.java)
 
@@ -32,9 +33,11 @@ class InitRunner (
 
         // load account
         accountLoader.loadAccounts()
+        val accountsMap = accountLoader.accountsMapping
 
-//        // load transactions
-//        debitCreditLoader.loadDebitCredit()
+        // load transactions
+        debitCreditLoader.loadFamilyBankAccount("mouilleron")
+        debitCreditLoader.loadDebitCredit(accountsMap)
 //        debitCreditLoader.loadDetailMontant()
 //        debitCreditLoader.loadEveythingInMongo()
 //        // load ventilations

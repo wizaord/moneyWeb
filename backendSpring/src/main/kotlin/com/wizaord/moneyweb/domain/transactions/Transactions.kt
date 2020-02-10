@@ -1,7 +1,7 @@
 package com.wizaord.moneyweb.domain.transactions
 
 import com.wizaord.moneyweb.domain.transactions.ventilations.Ventilation
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -11,7 +11,7 @@ abstract class Transaction(
         val bankLibelle: String,
         val bankDetail: String?,
         var isPointe: Boolean = false,
-        var dateCreation: LocalDateTime = LocalDateTime.now(),
+        var dateCreation: LocalDate = LocalDate.now(),
         val id: String = UUID.randomUUID().toString()
 ) {
 

@@ -34,6 +34,7 @@ class FamilyBankAccountsService(val familyName: String,
             familyBankAccounts.registerFamilyMember(it)
         }
         familyBankAccounts.bankAccountsOwners.addAll(familyBankAccountsImpl.bankAccountsOwners)
+        // TODO : inject me on the bankAccount
         familyBankAccounts.activateNotifications()
     }
 
@@ -68,6 +69,9 @@ class FamilyBankAccountsService(val familyName: String,
         logger.info("Transaction has been deleted")
     }
 
+    fun transactionRegister(accountId: String, transaction: Transaction) {
+        this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount?.addTransaction(transaction)
+    }
 
 
 }

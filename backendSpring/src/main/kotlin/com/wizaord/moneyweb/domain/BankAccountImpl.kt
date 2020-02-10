@@ -2,6 +2,7 @@ package com.wizaord.moneyweb.domain
 
 import com.wizaord.moneyweb.domain.transactions.Transaction
 import com.wizaord.moneyweb.domain.transactions.TransactionMatch
+import org.slf4j.LoggerFactory
 import java.time.LocalDate
 
 data class BankAccountImpl(
@@ -10,6 +11,8 @@ data class BankAccountImpl(
         private val infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications? = null,
         val dateCreation: LocalDate = LocalDate.now(),
         var isOpen: Boolean = true) : BankAccount {
+
+    private val log = LoggerFactory.getLogger(BankAccountImpl::class.java)
 
     private val transactions = mutableListOf<Transaction>()
 
@@ -31,6 +34,7 @@ data class BankAccountImpl(
     }
 
     override fun addTransaction(transaction: Transaction) {
+        log.info("Added transaction to account {}", this.accountName)
         this.transactions.add(transaction)
         infrastructureBankAccountNotifications?.notifyNewTransaction(transaction)
     }

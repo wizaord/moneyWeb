@@ -19,6 +19,7 @@ class AccountLoader(
 
     private val logger = LoggerFactory.getLogger(AccountLoader::class.java)
     private val accounts: MutableList<Account> = mutableListOf()
+    val accountsMapping: MutableMap<String, String> = mutableMapOf()
 
     @Value("\${moneyweb.init.initdatabase.fileLocation.accounts}")
     lateinit var accountsFilePath: String
@@ -31,6 +32,7 @@ class AccountLoader(
                 else -> true
             }
             accounts.add(Account(splitStr[0], splitStr[1], splitStr[3], isOpened, createDateFromString(splitStr[4])))
+            accountsMapping[splitStr[0]] = splitStr[1]
         }
     }
 

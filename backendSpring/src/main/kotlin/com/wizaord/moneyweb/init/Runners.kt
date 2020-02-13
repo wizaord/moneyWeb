@@ -29,7 +29,6 @@ class InitRunner (
             logger.info("Database initialisation is deactivated")
             return
         }
-
         cleanDatabase()
         categoryLoader.loadCategories()
 

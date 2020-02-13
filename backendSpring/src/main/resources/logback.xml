@@ -8,6 +8,7 @@
 
     <logger name="com.wizaord" level="INFO"/>
     <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework.data.mongodb.core.MongoTemplate" level="DEBUG"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>

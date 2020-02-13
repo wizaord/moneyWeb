@@ -112,7 +112,7 @@ internal class TransactionTest {
         transaction.removeVentilation(ventilation)
 
         // then
-        assertThat(transaction.getVentilations()).hasSize(0)
+        assertThat(transaction.ventilations).hasSize(0)
 
     }
 

@@ -1,8 +1,12 @@
 package com.wizaord.moneyweb.infrastructure
 
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
+import com.wizaord.moneyweb.domain.transactions.Credit
+import com.wizaord.moneyweb.domain.transactions.Debit
+import com.wizaord.moneyweb.domain.transactions.Transaction
 import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccount
 import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccountsRepository
+import com.wizaord.moneyweb.infrastructure.domain.TransactionsRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -10,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class FamilyBankAccountPersistenceImpl(
-        @Autowired val familyBankAccountsRepository: FamilyBankAccountsRepository
+        @Autowired val familyBankAccountsRepository: FamilyBankAccountsRepository,
+        @Autowired val transactionsRepository: TransactionsRepository
 ) : FamilyBankAccountPersistence {
 
     override fun loadFamilyBankAccountByFamilyName(familyName: String): FamilyBankAccountsImpl? {
@@ -28,6 +33,15 @@ class FamilyBankAccountPersistenceImpl(
     override fun updateFamily(familyBankAccountsImpl: FamilyBankAccountsImpl): FamilyBankAccountsImpl {
         val familyToUpdate = FamilyBankAccount.fromDomain(familyBankAccountsImpl)
         return familyBankAccountsRepository.save(familyToUpdate).toDomain()
+    }
+
+    override fun transactionCreate(transaction: Transaction) {
+        lateinit var tr: com.wizaord.moneyweb.infrastructure.domain.Transaction
+        when (transaction) {
+            is Credit -> tr = com.wizaord.moneyweb.infrastructure.domain.Credit.fromDomain(transaction)
+            is Debit -> tr = com.wizaord.moneyweb.infrastructure.domain.Debit.fromDomain(transaction)
+        }
+        this.transactionsRepository.save(tr)
     }
 
 }

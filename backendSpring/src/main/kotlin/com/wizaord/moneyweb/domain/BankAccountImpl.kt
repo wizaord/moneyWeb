@@ -8,13 +8,17 @@ import java.time.LocalDate
 data class BankAccountImpl(
         val accountName: String,
         val bankDefinition: String,
-        private val infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications? = null,
+        private var infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications? = null,
         val dateCreation: LocalDate = LocalDate.now(),
         var isOpen: Boolean = true) : BankAccount {
 
     private val log = LoggerFactory.getLogger(BankAccountImpl::class.java)
 
     private val transactions = mutableListOf<Transaction>()
+
+    fun registerInfrastructureBankAccountNotification(infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications) {
+        this.infrastructureBankAccountNotifications = infrastructureBankAccountNotifications
+    }
 
     override fun solde(): Double {
         return transactions

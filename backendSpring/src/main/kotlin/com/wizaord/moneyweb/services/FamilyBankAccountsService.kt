@@ -34,7 +34,10 @@ class FamilyBankAccountsService(val familyName: String,
             familyBankAccounts.registerFamilyMember(it)
         }
         familyBankAccounts.bankAccountsOwners.addAll(familyBankAccountsImpl.bankAccountsOwners)
-        // TODO : inject me on the bankAccount
+        familyBankAccountsImpl.bankAccountsOwners.forEach { bankAccountOwner ->
+            val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
+            bankAccountImpl.registerInfrastructureBankAccountNotification(this)
+        }
         familyBankAccounts.activateNotifications()
     }
 
@@ -62,6 +65,7 @@ class FamilyBankAccountsService(val familyName: String,
     }
 
     override fun notifyNewTransaction(transaction: Transaction) {
+        this.familyBankAccountPersistence.transactionCreate(transaction)
         logger.info("new Transaction has been created")
     }
 

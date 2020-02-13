@@ -145,7 +145,7 @@ internal class BankAccountImplTest {
         bankAccount.updateTransaction(transaction)
 
         // then
-        assertThat(bankAccount.getTransactions()[0].getVentilations()).hasSize(1)
+        assertThat(bankAccount.getTransactions()[0].ventilations).hasSize(1)
 
         verify(infrastructureBankAccountNotifications).notifyRemoveTransaction(anyOrNull())
         verify(infrastructureBankAccountNotifications, times(2)).notifyNewTransaction(transaction)

@@ -9,5 +9,5 @@ class Debit(
         descriptionBanque: String?,
         amount: Double,
         isPointe: Boolean = false,
-        id: String = UUID.randomUUID().toString()) : Transaction(amount.absoluteValue, libelle, libelleBanque, descriptionBanque, isPointe, id = id)
+        id: String = UUID.randomUUID().toString()) : Transaction(amount.absoluteValue * -1, libelle, libelleBanque, descriptionBanque, isPointe, id = id)
 

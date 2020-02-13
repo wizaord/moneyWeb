@@ -11,6 +11,7 @@ import com.wizaord.moneyweb.domain.transactions.Credit
 import com.wizaord.moneyweb.infrastructure.domain.BankAccount
 import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccount
 import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccountsRepository
+import com.wizaord.moneyweb.infrastructure.domain.TransactionsRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -26,6 +27,9 @@ internal class FamilyBankAccountPersistenceImplTest {
 
     @Mock
     lateinit var familyBankAccountsRepository: FamilyBankAccountsRepository
+
+    @Mock
+    lateinit var transactionsRepository: TransactionsRepository
 
     @InjectMocks
     lateinit var familyBankAccountPersistenceImpl: FamilyBankAccountPersistenceImpl

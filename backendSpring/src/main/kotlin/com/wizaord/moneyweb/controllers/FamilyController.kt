@@ -14,14 +14,14 @@ class FamilyController(
     @GetMapping("{familyName}/owners")
     @ResponseBody
     fun getOwners(@PathVariable familyName: String): List<Owner> {
-        val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
+        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions(familyName)
         return familyService.owners().map { Owner(it.username) }
     }
 
     @PostMapping("{familyName}/owners")
     @ResponseBody
     fun createOwner(@PathVariable familyName: String, @RequestBody owner: Owner): Owner {
-        val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
+        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions(familyName)
         return Owner.fromDomain(familyService.ownerCreate(owner.toDomain()))
     }
 

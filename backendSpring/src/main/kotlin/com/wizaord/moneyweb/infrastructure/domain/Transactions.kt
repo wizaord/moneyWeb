@@ -18,6 +18,7 @@ abstract class Transaction (
     var bankDetail: String? = null
     var isPointe: Boolean? = null
     var dateCreation: LocalDate? = null
+    var accountInternalId: String? = null
     var ventilations = mutableListOf<Ventilation>()
 
     fun loadTransaction(transaction: com.wizaord.moneyweb.domain.transactions.Transaction){
@@ -36,6 +37,9 @@ abstract class Transaction (
             this.ventilations.add(ventilationInfra)
         }
     }
+
+    abstract fun toDomain(): com.wizaord.moneyweb.domain.transactions.Transaction
+
 }
 
 class Debit(id: String) : Transaction(id) {
@@ -46,6 +50,10 @@ class Debit(id: String) : Transaction(id) {
             return c
         }
     }
+
+    override fun toDomain(): com.wizaord.moneyweb.domain.transactions.Debit {
+        return com.wizaord.moneyweb.domain.transactions.Debit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id)
+    }
 }
 class Credit(id: String) : Transaction(id) {
     companion object {
@@ -54,6 +62,10 @@ class Credit(id: String) : Transaction(id) {
             c.loadTransaction(credit)
             return c
         }
+    }
+
+    override fun toDomain(): com.wizaord.moneyweb.domain.transactions.Credit {
+        return Credit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id)
     }
 }
 

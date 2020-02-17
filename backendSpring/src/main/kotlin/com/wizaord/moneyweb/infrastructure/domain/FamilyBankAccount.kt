@@ -61,6 +61,7 @@ data class BankAccount(val name: String,
                        val bankName: String,
                        val dateCreation: LocalDate,
                        val isOpened: Boolean,
+                       val amount: Double,
                        val internalId: String) {
 
     companion object {
@@ -69,12 +70,13 @@ data class BankAccount(val name: String,
                     bankAccount.bankDefinition,
                     bankAccount.dateCreation,
                     bankAccount.isOpen,
-                    bankAccount.internalId)
+                    bankAccount.solde(),
+                    bankAccount.accountId)
         }
     }
 
     fun toDomain(): BankAccountImpl {
-        return BankAccountImpl(name, bankName, dateCreation = dateCreation, isOpen = isOpened, internalId = internalId)
+        return BankAccountImpl(name, bankName, dateCreation = dateCreation, isOpen = isOpened, accountId = internalId, solde = amount)
     }
 
 }

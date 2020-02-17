@@ -77,7 +77,7 @@ internal class BankAccountImplTest {
 
         // then
         assertThat(bankAccount.solde()).isEqualTo(-10.0)
-        verify(infrastructureBankAccountNotifications).notifyNewTransaction(debit)
+        verify(infrastructureBankAccountNotifications).notifyNewTransaction(anyOrNull(), anyOrNull())
     }
 
 
@@ -91,7 +91,7 @@ internal class BankAccountImplTest {
 
         // then
         assertThat(bankAccount.solde()).isEqualTo(10.0)
-        verify(infrastructureBankAccountNotifications).notifyNewTransaction(credit)
+        verify(infrastructureBankAccountNotifications).notifyNewTransaction(anyOrNull(), anyOrNull())
     }
 
     @Test
@@ -148,7 +148,7 @@ internal class BankAccountImplTest {
         assertThat(bankAccount.getTransactions()[0].ventilations).hasSize(1)
 
         verify(infrastructureBankAccountNotifications).notifyRemoveTransaction(anyOrNull())
-        verify(infrastructureBankAccountNotifications, times(2)).notifyNewTransaction(transaction)
+        verify(infrastructureBankAccountNotifications, times(2)).notifyNewTransaction(anyOrNull(), anyOrNull())
     }
 
     @Test
@@ -191,7 +191,7 @@ internal class BankAccountImplTest {
 
     @Test
     internal fun `constructor - When BankAccount is created, an internal Id is created`() {
-        assertThat(bankAccount.internalId).isNotNull()
+        assertThat(bankAccount.accountId).isNotNull()
     }
 
 }

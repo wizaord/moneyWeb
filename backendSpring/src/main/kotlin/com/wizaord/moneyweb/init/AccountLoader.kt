@@ -42,7 +42,7 @@ class AccountLoader(
 
         familyBankAccountsCreateService.initFamily("mouilleron")
 
-        val familyBean = this.familyBankAccountServiceFactory.getServiceBeanForFamily("mouilleron")
+        val familyBean = this.familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions("mouilleron")
 
         accounts.forEach { account ->
             familyBean.accountRegister(account.name,

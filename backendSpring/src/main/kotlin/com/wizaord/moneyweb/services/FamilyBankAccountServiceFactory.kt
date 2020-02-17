@@ -11,7 +11,13 @@ class FamilyBankAccountServiceFactory(
         @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence
 ) {
 
-    fun getServiceBeanForFamily(familyName: String): FamilyBankAccountsService {
-        return applicationContext.getBean("familyBankAccountsService", familyName, familyBankAccountPersistence) as FamilyBankAccountsService
+    fun getFamilyServiceWithoutTransactions(familyName: String): FamilyBankAccountsService {
+        val loadTransactions = false
+        return applicationContext.getBean("familyBankAccountsService", familyName, loadTransactions, familyBankAccountPersistence) as FamilyBankAccountsService
+    }
+
+    fun getFamilyServiceWithTransactions(familyName: String): FamilyBankAccountsService {
+        val loadTransactions = true
+        return applicationContext.getBean("familyBankAccountsService", familyName, loadTransactions, familyBankAccountPersistence) as FamilyBankAccountsService
     }
 }

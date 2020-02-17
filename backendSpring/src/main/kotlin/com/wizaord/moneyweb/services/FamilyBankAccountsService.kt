@@ -12,6 +12,7 @@ import java.time.LocalDate
 @Component
 @Scope("prototype")
 class FamilyBankAccountsService(val familyName: String,
+                                val loadTransactions: Boolean,
                                 @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence): InfrastructureBankAccountFamilyNotifications, InfrastructureBankAccountNotifications {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -34,13 +35,21 @@ class FamilyBankAccountsService(val familyName: String,
             familyBankAccounts.registerFamilyMember(it)
         }
         familyBankAccounts.bankAccountsOwners.addAll(familyBankAccountsImpl.bankAccountsOwners)
+
+        if (loadTransactions) {
+            // load transactions from accounts
+            familyBankAccountsImpl.bankAccountsOwners.forEach { bankAccountOwner ->
+                val transactionsLoaded = familyBankAccountPersistence.loadTransactionsFromAccount(bankAccountOwner.bankAccount.getInternalId())
+                transactionsLoaded.forEach { transaction -> bankAccountOwner.bankAccount.addTransaction(transaction) }
+            }
+        }
+
+        // activate notification
         familyBankAccountsImpl.bankAccountsOwners.forEach { bankAccountOwner ->
             val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
             bankAccountImpl.registerInfrastructureBankAccountNotification(this)
         }
 
-        // load transactions from accounts
-        // FIXME: charger les transactions des comptes
         familyBankAccounts.activateNotifications()
     }
 
@@ -73,8 +82,8 @@ class FamilyBankAccountsService(val familyName: String,
         this.familyBankAccountPersistence.updateFamily(familyBankAccountsImpl)
     }
 
-    override fun notifyNewTransaction(transaction: Transaction) {
-        this.familyBankAccountPersistence.transactionCreate(transaction)
+    override fun notifyNewTransaction(accountInternalId: String, transaction: Transaction) {
+        this.familyBankAccountPersistence.transactionCreate(accountInternalId, transaction)
         logger.info("new Transaction has been created")
     }
 

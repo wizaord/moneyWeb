@@ -24,6 +24,7 @@ interface BankAccount {
     fun getTransactions(): List<Transaction>
     fun getTransactionsMatched(transaction: Transaction): List<TransactionMatch>
     fun deleteAllTransactions()
+    fun getInternalId(): String
 
 }
 

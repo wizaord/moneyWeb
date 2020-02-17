@@ -43,15 +43,6 @@ export class AccountService {
       );
   }
 
-  getSoldeAccount(accountName: string): Observable<number> {
-    return this.transactionsService.getTransactions(accountName)
-      .pipe(
-        flatMap(transaction => transaction),
-        map(transaction => transaction.amount),
-        reduce((t1, t2) => t1 + t2)
-      );
-  }
-
   getAccountById(accountId: string): Observable<Account> {
     return this.getAccounts()
       .pipe(

@@ -39,7 +39,7 @@ class DebitCreditLoader(
 
 
     fun loadFamilyBankAccount(familyName: String) {
-        serviceBeanForFamily = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
+        serviceBeanForFamily = familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions(familyName)
     }
 
     fun loadDebitCredit(accountsMap: Map<String, String>) {

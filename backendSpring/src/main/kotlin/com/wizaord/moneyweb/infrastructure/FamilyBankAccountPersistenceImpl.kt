@@ -26,6 +26,11 @@ class FamilyBankAccountPersistenceImpl(
         }
     }
 
+    override fun loadTransactionsFromAccount(accountInternalId: String): List<Transaction> {
+        val transactions = transactionsRepository.findByAccountInternalId(accountInternalId)
+        return transactions.map { it.toDomain() }
+    }
+
     override fun initFamily(familyBankAccountsImpl: FamilyBankAccountsImpl): FamilyBankAccountsImpl {
         return familyBankAccountsRepository.save(FamilyBankAccount.fromDomain(familyBankAccountsImpl)).toDomain()
     }
@@ -35,12 +40,13 @@ class FamilyBankAccountPersistenceImpl(
         return familyBankAccountsRepository.save(familyToUpdate).toDomain()
     }
 
-    override fun transactionCreate(transaction: Transaction) {
+    override fun transactionCreate(accountInternalId: String, transaction: Transaction) {
         lateinit var tr: com.wizaord.moneyweb.infrastructure.domain.Transaction
         when (transaction) {
             is Credit -> tr = com.wizaord.moneyweb.infrastructure.domain.Credit.fromDomain(transaction)
             is Debit -> tr = com.wizaord.moneyweb.infrastructure.domain.Debit.fromDomain(transaction)
         }
+        tr.accountInternalId = accountInternalId
         this.transactionsRepository.save(tr)
     }
 

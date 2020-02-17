@@ -30,7 +30,7 @@
                   <th scope="row">{{ i + 1 }}</th>
                   <td>{{account.bankName}}</td>
                   <td>{{account.accountName}}</td>
-                  <td>0</td>
+                  <td>{{account.solde| number}} </td>
                   <td>{{account.owners}}</td>
                   <td>
                     <i class="fa fa-folder-open" (click)="closeAccount(account)"></i>
@@ -61,7 +61,7 @@
                   <th scope="row">{{ i + 1 }}</th>
                   <td>{{account.bankName}}</td>
                   <td>{{account.accountName}}</td>
-                  <td>0</td>
+                  <td>{{account.solde | number}}</td>
                   <td>{{account.owners}}</td>
                   <td>
                     <i class="fa fa-folder" (click)="openAccount(account)"></i>

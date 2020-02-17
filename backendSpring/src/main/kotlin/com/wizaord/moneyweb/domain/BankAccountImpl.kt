@@ -13,21 +13,17 @@ data class BankAccountImpl(
         private var infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications? = null,
         val dateCreation: LocalDate = LocalDate.now(),
         var isOpen: Boolean = true,
-        val internalId: String = UUID.randomUUID().toString()) : BankAccount {
+        var solde: Double = 0.0,
+        val accountId: String = UUID.randomUUID().toString()) : BankAccount {
 
     private val log = LoggerFactory.getLogger(BankAccountImpl::class.java)
-
     private val transactions = mutableListOf<Transaction>()
 
     fun registerInfrastructureBankAccountNotification(infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications) {
         this.infrastructureBankAccountNotifications = infrastructureBankAccountNotifications
     }
 
-    override fun solde(): Double {
-        return transactions
-                .map { it.amount }
-                .sum()
-    }
+    override fun solde() = this.solde
 
     override fun getName() = this.accountName
     override fun getBankName() = this.bankDefinition
@@ -45,12 +41,17 @@ data class BankAccountImpl(
     override fun addTransaction(transaction: Transaction) {
         log.info("Added transaction to account {}", this.accountName)
         this.transactions.add(transaction)
-        infrastructureBankAccountNotifications?.notifyNewTransaction(transaction)
+        this.solde += transaction.amount
+        infrastructureBankAccountNotifications?.notifyNewTransaction(this.accountId, transaction)
+        infrastructureBankAccountNotifications?.notifyAccountUpdate(this)
+
     }
 
     override fun removeTransaction(transaction: Transaction) {
+        this.solde -= transaction.amount
         transactions.remove(transaction)
         infrastructureBankAccountNotifications?.notifyRemoveTransaction(transaction)
+        infrastructureBankAccountNotifications?.notifyAccountUpdate(this)
     }
 
     @Throws(NoSuchElementException::class)
@@ -69,6 +70,8 @@ data class BankAccountImpl(
         val transactionToDelete = this.transactions.toList()
         transactionToDelete.forEach { transaction -> this.removeTransaction(transaction) }
     }
+
+    override fun getInternalId() = this.accountId
 
     @Throws(NoSuchElementException::class)
     override fun getTransactionById(transactionId: String): Transaction = transactions.first { it.id == transactionId }

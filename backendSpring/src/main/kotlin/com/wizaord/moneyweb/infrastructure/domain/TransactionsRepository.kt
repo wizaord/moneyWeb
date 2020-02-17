@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface TransactionsRepository : MongoRepository<Transaction, String> {
 
+    fun findByAccountInternalId(accountInternalId: String): List<Transaction>
+
 }

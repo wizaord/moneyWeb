@@ -34,10 +34,19 @@ data class FamilyBankAccountsImpl(
         registerAccount(bankAccount, familyMembers)
     }
 
+    override fun removeAccount(accountName: String) {
+        val bankAccountName = this.bankAccountsOwners.firstOrNull() { bankAccountOwners -> bankAccountOwners.containBankAccountWithName(accountName) }
+                ?: return
+
+        bankAccountName.bankAccount.deleteAllTransactions()
+        this.bankAccountsOwners.removeIf { bankAccountsOwners -> bankAccountsOwners.containBankAccountWithName(accountName) }
+        notifyBankAccountUpdated()
+    }
+
     override fun changeBankAccountOwners(bankAccountName: String, owners: List<FamilyMember>) {
         val accessToAccountByAccountName = accessToAccountByAccountName(bankAccountName) ?: throw NoSuchElementException()
         accessToAccountByAccountName.replaceOwners(owners)
-        infrastructureBankAccountFamilyNotifications?.notifyFamilyBankAccountUpdate(this)
+        notifyBankAccountUpdated()
     }
 
 
@@ -51,7 +60,7 @@ data class FamilyBankAccountsImpl(
     override fun accessToAccounts() = this.bankAccountsOwners.toList()
     override fun accessToAccountsByBankname(bankName: String) = accessToAccounts().filter { it.bankAccount.getBankName() == bankName }
     override fun accessToAccountsByFamilyMember(familyMember: FamilyMember) = accessToAccounts().filter { it.hasOwner(familyMember) }
-    override fun accessToAccountByAccountName(accountName: String) = accessToAccounts().firstOrNull { it.bankAccount.getName() == accountName }
+    override fun accessToAccountByAccountName(accountName: String) = accessToAccounts().firstOrNull { it.containBankAccountWithName(accountName) }
 
     @Throws(FamilyMemberAlreadyExistException::class)
     override fun registerFamilyMember(familyMember: FamilyMember) {

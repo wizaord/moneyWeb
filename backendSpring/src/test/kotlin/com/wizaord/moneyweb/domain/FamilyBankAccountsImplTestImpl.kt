@@ -8,6 +8,8 @@ import com.wizaord.moneyweb.domain.exceptions.BankAccountWithTheSameNameExceptio
 import com.wizaord.moneyweb.domain.exceptions.FamilyMemberAlreadyExistException
 import com.wizaord.moneyweb.domain.exceptions.FamilyMemberNotKnowException
 import com.wizaord.moneyweb.domain.exceptions.FamilyMemberOwnerException
+import com.wizaord.moneyweb.domain.transactions.Credit
+import com.wizaord.moneyweb.domain.transactions.Debit
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -244,6 +246,37 @@ internal class FamilyBankAccountsImplTestImpl {
         // then
         assertThat(familyBankAccountsImpl.accessToAccountByAccountName(accountCreate.getName())!!.getOwners()).hasSize(2)
         verify(infrastructureBankAccountFamilyNotifications, times(4)).notifyFamilyBankAccountUpdate(anyOrNull())
+    }
+
+    @Test
+    internal fun `removeAccount - if account does not exist, then do nothing`() {
+        // given
+
+        // when
+        familyBankAccountsImpl.removeAccount("NOT KNOW")
+
+        // then
+        verifyZeroInteractions(infrastructureBankAccountFamilyNotifications)
+        verifyZeroInteractions(infrastructureBankAccountNotifications)
+    }
+
+    @Test
+    internal fun `removeAccount - delete all transaction before update the account family`() {
+        // given
+        val bankAccount = BankAccountImpl("accountName", "bankName")
+        bankAccount.addTransaction(Credit("credit", "credit", null, 10.0))
+        bankAccount.addTransaction(Debit("credit", "credit", null, 10.0))
+        bankAccount.registerInfrastructureBankAccountNotification(infrastructureBankAccountNotifications)
+
+        familyBankAccountsImpl.registerAccount(bankAccount)
+
+        // when
+        familyBankAccountsImpl.removeAccount("accountName")
+
+        // then
+        assertThat(familyBankAccountsImpl.accessToAccountByAccountName("accountName")).isNull()
+        verify(infrastructureBankAccountNotifications, times(2)).notifyRemoveTransaction(anyOrNull())
+        verify(infrastructureBankAccountFamilyNotifications, times(2)).notifyFamilyBankAccountUpdate(anyOrNull())
     }
 
     private fun createDummyAccount(): BankAccount =

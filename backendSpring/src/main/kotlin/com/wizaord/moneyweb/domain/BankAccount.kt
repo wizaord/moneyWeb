@@ -23,6 +23,7 @@ interface BankAccount {
     fun getTransactionById(transactionId: String): Transaction
     fun getTransactions(): List<Transaction>
     fun getTransactionsMatched(transaction: Transaction): List<TransactionMatch>
+    fun deleteAllTransactions()
 
 }
 

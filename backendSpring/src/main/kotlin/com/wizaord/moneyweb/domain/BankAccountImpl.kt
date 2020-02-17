@@ -62,6 +62,11 @@ data class BankAccountImpl(
         return this.transactions.map { TransactionMatch(it, it.matchWith(transaction)) }
     }
 
+    override fun deleteAllTransactions() {
+        val transactionToDelete = this.transactions.toList()
+        transactionToDelete.forEach { transaction -> this.removeTransaction(transaction) }
+    }
+
     @Throws(NoSuchElementException::class)
     override fun getTransactionById(transactionId: String): Transaction = transactions.first { it.id == transactionId }
 

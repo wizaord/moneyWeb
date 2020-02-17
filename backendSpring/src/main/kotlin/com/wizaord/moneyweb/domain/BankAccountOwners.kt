@@ -8,6 +8,7 @@ data class BankAccountOwners(
 
     fun hasOwner(familyMember: FamilyMember) = this.owners.contains(familyMember)
     fun getOwners() = this.owners.toList()
+    fun containBankAccountWithName(bankName: String) = this.bankAccount.getName() == bankName
 
     @Throws(AccountWithoutOwnerException::class)
     fun removeOwner(familyMember: FamilyMember) {

@@ -44,4 +44,13 @@ export class AccountManageComponent implements OnInit {
       }
     );
   }
+
+  deleteAccount(account: Account) {
+    this.accountService.deleteAccount(account).subscribe(
+      result => {
+        console.log('plop');
+        this.accounts.splice(this.accounts.indexOf(account), 1);
+      }
+    );
+  }
 }

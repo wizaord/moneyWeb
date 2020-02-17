@@ -33,20 +33,26 @@ class AccountController(
 
     }
 
-    @RequestMapping("/{accountName}/close")
+    @PatchMapping("/{accountName}/close")
     fun accountClose(@PathVariable familyName: String,
                  @PathVariable accountName: String) {
         val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
         familyService.accountClose(accountName)
     }
 
-    @RequestMapping("/{accountName}/open")
+    @PatchMapping("/{accountName}/open")
     fun accountOpen(@PathVariable familyName: String,
                      @PathVariable accountName: String) {
         val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
         familyService.accountOpen(accountName)
     }
 
+    @DeleteMapping("/{accountName}")
+    fun accountDelete(@PathVariable familyName: String,
+                      @PathVariable accountName: String) {
+        val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
+        familyService.accountDelete(accountName)
+    }
 }
 
 

@@ -13,6 +13,8 @@ interface FamilyBankAccounts {
     @Throws(BankAccountWithTheSameNameException::class)
     fun registerAccount(bankAccount: BankAccount)
 
+    fun removeAccount(accountName: String)
+
     fun changeBankAccountOwners(bankAccountId: String, owners: List<FamilyMember>)
 
     fun accessToAccounts(): List<BankAccountOwners>
@@ -28,4 +30,5 @@ interface FamilyBankAccounts {
     fun getFamily(): List<FamilyMember>
 
     fun getCategoryConfiguredByPreviousFamilyTransaction(transaction: Transaction): Transaction?
+
 }

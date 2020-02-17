@@ -41,11 +41,15 @@ class FamilyBankAccountsService(val familyName: String,
         familyBankAccounts.activateNotifications()
     }
 
+    fun accountRegister(name: String,
+                        bankName: String,
+                        createDate: LocalDate = LocalDate.now(),
+                        owners: List<String> = this.familyBankAccounts.getFamily().map { it.username }) {
 
-    fun accountRegister(name: String, bankName: String, createDate: LocalDate = LocalDate.now()) {
         val newBankAccount = BankAccountImpl(name, bankName, this, createDate)
-        familyBankAccounts.registerAccount(newBankAccount)
+        familyBankAccounts.registerAccount(newBankAccount, owners.map { owner -> FamilyMember(owner) })
     }
+
 
     fun accountClose(bankAccountName: String) = this.familyBankAccounts.accessToAccountByAccountName(bankAccountName)?.bankAccount?.close()
     fun accountOpen(bankAccountName: String) = this.familyBankAccounts.accessToAccountByAccountName(bankAccountName)?.bankAccount?.open()
@@ -76,6 +80,7 @@ class FamilyBankAccountsService(val familyName: String,
     fun transactionRegister(accountId: String, transaction: Transaction) {
         this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount?.addTransaction(transaction)
     }
+
 
 
 }

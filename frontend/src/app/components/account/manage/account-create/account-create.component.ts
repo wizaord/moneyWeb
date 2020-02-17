@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AccountOwner } from '../../../../domain/user/AccountOwner';
 import { UserService } from '../../../../services/user.service';
+import { FamilyService } from '../../../../services/family.service';
 
 @Component({
   selector: 'app-account-create',
@@ -24,12 +25,12 @@ export class AccountCreateComponent implements OnInit {
   constructor(private ngbDateParserFormatter: NgbDateParserFormatter,
               private router: Router,
               private accountService: AccountService,
-              private userService: UserService) { }
+              private familyService: FamilyService) { }
 
   ngOnInit() {
     this.accountName = '';
     this.bankName = '';
-    // this.userService.getOwners().subscribe(owners => owners.forEach(owner => this.accountOwners.push(owner)));
+    this.familyService.getOwners().subscribe(owners => owners.forEach(owner => this.accountOwners.push(owner)));
   }
 
   onAccountCreate() {

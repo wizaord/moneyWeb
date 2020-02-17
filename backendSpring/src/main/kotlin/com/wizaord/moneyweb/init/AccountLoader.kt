@@ -1,5 +1,6 @@
 package com.wizaord.moneyweb.init
 
+import com.wizaord.moneyweb.configuration.toLocalDate
 import com.wizaord.moneyweb.services.FamilyBankAccountServiceFactory
 import com.wizaord.moneyweb.services.FamilyBankAccountsCreateService
 import org.slf4j.LoggerFactory
@@ -44,7 +45,8 @@ class AccountLoader(
         val familyBean = this.familyBankAccountServiceFactory.getServiceBeanForFamily("mouilleron")
 
         accounts.forEach { account ->
-            familyBean.accountRegister(account.name, "TO_BE_DEFINED", account.dateCreation.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+            familyBean.accountRegister(account.name,
+                    "TO_BE_DEFINED", account.dateCreation.toLocalDate())
             if (!account.isOpen) familyBean.accountClose(account.name)
 
         }

@@ -1,15 +1,14 @@
 package com.wizaord.moneyweb.controllers
 
 import com.wizaord.moneyweb.configuration.toDate
+import com.wizaord.moneyweb.configuration.toLocalDate
 import com.wizaord.moneyweb.domain.BankAccountImpl
 import com.wizaord.moneyweb.domain.BankAccountOwners
 import com.wizaord.moneyweb.services.FamilyBankAccountServiceFactory
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
@@ -20,25 +19,13 @@ class AccountController(
 
     private val logger = LoggerFactory.getLogger(javaClass.canonicalName)
 
-//    @PostMapping("/create")
-//    @ResponseBody
-//    fun create(@RequestBody account: AccountCreate): ResponseEntity<Account> {
-//        val nbNotValidOwner = account.owners
-//                .map { userService.isKnowOwner(it) }
-//                .filter { !it }
-//                .count()
-//
-//        if (nbNotValidOwner > 0) {
-//            return ResponseEntity(NOT_ACCEPTABLE);
-//        }
-//
-//        val owners = account.owners.map { com.wizaord.moneyweb.infrastructure.AccountOwner(it) }.toMutableSet()
-//        val accountToCreate = com.wizaord.moneyweb.infrastructure.Account(null, account.accountName, account.bankName, account.dateCreate, true, owners)
-//
-//        val accountCreated = accountService.create(accountToCreate)
-//
-//        return ResponseEntity(Account.fromAccountDb(accountCreated), HttpStatus.CREATED)
-//    }
+    @PostMapping("")
+    @ResponseBody
+    fun create(@PathVariable familyName: String, @RequestBody account: AccountCreate): ResponseEntity<Account> {
+        val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
+        familyService.accountRegister(account.accountName, account.bankName, account.dateCreate.toLocalDate(), account.owners)
+        return ResponseEntity.ok().build()
+    }
 
     @RequestMapping("")
     @ResponseBody
@@ -49,6 +36,7 @@ class AccountController(
     }
 
 }
+
 
 data class AccountCreate(var accountName: String,
                          var bankName: String,

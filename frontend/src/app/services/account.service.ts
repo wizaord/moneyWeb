@@ -17,13 +17,14 @@ export class AccountService {
   }
 
   createAccount(name: string, bank: string, openDate: string, ownersSelected: string[]): Observable<Account> {
+    const familyName = this.authenticationService.currentUserValue.username;
     const account = {
       accountName: name,
       bankName: bank,
       dateCreate: openDate,
       owners: ownersSelected
     };
-    return this.http.post<Account>(`${this.API_URL}/create`, account);
+    return this.http.post<Account>(`${this.API_URL}/${familyName}/accounts`, account);
   }
 
   getAccounts(): Observable<Account[]> {

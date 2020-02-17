@@ -5,17 +5,17 @@ import com.wizaord.moneyweb.domain.BankAccountImpl
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 import com.wizaord.moneyweb.domain.FamilyMember
 import com.wizaord.moneyweb.domain.InfrastructureBankAccountFamilyNotifications
+import com.wizaord.moneyweb.domain.exceptions.OwnerNotKnowException
 import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.within
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalUnit
-import java.util.concurrent.TimeUnit
 
 @ExtendWith(MockitoExtension::class)
 internal class FamilyBankAccountsServiceTest {

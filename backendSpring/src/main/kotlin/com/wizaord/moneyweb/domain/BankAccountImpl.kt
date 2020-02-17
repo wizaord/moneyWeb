@@ -4,13 +4,16 @@ import com.wizaord.moneyweb.domain.transactions.Transaction
 import com.wizaord.moneyweb.domain.transactions.TransactionMatch
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
+import java.util.*
+import kotlin.NoSuchElementException
 
 data class BankAccountImpl(
         val accountName: String,
         val bankDefinition: String,
         private var infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications? = null,
         val dateCreation: LocalDate = LocalDate.now(),
-        var isOpen: Boolean = true) : BankAccount {
+        var isOpen: Boolean = true,
+        val internalId: String = UUID.randomUUID().toString()) : BankAccount {
 
     private val log = LoggerFactory.getLogger(BankAccountImpl::class.java)
 

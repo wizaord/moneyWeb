@@ -3,8 +3,9 @@ import { environment } from '../../environments/environment';
 import { from, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../domain/account/Account';
-import { concatAll, concatMap, filter, flatMap, toArray } from 'rxjs/operators';
+import { concatAll, concatMap, filter, flatMap, map, reduce, toArray } from 'rxjs/operators';
 import { AuthenticationService } from './authentification/authentication.service';
+import { TransactionsService } from './transactions.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class AccountService {
   API_URL = `${environment.apiUrl}/family`;
 
   constructor(private http: HttpClient,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private transactionsService: TransactionsService) {
   }
 
   createAccount(name: string, bank: string, openDate: string, ownersSelected: string[]): Observable<Account> {
@@ -38,6 +40,15 @@ export class AccountService {
       .pipe(
         flatMap(account => account),
         filter(account => account.isOpened),
+      );
+  }
+
+  getSoldeAccount(accountName: string): Observable<number> {
+    return this.transactionsService.getTransactions(accountName)
+      .pipe(
+        flatMap(transaction => transaction),
+        map(transaction => transaction.amount),
+        reduce((t1, t2) => t1 + t2)
       );
   }
 

@@ -38,6 +38,9 @@ class FamilyBankAccountsService(val familyName: String,
             val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
             bankAccountImpl.registerInfrastructureBankAccountNotification(this)
         }
+
+        // load transactions from accounts
+        // FIXME: charger les transactions des comptes
         familyBankAccounts.activateNotifications()
     }
 
@@ -88,6 +91,9 @@ class FamilyBankAccountsService(val familyName: String,
         this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount?.addTransaction(transaction)
     }
 
+    fun transactions(accountName: String): List<Transaction> {
+        return this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.getTransactions()?: emptyList()
+    }
 
 
 }

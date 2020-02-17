@@ -4,6 +4,7 @@ export class Account {
   dateCreate: Date;
   isOpened: boolean;
   owners: string[];
+  solde: number;
 
   constructor(accountName: string,
               bankName: string,
@@ -15,5 +16,6 @@ export class Account {
     this.dateCreate = openDate;
     this.isOpened = isOpened;
     this.owners = [];
+    this.solde = 0;
   }
 }

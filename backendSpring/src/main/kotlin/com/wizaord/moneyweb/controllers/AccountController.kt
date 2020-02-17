@@ -53,6 +53,7 @@ class AccountController(
         val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
         familyService.accountDelete(accountName)
     }
+
 }
 
 
@@ -63,7 +64,7 @@ data class AccountCreate(var accountName: String,
 
 }
 
-class Account(var accountName: String,
+data class Account(var accountName: String,
               var bankName: String,
               var dateCreate: Date,
               var isOpened: Boolean,
@@ -72,8 +73,11 @@ class Account(var accountName: String,
     companion object {
         fun fromDomain(bao: BankAccountOwners): Account {
             val bankAccount = bao.bankAccount as BankAccountImpl
-            return Account(bankAccount.getName(), bankAccount.getBankName(), bankAccount.dateCreation.toDate(),
-                    bankAccount.isOpen, bao.getOwners().map { it.username })
+            return Account(bankAccount.getName(),
+                    bankAccount.getBankName(),
+                    bankAccount.dateCreation.toDate(),
+                    bankAccount.isOpen,
+                    bao.getOwners().map { it.username })
         }
     }
 }

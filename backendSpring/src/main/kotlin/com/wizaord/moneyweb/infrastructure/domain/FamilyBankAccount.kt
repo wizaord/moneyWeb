@@ -60,19 +60,21 @@ data class BankAccountOwners(val owners: List<FamilyMember>,
 data class BankAccount(val name: String,
                        val bankName: String,
                        val dateCreation: LocalDate,
-                       val isOpened: Boolean) {
+                       val isOpened: Boolean,
+                       val internalId: String) {
 
     companion object {
         fun fromDomain(bankAccount: BankAccountImpl): BankAccount {
             return BankAccount(bankAccount.accountName,
                     bankAccount.bankDefinition,
                     bankAccount.dateCreation,
-                    bankAccount.isOpen)
+                    bankAccount.isOpen,
+                    bankAccount.internalId)
         }
     }
 
     fun toDomain(): BankAccountImpl {
-        return BankAccountImpl(name, bankName, dateCreation = dateCreation, isOpen = isOpened)
+        return BankAccountImpl(name, bankName, dateCreation = dateCreation, isOpen = isOpened, internalId = internalId)
     }
 
 }

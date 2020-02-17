@@ -189,5 +189,10 @@ internal class BankAccountImplTest {
         assertThat(bankAccount.isOpen).isFalse()
     }
 
+    @Test
+    internal fun `constructor - When BankAccount is created, an internal Id is created`() {
+        assertThat(bankAccount.internalId).isNotNull()
+    }
+
 }
 

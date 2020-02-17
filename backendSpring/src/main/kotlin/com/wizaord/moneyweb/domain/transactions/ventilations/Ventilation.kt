@@ -6,12 +6,8 @@ import java.util.*
 
 abstract class Ventilation(
         val amount: Double,
-        private var category: Category? = null,
+        var category: Category? = null,
         val id: String = UUID.randomUUID().toString()
 ) {
 
-    fun getCategory(): Category? = this.category
-    fun setCategory(category: Category) {
-        this.category = category
-    }
 }

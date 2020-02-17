@@ -37,7 +37,14 @@ class CategoryLoader(
 
         // replacement de tous les Ids
         categoriesFamily.forEach { categoryService.createCategory(it) }
+        // creation d'une dernière category VIREMENT INTERNE
+        createVirementInterneCategory()
         logger.info("All categories have been loaded")
+    }
+
+    private fun createVirementInterneCategory() {
+        val categoryFamily = CategoryFamily("VIREMENT INTERNE", "1")
+        categoryService.createCategory(categoryFamily)
     }
 
     fun readCategories() {

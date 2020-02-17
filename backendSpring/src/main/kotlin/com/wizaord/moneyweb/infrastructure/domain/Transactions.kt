@@ -28,12 +28,12 @@ abstract class Transaction (
         this.isPointe = transaction.isPointe
         this.dateCreation = transaction.dateCreation
         transaction.ventilations.forEach { ventilation ->
-            val ventilation = when (ventilation) {
+            val ventilationInfra = when (ventilation) {
                 is DebitVentilation -> com.wizaord.moneyweb.infrastructure.domain.DebitVentilation.fromDomain(ventilation)
                 is CreditVentilation -> com.wizaord.moneyweb.infrastructure.domain.CreditVentilation.fromDomain(ventilation)
                 else -> error("Not possible")
             }
-            this.ventilations.add(ventilation)
+            this.ventilations.add(ventilationInfra)
         }
     }
 }
@@ -58,18 +58,19 @@ class Credit(id: String) : Transaction(id) {
 }
 
 abstract class Ventilation(
-        val amount: Double
+        val amount: Double,
+        val categoryId: String?
 )
 
-class DebitVentilation(amount: Double) : Ventilation(amount) {
+class DebitVentilation(amount: Double, categoryId: String?) : Ventilation(amount, categoryId) {
     companion object {
         fun fromDomain(ventilation: DebitVentilation) =
-                com.wizaord.moneyweb.infrastructure.domain.DebitVentilation(ventilation.amount)
+                com.wizaord.moneyweb.infrastructure.domain.DebitVentilation(ventilation.amount, ventilation.category?.id)
     }
 }
-class CreditVentilation(amount: Double) : Ventilation(amount) {
+class CreditVentilation(amount: Double, categoryId: String?) : Ventilation(amount, categoryId) {
     companion object {
         fun fromDomain(ventilation: CreditVentilation) =
-                com.wizaord.moneyweb.infrastructure.domain.CreditVentilation(ventilation.amount)
+                com.wizaord.moneyweb.infrastructure.domain.CreditVentilation(ventilation.amount, ventilation.category?.id)
     }
 }

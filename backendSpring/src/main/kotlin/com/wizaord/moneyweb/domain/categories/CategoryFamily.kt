@@ -12,4 +12,9 @@ class CategoryFamily(
 
     fun addSubCategory(category: Category) = this.categories.add(category)
     fun getSubCategories() = this.categories
+
+    fun findById(categoryId: String): Category? {
+        if (id == categoryId) return this
+        return this.categories.firstOrNull { it.id == categoryId }
+    }
 }

@@ -27,4 +27,21 @@ export class AccountManageComponent implements OnInit {
     return this.accounts.filter(a => ! a.isOpened);
   }
 
+  closeAccount(account: Account) {
+    console.log('Fermeture du compte ' + account.accountName);
+    this.accountService.closAccount(account).subscribe(
+      result => {
+        account.isOpened = false;
+      }
+    );
+  }
+
+  openAccount(account: Account) {
+    console.log('Fermeture du compte ' + account.accountName);
+    this.accountService.openAccount(account).subscribe(
+      result => {
+        account.isOpened = true;
+      }
+    );
+  }
 }

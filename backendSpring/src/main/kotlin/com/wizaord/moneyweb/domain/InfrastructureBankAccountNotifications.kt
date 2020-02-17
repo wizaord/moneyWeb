@@ -6,4 +6,5 @@ interface InfrastructureBankAccountNotifications {
 
     fun notifyNewTransaction(transaction: Transaction)
     fun notifyRemoveTransaction(transaction: Transaction)
+    fun notifyAccountUpdate(accountImpl: BankAccountImpl)
 }

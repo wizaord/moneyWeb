@@ -33,7 +33,7 @@
                   <td>0</td>
                   <td>{{account.owners}}</td>
                   <td>
-                    <i class="fa fa-folder-open"></i>
+                    <i class="fa fa-folder-open" (click)="closeAccount(account)"></i>
                     <i class="fa fa-edit"></i>
                   </td>
                 </tr>
@@ -64,6 +64,7 @@
                   <td>0</td>
                   <td>{{account.owners}}</td>
                   <td>
+                    <i class="fa fa-folder" (click)="openAccount(account)"></i>
                     <i class="fa fa-trash"></i>
                   </td>
                 </tr>

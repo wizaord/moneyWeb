@@ -20,11 +20,9 @@ class AccountController(
     private val logger = LoggerFactory.getLogger(javaClass.canonicalName)
 
     @PostMapping("")
-    @ResponseBody
-    fun create(@PathVariable familyName: String, @RequestBody account: AccountCreate): ResponseEntity<Account> {
+    fun create(@PathVariable familyName: String, @RequestBody account: AccountCreate) {
         val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
         familyService.accountRegister(account.accountName, account.bankName, account.dateCreate.toLocalDate(), account.owners)
-        return ResponseEntity.ok().build()
     }
 
     @RequestMapping("")
@@ -33,6 +31,20 @@ class AccountController(
         val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
         return familyService.bankAccounts().map { Account.fromDomain(it) }
 
+    }
+
+    @RequestMapping("/{accountName}/close")
+    fun accountClose(@PathVariable familyName: String,
+                 @PathVariable accountName: String) {
+        val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
+        familyService.accountClose(accountName)
+    }
+
+    @RequestMapping("/{accountName}/open")
+    fun accountOpen(@PathVariable familyName: String,
+                     @PathVariable accountName: String) {
+        val familyService = familyBankAccountServiceFactory.getServiceBeanForFamily(familyName)
+        familyService.accountOpen(accountName)
     }
 
 }

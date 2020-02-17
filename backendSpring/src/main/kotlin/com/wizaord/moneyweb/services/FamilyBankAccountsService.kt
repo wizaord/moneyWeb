@@ -77,6 +77,10 @@ class FamilyBankAccountsService(val familyName: String,
         logger.info("Transaction has been deleted")
     }
 
+    override fun notifyAccountUpdate(accountImpl: BankAccountImpl) {
+        this.notifyFamilyBankAccountUpdate(this.familyBankAccounts)
+    }
+
     fun transactionRegister(accountId: String, transaction: Transaction) {
         this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount?.addTransaction(transaction)
     }

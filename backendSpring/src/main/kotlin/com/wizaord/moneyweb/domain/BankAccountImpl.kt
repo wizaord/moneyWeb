@@ -31,10 +31,12 @@ data class BankAccountImpl(
 
     override fun open() {
         this.isOpen = true
+        infrastructureBankAccountNotifications?.notifyAccountUpdate(this)
     }
 
     override fun close() {
         this.isOpen = false
+        infrastructureBankAccountNotifications?.notifyAccountUpdate(this)
     }
 
     override fun addTransaction(transaction: Transaction) {

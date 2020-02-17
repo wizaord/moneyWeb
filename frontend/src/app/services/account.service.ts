@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../domain/account/Account';
 import { concatAll, concatMap, filter, flatMap, toArray } from 'rxjs/operators';
@@ -41,4 +41,24 @@ export class AccountService {
       );
   }
 
+  getAccountById(accountId: string): Observable<Account> {
+    return this.getAccounts()
+      .pipe(
+        flatMap(account => account),
+        filter(account => account.accountName === accountId)
+      );
+  }
+
+  closAccount(account: Account): Observable<any> {
+    const familyName = this.authenticationService.currentUserValue.username;
+    const apiUrl = `${this.API_URL}/${familyName}/accounts/${account.accountName}/close`;
+    return this.http.patch<Account>(apiUrl, {});
+  }
+
+  openAccount(account: Account): Observable<any> {
+    const familyName = this.authenticationService.currentUserValue.username;
+    const apiUrl = `${this.API_URL}/${familyName}/accounts/${account.accountName}/open`;
+    return this.http.patch<Account>(apiUrl, {});
+
+  }
 }

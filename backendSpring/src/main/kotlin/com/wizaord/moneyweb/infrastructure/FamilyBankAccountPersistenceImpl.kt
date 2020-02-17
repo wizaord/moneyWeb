@@ -44,4 +44,8 @@ class FamilyBankAccountPersistenceImpl(
         this.transactionsRepository.save(tr)
     }
 
+    override fun transactionRemove(transaction: Transaction) {
+        transactionsRepository.deleteById(transaction.id)
+    }
+
 }

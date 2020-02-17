@@ -8,4 +8,5 @@ interface FamilyBankAccountPersistence {
     fun initFamily(familyBankAccountsImpl: FamilyBankAccountsImpl): FamilyBankAccountsImpl
     fun updateFamily(familyBankAccountsImpl: FamilyBankAccountsImpl): FamilyBankAccountsImpl
     fun transactionCreate(transaction: Transaction)
+    fun transactionRemove(transaction: Transaction)
 }

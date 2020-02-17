@@ -74,6 +74,7 @@ class FamilyBankAccountsService(val familyName: String,
     }
 
     override fun notifyRemoveTransaction(transaction: Transaction) {
+        this.familyBankAccountPersistence.transactionRemove(transaction)
         logger.info("Transaction has been deleted")
     }
 

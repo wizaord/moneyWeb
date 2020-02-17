@@ -5,17 +5,19 @@
   </button>
   <div class="navbar-collapse" [class.collapse]="collapsed">
     <ul class="navbar-nav mr-auto">
+      <li class="nav-item active"><a class="nav-link" routerLink="/accountShow">Accounts <span class="sr-only">(current)</span></a></li>
+      <li class="nav-item active"><a class="nav-link" routerLink="/upload">Upload <span class="sr-only">(current)</span></a></li>
+      <li class="nav-item active"><a class="nav-link" routerLink="/statistiques">Statistiques <span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="navbar-nav my-2">
       <li class="nav-item active" ngbDropdown>
         <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarAccount" role="button">
-          Account
+          Admin
         </a>
         <div ngbDropdownMenu aria-labelledby="navbarAccount" class="dropdown-menu">
-          <a ngbDropdownItem routerLink="/accountShow" (click)="$event.preventDefault()">Show</a>
-          <a ngbDropdownItem routerLink="/accountManage" (click)="$event.preventDefault()">Manage</a>
+          <a ngbDropdownItem routerLink="/accountManage" (click)="$event.preventDefault()">Manage Accounts</a>
+          <a ngbDropdownItem routerLink="/family/show" (click)="$event.preventDefault()">Manage Family</a>
         </div>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/family/show">Family <span class="sr-only">(current)</span></a>
       </li>
     </ul>
     <button class="btn btn-outline-primary my-2 my-sm-0" (click)="logout()">Logout</button>

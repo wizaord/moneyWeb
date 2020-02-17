@@ -10,7 +10,7 @@
     </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let account of accounts; index as i">
+      <tr *ngFor="let account of accountsSortedByName ; index as i">
         <th scope="row">{{ i + 1 }}</th>
         <td>{{account.bankName}}</td>
         <td>{{account.accountName}}</td>

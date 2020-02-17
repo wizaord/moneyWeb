@@ -14,6 +14,10 @@ export class AccountShowComponent implements OnInit {
   constructor(private accountService: AccountService) {
   }
 
+  get accountsSortedByName() {
+    return this.accounts.sort((a, b) => a.accountName.localeCompare(b.accountName));
+  }
+
   ngOnInit() {
     this.accountService.getOpenedAccounts().subscribe(
       account => {this.accounts.push(account); }

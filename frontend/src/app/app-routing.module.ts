@@ -9,6 +9,8 @@ import { UserHomepageComponent } from './components/homepage/user-homepage.compo
 import { AccountCreateComponent } from './components/account/manage/account-create/account-create.component';
 import { FamilyComponent } from './components/family/family/family.component';
 import { FamilyCreateComponent } from './components/family/family-create/family-create.component';
+import { UploadComponent } from './components/upload/upload.component';
+import { StatistiquesComponent } from './components/statistiques/statistiques.component';
 
 const routes: Routes = [
   { path: '', component: UserHomepageComponent, canActivate: [AuthGuard] },
@@ -19,6 +21,8 @@ const routes: Routes = [
   { path: 'accountCreate', component: AccountCreateComponent, canActivate: [AuthGuard] },
   { path: 'family/show', component: FamilyComponent, canActivate: [AuthGuard] },
   { path: 'family/create', component: FamilyCreateComponent, canActivate: [AuthGuard] },
+  { path: 'upload', component: UploadComponent, canActivate: [AuthGuard] },
+  { path: 'statistiques', component: StatistiquesComponent, canActivate: [AuthGuard] },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }];

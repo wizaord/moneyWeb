@@ -23,6 +23,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FamilyComponent } from './components/family/family/family.component';
 import { FamilyCreateComponent } from './components/family/family-create/family-create.component';
+import { UploadComponent } from './components/upload/upload.component';
+import { StatistiquesComponent } from './components/statistiques/statistiques.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { FamilyCreateComponent } from './components/family/family-create/family-
     AccountCreateComponent,
     FamilyComponent,
     FamilyCreateComponent,
+    UploadComponent,
+    StatistiquesComponent,
   ],
   imports: [
     NgbModule,

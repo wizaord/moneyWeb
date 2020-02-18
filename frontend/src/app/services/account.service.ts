@@ -69,4 +69,10 @@ export class AccountService {
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${account.accountName}`;
     return this.http.delete(apiUrl);
   }
+
+  updateAccountInfo(accountName: string, accountToUpdate: Account) {
+    const familyName = this.authenticationService.currentUserValue.username;
+    const apiUrl = `${this.API_URL}/${familyName}/accounts/${accountName}`;
+    return this.http.put<Account>(apiUrl, accountToUpdate);
+  }
 }

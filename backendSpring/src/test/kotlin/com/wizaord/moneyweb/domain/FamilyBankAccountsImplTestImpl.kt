@@ -1,9 +1,6 @@
 package com.wizaord.moneyweb.domain
 
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.*
 import com.wizaord.moneyweb.domain.exceptions.BankAccountWithTheSameNameException
 import com.wizaord.moneyweb.domain.exceptions.FamilyMemberAlreadyExistException
 import com.wizaord.moneyweb.domain.exceptions.FamilyMemberNotKnowException
@@ -278,6 +275,7 @@ internal class FamilyBankAccountsImplTestImpl {
         verify(infrastructureBankAccountNotifications, times(2)).notifyRemoveTransaction(anyOrNull())
         verify(infrastructureBankAccountFamilyNotifications, times(2)).notifyFamilyBankAccountUpdate(anyOrNull())
     }
+
 
     private fun createDummyAccount(): BankAccount =
             BankAccountImpl("name", "bankName", infrastructureBankAccountNotifications)

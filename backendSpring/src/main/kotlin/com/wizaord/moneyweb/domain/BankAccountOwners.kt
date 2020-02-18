@@ -23,6 +23,5 @@ data class BankAccountOwners(
         this.owners.clear()
         this.owners.addAll(owners)
     }
-
 }
 

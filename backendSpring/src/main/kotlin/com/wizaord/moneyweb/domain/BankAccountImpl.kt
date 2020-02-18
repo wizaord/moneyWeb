@@ -8,10 +8,10 @@ import java.util.*
 import kotlin.NoSuchElementException
 
 data class BankAccountImpl(
-        val accountName: String,
-        val bankDefinition: String,
+        var accountName: String,
+        var bankDefinition: String,
         private var infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications? = null,
-        val dateCreation: LocalDate = LocalDate.now(),
+        var dateCreation: LocalDate = LocalDate.now(),
         var isOpen: Boolean = true,
         var solde: Double = 0.0,
         val accountId: String = UUID.randomUUID().toString()) : BankAccount {
@@ -30,12 +30,12 @@ data class BankAccountImpl(
 
     override fun open() {
         this.isOpen = true
-        infrastructureBankAccountNotifications?.notifyAccountUpdate(this)
+        notifyAccountUpdated()
     }
 
     override fun close() {
         this.isOpen = false
-        infrastructureBankAccountNotifications?.notifyAccountUpdate(this)
+        notifyAccountUpdated()
     }
 
     override fun addTransaction(transaction: Transaction) {
@@ -43,7 +43,7 @@ data class BankAccountImpl(
         this.transactions.add(transaction)
         this.solde += transaction.amount
         infrastructureBankAccountNotifications?.notifyNewTransaction(this.accountId, transaction)
-        infrastructureBankAccountNotifications?.notifyAccountUpdate(this)
+        notifyAccountUpdated()
 
     }
 
@@ -51,7 +51,7 @@ data class BankAccountImpl(
         this.solde -= transaction.amount
         transactions.remove(transaction)
         infrastructureBankAccountNotifications?.notifyRemoveTransaction(transaction)
-        infrastructureBankAccountNotifications?.notifyAccountUpdate(this)
+        notifyAccountUpdated()
     }
 
     @Throws(NoSuchElementException::class)
@@ -72,6 +72,25 @@ data class BankAccountImpl(
     }
 
     override fun getInternalId() = this.accountId
+
+    override fun updateName(newAccountName: String) {
+        accountName = newAccountName
+        notifyAccountUpdated()
+    }
+
+    private fun notifyAccountUpdated() {
+        this.infrastructureBankAccountNotifications?.notifyAccountUpdate(this)
+    }
+
+    override fun updateBankName(newBankDetail: String) {
+        bankDefinition = newBankDetail
+        notifyAccountUpdated()
+    }
+
+    override fun updateBankAccountDateCreate(newAccountDate: LocalDate) {
+        dateCreation = newAccountDate
+        notifyAccountUpdated()
+    }
 
     @Throws(NoSuchElementException::class)
     override fun getTransactionById(transactionId: String): Transaction = transactions.first { it.id == transactionId }

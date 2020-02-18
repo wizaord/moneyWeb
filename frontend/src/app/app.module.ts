@@ -25,6 +25,7 @@ import { FamilyComponent } from './components/family/family/family.component';
 import { FamilyCreateComponent } from './components/family/family-create/family-create.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { StatistiquesComponent } from './components/statistiques/statistiques.component';
+import { AccountModifyComponent } from './components/account/manage/account-modify/account-modify.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { StatistiquesComponent } from './components/statistiques/statistiques.co
     FamilyCreateComponent,
     UploadComponent,
     StatistiquesComponent,
+    AccountModifyComponent,
   ],
   imports: [
     NgbModule,

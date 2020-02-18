@@ -194,5 +194,30 @@ internal class BankAccountImplTest {
         assertThat(bankAccount.accountId).isNotNull()
     }
 
+    @Test
+    internal fun updateName() {
+        // when
+        bankAccount.updateName("PLOP")
+
+        // then
+        assertThat(bankAccount.accountName).isEqualTo("PLOP")
+        verify(infrastructureBankAccountNotifications).notifyAccountUpdate(anyOrNull())
+    }
+
+    @Test
+    internal fun updateBankName() {
+        bankAccount.updateBankName("PLOP")
+        assertThat(bankAccount.bankDefinition)
+        verify(infrastructureBankAccountNotifications).notifyAccountUpdate(anyOrNull())
+    }
+
+    @Test
+    internal fun dateCreateUpdate() {
+        val now = LocalDate.now()
+        bankAccount.updateBankAccountDateCreate(now)
+        assertThat(bankAccount.dateCreation).isEqualTo(now)
+        verify(infrastructureBankAccountNotifications).notifyAccountUpdate(anyOrNull())
+    }
+
 }
 

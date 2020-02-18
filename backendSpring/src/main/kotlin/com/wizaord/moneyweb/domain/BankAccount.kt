@@ -2,6 +2,7 @@ package com.wizaord.moneyweb.domain
 
 import com.wizaord.moneyweb.domain.transactions.Transaction
 import com.wizaord.moneyweb.domain.transactions.TransactionMatch
+import java.time.LocalDate
 
 
 interface BankAccount {
@@ -25,6 +26,8 @@ interface BankAccount {
     fun getTransactionsMatched(transaction: Transaction): List<TransactionMatch>
     fun deleteAllTransactions()
     fun getInternalId(): String
-
+    fun updateName(newAccountName: String)
+    fun updateBankName(newAccountBankName: String)
+    fun updateBankAccountDateCreate(newAccountDate: LocalDate)
 }
 

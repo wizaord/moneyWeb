@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1><p class="text-center">Modification du comptes {{accountNameTitle}}</p></h1>
+    </div>
+  </div>
+
+  <form (ngSubmit)="onAccountModify()" #accountModifyForm="ngForm">
+    <div class="row">
+      <div class="col-6">
+        <div class="col-3">Name</div>
+        <div class="col-9">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="accountNameGroup">@</span>
+            </div>
+            <input type="text" class="form-control"
+                   placeholder="accountName" aria-label="accountName" aria-describedby="accountNameGroup"
+                   required
+                   [(ngModel)]="accountToEdit.accountName" name=accountName #accountNameRef="ngModel">
+          </div>
+          <div [hidden]="accountNameRef.valid || accountNameRef.pristine" class="alert alert-danger">Name is
+            required
+          </div>
+        </div>
+
+        <div class="col-3">Bank Name</div>
+        <div class="col-9">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="bankNameGroup">@</span>
+            </div>
+            <input type="text" class="form-control"
+                   placeholder="bankName" aria-label="bankName" aria-describedby="bankNameGroup"
+                   required
+                   [(ngModel)]="accountToEdit.bankName" name=bankName #bankNameRef="ngModel">
+          </div>
+          <div [hidden]="bankNameRef.valid || bankNameRef.pristine" class="alert alert-danger">Bank name is required</div>
+        </div>
+
+        <div class="col-3">Open date</div>
+        <div class="col-9">
+          <div class="form-group">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="accountDate" ngbDatepicker #datebankNameRef="ngModel" #d="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+              </div>
+            </div>
+          </div>
+          <div [hidden]="datebankNameRef.value != null || datebankNameRef.pristine" class="alert alert-danger">Date is required</div>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Please select the owner</mat-label>
+            <mat-select [(ngModel)]="accountToEdit.owners" name="ownersSelected" multiple #selectOwnerRef="ngModel">
+              <mat-option *ngFor="let owner of accountOwners" [value]="owner.name">
+                {{owner.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div [hidden]="selectIsValid(selectOwnerRef)" class="alert alert-danger">Select at least one owner</div>
+      </div>
+      <div class="col-6">
+        <button type="submit" class="btn btn-warning btn-lg" [disabled]="!accountModifyForm.form.valid || datebankNameRef.value == null || !selectIsValid(selectOwnerRef)">
+          Modifier
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

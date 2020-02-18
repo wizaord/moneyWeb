@@ -34,7 +34,7 @@
                   <td>{{account.owners}}</td>
                   <td>
                     <i class="fa fa-folder-open" (click)="closeAccount(account)"></i>
-                    <i class="fa fa-edit"></i>
+                    <a routerLink="/account/{{account.accountName}}/modify"><i class="fa fa-edit"></i></a>
                   </td>
                 </tr>
                 </tbody>

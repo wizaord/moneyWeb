@@ -4,10 +4,12 @@ import com.wizaord.moneyweb.configuration.toDate
 import com.wizaord.moneyweb.configuration.toLocalDate
 import com.wizaord.moneyweb.domain.BankAccountImpl
 import com.wizaord.moneyweb.domain.BankAccountOwners
+import com.wizaord.moneyweb.domain.FamilyMember
 import com.wizaord.moneyweb.services.FamilyBankAccountServiceFactory
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
 import java.util.*
 
 @RestController
@@ -53,6 +55,19 @@ class AccountController(
         familyService.accountDelete(accountName)
     }
 
+    @PutMapping("/{accountName}")
+    @ResponseBody
+    fun accountUpdate(@PathVariable familyName: String,
+                      @PathVariable accountName: String,
+                      @RequestBody accountToUpdate: Account): Account {
+        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions(familyName)
+        familyService.accountUpdateBankName(accountName, accountToUpdate.bankName)
+        familyService.accountUpdateDateCreation(accountName, accountToUpdate.dateCreate)
+        familyService.accountUpdateOwners(accountName, accountToUpdate.owners.map { FamilyMember(it) })
+        familyService.accountUpdateName(accountName, accountToUpdate.accountName)
+        return Account.fromDomain(familyService.bankAccount(accountName)!!)
+    }
+
 }
 
 
@@ -65,17 +80,18 @@ data class AccountCreate(var accountName: String,
 
 data class Account(var accountName: String,
                    var bankName: String,
-                   var dateCreate: Date,
+                   var dateCreate: LocalDate,
                    var isOpened: Boolean,
                    var solde: Double,
                    var owners: List<String>) {
+
 
     companion object {
         fun fromDomain(bao: BankAccountOwners): Account {
             val bankAccount = bao.bankAccount as BankAccountImpl
             return Account(bankAccount.getName(),
                     bankAccount.getBankName(),
-                    bankAccount.dateCreation.toDate(),
+                    bankAccount.dateCreation,
                     bankAccount.isOpen,
                     bankAccount.solde,
                     bao.getOwners().map { it.username })

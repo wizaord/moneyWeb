@@ -65,7 +65,7 @@ class AccountController(
         familyService.accountUpdateDateCreation(accountName, accountToUpdate.dateCreate)
         familyService.accountUpdateOwners(accountName, accountToUpdate.owners.map { FamilyMember(it) })
         familyService.accountUpdateName(accountName, accountToUpdate.accountName)
-        return Account.fromDomain(familyService.bankAccount(accountName)!!)
+        return Account.fromDomain(familyService.bankAccount(accountToUpdate.accountName)!!)
     }
 
 }

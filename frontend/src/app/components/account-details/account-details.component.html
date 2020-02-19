@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-2 text-center">
+          <button type="button" (click)="goPreviousMonth()">{{currentMonth | datePreviousMonthExtract}}</button>
+        </div>
+        <div class="col-8 text-center">
+          <h5 class="card-title">Transaction pour le compte {{accountNameTitle}} - date {{this.currentMonth}}</h5>
+        </div>
+        <div class="col-2 text-center">
+          <button type="button" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}}</button>
+        </div>
+      </div>
+      <app-transactions-show [dateBegin]="getBeginMonthDate()" [dateEnd]="getEndMonthDate()"></app-transactions-show>
+    </div>
+  </div>
+</div>

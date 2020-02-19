@@ -12,6 +12,7 @@ import { FamilyCreateComponent } from './components/family/family-create/family-
 import { UploadComponent } from './components/upload/upload.component';
 import { StatistiquesComponent } from './components/statistiques/statistiques.component';
 import { AccountModifyComponent } from './components/account/manage/account-modify/account-modify.component';
+import { AccountDetailsComponent } from './components/account-details/account-details.component';
 
 const routes: Routes = [
   { path: '', component: UserHomepageComponent, canActivate: [AuthGuard] },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'accountManage', component: AccountManageComponent, canActivate: [AuthGuard] },
   { path: 'accountCreate', component: AccountCreateComponent, canActivate: [AuthGuard] },
   { path: 'account/:accountName/modify', component: AccountModifyComponent, canActivate: [AuthGuard] },
+  { path: 'account/:accountName', component: AccountDetailsComponent, canActivate: [AuthGuard] },
   { path: 'family/show', component: FamilyComponent, canActivate: [AuthGuard] },
   { path: 'family/create', component: FamilyCreateComponent, canActivate: [AuthGuard] },
   { path: 'upload', component: UploadComponent, canActivate: [AuthGuard] },

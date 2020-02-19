@@ -109,12 +109,13 @@ class DebitCreditLoader(
         val amountTotal = ventilationsExtracted!!.stream().mapToDouble { it.amount }.sum()
 
         var transaction: Transaction?
+        val dateCreate = createDateFromString(csvLine[2].split(" ")[0])!!
         if (isCredit) {
-            transaction = Credit(userLibelle, detailLibellebanque, userLibelle, amountTotal, isPointe, transactionId)
+            transaction = Credit(userLibelle, detailLibellebanque, userLibelle, amountTotal, isPointe, transactionId, dateCreate)
         } else {
-            transaction = Debit(userLibelle, detailLibellebanque, userLibelle, amountTotal, isPointe, transactionId)
+            transaction = Debit(userLibelle, detailLibellebanque, userLibelle, amountTotal, isPointe, transactionId, dateCreate)
         }
-        transaction.dateCreation = createDateFromString(csvLine[2].split(" ")[0])!!
+
 
         // search account by Id
         ventilationsExtracted.forEach { transaction.addVentilation(it) }

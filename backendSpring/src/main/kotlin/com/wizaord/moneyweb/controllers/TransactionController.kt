@@ -17,8 +17,9 @@ class TransactionController(
     @ResponseBody
     fun getTransactions(@PathVariable familyName: String,
                         @PathVariable accountName: String): List<com.wizaord.moneyweb.controllers.Transaction> {
-        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions(familyName)
-        return familyService.transactions(accountName).map { com.wizaord.moneyweb.controllers.Transaction.fromDomain(it) }
+        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithTransactions(familyName)
+        val transactions = familyService.transactions(accountName);
+        return transactions.map { com.wizaord.moneyweb.controllers.Transaction.fromDomain(it) }
     }
 }
 

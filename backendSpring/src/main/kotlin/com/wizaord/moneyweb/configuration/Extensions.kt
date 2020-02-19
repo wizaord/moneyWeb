@@ -6,13 +6,13 @@ import java.util.*
 
 fun LocalDate.toDate(): Date {
     return Date.from(this.atStartOfDay()
-            .atZone(ZoneId.of("ECT"))
+            .atZone(ZoneId.systemDefault())
             .toInstant());
 }
 
 
 fun Date.toLocalDate(): LocalDate {
     return this.toInstant()
-            .atZone(ZoneId.of("ECT"))
+            .atZone(ZoneId.systemDefault())
             .toLocalDate();
 }

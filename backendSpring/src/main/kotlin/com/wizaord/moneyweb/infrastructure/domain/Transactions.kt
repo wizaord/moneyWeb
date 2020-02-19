@@ -52,7 +52,7 @@ class Debit(id: String) : Transaction(id) {
     }
 
     override fun toDomain(): com.wizaord.moneyweb.domain.transactions.Debit {
-        return com.wizaord.moneyweb.domain.transactions.Debit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id)
+        return com.wizaord.moneyweb.domain.transactions.Debit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id, dateCreation!!)
     }
 }
 class Credit(id: String) : Transaction(id) {
@@ -65,7 +65,7 @@ class Credit(id: String) : Transaction(id) {
     }
 
     override fun toDomain(): com.wizaord.moneyweb.domain.transactions.Credit {
-        return Credit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id)
+        return Credit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id, dateCreation!!)
     }
 }
 

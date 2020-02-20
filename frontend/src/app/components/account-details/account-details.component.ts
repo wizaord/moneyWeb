@@ -13,6 +13,7 @@ export class AccountDetailsComponent implements OnInit {
   private currentMonth: Date = new Date();
   private accountTransactions: Transaction[] = [];
   private accountTransactionsBehavior = new BehaviorSubject<Transaction[]>([]);
+  public loading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,9 +25,13 @@ export class AccountDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.accountNameTitle = params.get('accountName');
       this.transactionsService.getTransactions(this.accountNameTitle).subscribe(
-        transactions => transactions.forEach(transaction => this.accountTransactions.push(transaction))
+        transactions => {
+          transactions.forEach(transaction => this.accountTransactions.push(transaction));
+          this.calculateCurrentMonth();
+          this.refreshBehaviorDatas();
+          this.loading = false;
+        }
       );
-      this.refreshBehaviorDatas();
     });
   }
 
@@ -54,13 +59,20 @@ export class AccountDetailsComponent implements OnInit {
     this.accountTransactionsBehavior.next(transactionForMonth);
   }
 
-  getSoldeInit(): number {
+  getSoldeInit() {
     const beginDateTime = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1).getTime();
-    const transactionsFiltered = this.accountTransactions.filter(transaction => {
+    return this.accountTransactions.filter(transaction => {
       const dateTransaction = new Date(transaction.dateCreation).getTime();
       return dateTransaction < beginDateTime;
     }).map(transaction => transaction.amount)
       .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+  }
+
+  private calculateCurrentMonth() {
+    if (this.accountTransactions.length !== 0) {
+      const mostRecentDate = this.accountTransactions[this.accountTransactions.length - 1].dateCreation;
+      this.currentMonth = new Date(mostRecentDate);
+    }
   }
 }
 

@@ -30,6 +30,7 @@ import { AccountDetailsComponent} from './components/account-details/account-det
 import { TransactionsShowComponent } from './components/account-details/transactions-show/transactions-show.component';
 import { TransactionShowComponent } from './components/account-details/transactions-show/transaction-show/transaction-show.component';
 import { DateNextMonthExtractPipe, DatePreviousMonthExtractPipe } from './pipes/date-month-extract.pipe';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { DateNextMonthExtractPipe, DatePreviousMonthExtractPipe } from './pipes/
     AngularFontAwesomeModule,
     HttpClientModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

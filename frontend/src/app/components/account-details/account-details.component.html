@@ -1,5 +1,8 @@
 <div class="container-fluid">
-  <div class="card">
+  <div class="spinner-container" *ngIf="this.loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="!this.loading" class="card">
     <div class="card-body">
       <div class="row">
         <div class="col-2 text-center">

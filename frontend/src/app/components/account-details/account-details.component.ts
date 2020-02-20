@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { TransactionsService } from '../../services/transactions.service';
 
 @Component({
   selector: 'app-account-details',
@@ -9,34 +11,49 @@ import { ActivatedRoute } from '@angular/router';
 export class AccountDetailsComponent implements OnInit {
   private accountNameTitle: string;
   private currentMonth: Date = new Date();
+  private accountTransactions: Transaction[] = [];
+  private accountTransactionsBehavior = new BehaviorSubject<Transaction[]>([]);
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private transactionsService: TransactionsService
   ) {
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.accountNameTitle = params.get('accountName');
+      this.transactionsService.getTransactions(this.accountNameTitle).subscribe(
+        transactions => transactions.forEach(transaction => this.accountTransactions.push(transaction))
+      );
+      this.refreshBehaviorDatas();
     });
-  }
-
-  getBeginMonthDate(): Date {
-    return new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1);
-  }
-
-  getEndMonthDate(): Date {
-    return new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1);
   }
 
   goPreviousMonth() {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, this.currentMonth.getDate(),
-                                this.currentMonth.getHours(), this.currentMonth.getMinutes(), this.currentMonth.getSeconds());
+      this.currentMonth.getHours(), this.currentMonth.getMinutes(), this.currentMonth.getSeconds());
+    this.refreshBehaviorDatas();
   }
 
   goNextMonth() {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, this.currentMonth.getDate(),
-                                this.currentMonth.getHours(), this.currentMonth.getMinutes(), this.currentMonth.getSeconds());
+      this.currentMonth.getHours(), this.currentMonth.getMinutes(), this.currentMonth.getSeconds());
+    this.refreshBehaviorDatas();
+  }
+
+  get currentMonthTransactions$(): Observable<Transaction[]> {
+    return this.accountTransactionsBehavior.asObservable();
+  }
+
+  private refreshBehaviorDatas() {
+    const beginDateTime = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1).getTime();
+    const endDateTime = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1).getTime();
+    const transactionForMonth = this.accountTransactions.filter(transaction => {
+      const dateTransaction = new Date(transaction.dateCreation).getTime();
+      return dateTransaction > beginDateTime && dateTransaction < endDateTime;
+    });
+    this.accountTransactionsBehavior.next(transactionForMonth);
   }
 }
 

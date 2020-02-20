@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>Upload file</h1>
+
+  <form>
+    <mat-form-field>
+      <mat-label>Please select the account</mat-label>
+      <mat-select [(ngModel)]="accountSelected" name="ownersSelected">
+        <mat-option *ngFor="let account of openedAccounts$ | async" [value]="account.accountName">
+          {{account.accountName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="form-group">
+      <label for="file">Please select file to upload</label>
+      <input type="file" class="form-control-file" id="file" (change)="handleFileInput($event.target.files)">
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="uploadFile()">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Submit</button>
+  </form>
+</div>

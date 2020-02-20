@@ -3,8 +3,6 @@ import { Observable, throwError } from 'rxjs';
 import { UserAccountDetails } from '../domain/user/UserAccountDetails';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { AccountOwner } from '../domain/user/AccountOwner';
-import { AuthenticationService } from './authentification/authentication.service';
 
 @Injectable({
   providedIn: 'root'

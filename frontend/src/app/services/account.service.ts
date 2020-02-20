@@ -14,8 +14,7 @@ export class AccountService {
   API_URL = `${environment.apiUrl}/family`;
 
   constructor(private http: HttpClient,
-              private authenticationService: AuthenticationService,
-              private transactionsService: TransactionsService) {
+              private authenticationService: AuthenticationService) {
   }
 
   createAccount(name: string, bank: string, openDate: string, ownersSelected: string[]): Observable<Account> {

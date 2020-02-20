@@ -31,14 +31,12 @@ export class AccountDetailsComponent implements OnInit {
   }
 
   goPreviousMonth() {
-    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, this.currentMonth.getDate(),
-      this.currentMonth.getHours(), this.currentMonth.getMinutes(), this.currentMonth.getSeconds());
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, this.currentMonth.getDate());
     this.refreshBehaviorDatas();
   }
 
   goNextMonth() {
-    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, this.currentMonth.getDate(),
-      this.currentMonth.getHours(), this.currentMonth.getMinutes(), this.currentMonth.getSeconds());
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, this.currentMonth.getDate());
     this.refreshBehaviorDatas();
   }
 
@@ -58,11 +56,11 @@ export class AccountDetailsComponent implements OnInit {
 
   getSoldeInit(): number {
     const beginDateTime = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1).getTime();
-    return this.accountTransactions.filter(transaction => {
+    const transactionsFiltered = this.accountTransactions.filter(transaction => {
       const dateTransaction = new Date(transaction.dateCreation).getTime();
       return dateTransaction < beginDateTime;
     }).map(transaction => transaction.amount)
-      .reduce((previousValue, currentValue) => previousValue + currentValue);
+      .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
   }
 }
 

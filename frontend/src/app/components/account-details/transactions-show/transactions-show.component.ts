@@ -1,5 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { TransactionsService } from '../../../services/transactions.service';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -7,17 +6,21 @@ import { Observable } from 'rxjs';
   templateUrl: './transactions-show.component.html',
   styleUrls: ['./transactions-show.component.css']
 })
-export class TransactionsShowComponent implements OnInit{
+export class TransactionsShowComponent implements OnInit {
 
   @Input() transactions$: Observable<Transaction[]>;
+  @Input() soldeInit: number;
 
   private loading = false;
 
-  constructor(
-  ) {
+  constructor() {
   }
 
   ngOnInit() {
   }
 
+  getSolde(amount: number): number {
+    this.soldeInit = this.soldeInit + amount;
+    return this.soldeInit;
+  }
 }

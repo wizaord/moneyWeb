@@ -55,5 +55,14 @@ export class AccountDetailsComponent implements OnInit {
     });
     this.accountTransactionsBehavior.next(transactionForMonth);
   }
+
+  getSoldeInit(): number {
+    const beginDateTime = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1).getTime();
+    return this.accountTransactions.filter(transaction => {
+      const dateTransaction = new Date(transaction.dateCreation).getTime();
+      return dateTransaction < beginDateTime;
+    }).map(transaction => transaction.amount)
+      .reduce((previousValue, currentValue) => previousValue + currentValue);
+  }
 }
 

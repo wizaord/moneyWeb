@@ -12,7 +12,7 @@
           <button type="button" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}}</button>
         </div>
       </div>
-      <app-transactions-show [transactions$]="this.currentMonthTransactions$"></app-transactions-show>
+      <app-transactions-show [transactions$]="this.currentMonthTransactions$" [soldeInit]="getSoldeInit()"></app-transactions-show>
     </div>
   </div>
 </div>

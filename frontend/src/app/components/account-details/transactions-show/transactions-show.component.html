@@ -20,7 +20,7 @@
       <td>{{transaction.bankDetail}}</td>
       <td>{{transaction.dateCreation | date}}</td>
       <td>{{transaction.amount}}</td>
-      <td>0</td>
+      <td>{{getSolde(transaction.amount) | number}}</td>
     </tr>
     </tbody>
   </table>

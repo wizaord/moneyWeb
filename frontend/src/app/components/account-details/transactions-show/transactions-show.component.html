@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <table class="table table-striped">
+  <table class="table table-striped table-hover table-sm">
     <thead>
     <tr>
       <th scope="col">#</th>
@@ -12,7 +12,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let transaction of transactions$ | async; index as i">
+    <tr [class.table-warning]="!transaction.isPointe" *ngFor="let transaction of transactions$ | async; index as i">
       <th scope="row">{{ i + 1 }}</th>
       <td>{{transaction.userLibelle}}</td>
       <td>{{transaction.bankLibelle}}</td>

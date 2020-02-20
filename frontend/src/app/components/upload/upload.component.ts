@@ -14,7 +14,7 @@ export class UploadComponent implements OnInit {
   fileToUpload: File = null;
   private loading: boolean;
   private openedAccounts$: Observable<Account[]>;
-  accountSelected: Account;
+  accountSelected: string;
 
   constructor(
     private fileUploadService: FileUploadService,
@@ -33,7 +33,8 @@ export class UploadComponent implements OnInit {
 
   uploadFile() {
     this.loading = true;
-    this.fileUploadService.uploadFile(this.accountSelected.accountName, this.fileToUpload).subscribe(
+    console.log('account selected ' + this.accountSelected);
+    this.fileUploadService.uploadFile(this.accountSelected, this.fileToUpload).subscribe(
       result => {
         this.loading = false;
       }

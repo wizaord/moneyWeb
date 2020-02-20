@@ -98,6 +98,7 @@ class FamilyBankAccountsService(val familyName: String,
     }
 
     fun transactionRegister(accountId: String, transaction: Transaction) {
+        logger.info("Registering a new transaction for account : $accountId")
         this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount?.addTransaction(transaction)
     }
 

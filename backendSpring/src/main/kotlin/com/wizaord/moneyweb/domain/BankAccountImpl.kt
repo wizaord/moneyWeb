@@ -39,7 +39,7 @@ data class BankAccountImpl(
     }
 
     override fun addTransaction(transaction: Transaction) {
-        log.info("Added transaction to account {}", this.accountName)
+        log.debug("Added transaction to account {}", this.accountName)
         this.transactions.add(transaction)
         this.solde += transaction.amount
         infrastructureBankAccountNotifications?.notifyNewTransaction(this.accountId, transaction)

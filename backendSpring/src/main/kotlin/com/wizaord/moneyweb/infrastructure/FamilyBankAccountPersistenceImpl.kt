@@ -7,6 +7,7 @@ import com.wizaord.moneyweb.domain.transactions.Transaction
 import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccount
 import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccountsRepository
 import com.wizaord.moneyweb.infrastructure.domain.TransactionsRepository
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,6 +18,8 @@ class FamilyBankAccountPersistenceImpl(
         @Autowired val familyBankAccountsRepository: FamilyBankAccountsRepository,
         @Autowired val transactionsRepository: TransactionsRepository
 ) : FamilyBankAccountPersistence {
+
+    private val logger = LoggerFactory.getLogger(FamilyBankAccountPersistenceImpl::class.java)
 
     override fun loadFamilyBankAccountByFamilyName(familyName: String): FamilyBankAccountsImpl? {
         val familyFromRepository = familyBankAccountsRepository.findById(familyName).map { it -> it.toDomain() }
@@ -47,6 +50,7 @@ class FamilyBankAccountPersistenceImpl(
             is Debit -> tr = com.wizaord.moneyweb.infrastructure.domain.Debit.fromDomain(transaction)
         }
         tr.accountInternalId = accountInternalId
+        logger.info("Persist new transaction with ID ${tr.id}")
         this.transactionsRepository.save(tr)
     }
 

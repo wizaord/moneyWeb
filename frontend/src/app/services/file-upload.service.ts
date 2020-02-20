@@ -20,7 +20,7 @@ export class FileUploadService {
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${accountName}/upload`;
 
     const formData: FormData = new FormData();
-    formData.append('fileKey', fileToUpload, fileToUpload.name);
+    formData.append('file', fileToUpload, fileToUpload.name);
     return this.http
       .post(apiUrl, formData)
       .pipe(

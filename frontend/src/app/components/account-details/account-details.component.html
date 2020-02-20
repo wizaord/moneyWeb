@@ -6,13 +6,13 @@
     <div class="card-body">
       <div class="row">
         <div class="col-2 text-center">
-          <button type="button" (click)="goPreviousMonth()">{{currentMonth | datePreviousMonthExtract}}</button>
+          <button type="button" class="btn btn-info" (click)="goPreviousMonth()"><< {{currentMonth | datePreviousMonthExtract}}</button>
         </div>
         <div class="col-8 text-center">
           <h5 class="card-title">Transaction pour le compte {{accountNameTitle}}</h5>
         </div>
         <div class="col-2 text-center">
-          <button type="button" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}}</button>
+          <button type="button" class="btn btn-info" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}} >></button>
         </div>
       </div>
       <app-transactions-show [transactions$]="this.currentMonthTransactions$" [soldeInit]="getSoldeInit()"></app-transactions-show>

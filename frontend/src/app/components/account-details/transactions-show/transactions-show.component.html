@@ -12,7 +12,6 @@
     </tr>
     </thead>
     <tbody>
-    <span *ngIf="loading" class="spinner-border spinner-border-lg"></span>
     <tr *ngFor="let transaction of transactions$ | async; index as i">
       <th scope="row">{{ i + 1 }}</th>
       <td>{{transaction.userLibelle}}</td>

@@ -19,7 +19,7 @@ internal class FileParserQifTest {
     internal fun `parseFile - check that file are successfully parsed`() {
         // given
         val inputStream = this.javaClass.classLoader.getResourceAsStream("uploadFile/qif/00040745001 (7).qif")
-        val libelleBank = "PCARTE 18/01/20 38 ALINEA 04      CB*9972"
+        val libelleBank = "CARTE 18/01/20 38 ALINEA 04      CB*9972"
         val dateCreation = LocalDate.of(2020, 1, 20)
         // when
         val transactions = fileParserQif.parseFile(inputStream!!)

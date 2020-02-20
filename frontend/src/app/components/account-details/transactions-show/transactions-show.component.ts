@@ -20,8 +20,7 @@ export class TransactionsShowComponent implements OnInit, OnChanges {
   }
 
   getSolde(amount: number): number {
-    this.currentSolde = this.currentSolde + amount;
-    return this.currentSolde;
+    return this.currentSolde += amount;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -66,7 +66,7 @@ data class Ventilation(var amount: Double,
 
     companion object {
         fun fromDomain(v: com.wizaord.moneyweb.domain.transactions.ventilations.Ventilation): Ventilation {
-            return Ventilation(v.amount, v.category?.id)
+            return Ventilation(v.amount, v.categoryId)
         }
     }
 

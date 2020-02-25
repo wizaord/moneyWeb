@@ -13,7 +13,7 @@ internal class CreditVentilationTest {
         val ventilation = CreditVentilation(10.0)
 
         // then
-        assertThat(ventilation.category).isNull()
+        assertThat(ventilation.categoryId).isNull()
 
     }
 
@@ -24,9 +24,9 @@ internal class CreditVentilationTest {
         val category = Category("plop")
 
         // when
-        ventilation.category = category
+        ventilation.categoryId = category.id
 
         // then
-        assertThat(ventilation.category).isEqualTo(category)
+        assertThat(ventilation.categoryId).isEqualTo(category.id)
     }
 }

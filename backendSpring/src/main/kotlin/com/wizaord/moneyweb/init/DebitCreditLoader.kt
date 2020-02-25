@@ -83,7 +83,7 @@ class DebitCreditLoader(
             // il s'agit d'un virement interne
             categorieId = "1"
         }
-        ventilation.category = findCategoryById(categorieId)
+        ventilation.categoryId = findCategoryById(categorieId).id
         return ventilation
     }
 

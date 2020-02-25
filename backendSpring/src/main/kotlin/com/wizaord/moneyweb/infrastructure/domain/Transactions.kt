@@ -83,7 +83,7 @@ abstract class Ventilation(
             true -> com.wizaord.moneyweb.domain.transactions.ventilations.CreditVentilation(amount)
             false -> com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation(amount)
         }
-        categoryId?.let { ventilation.category = Category("", categoryId)}
+        ventilation.categoryId = categoryId
         return ventilation
     }
 }
@@ -91,12 +91,12 @@ abstract class Ventilation(
 class DebitVentilation(amount: Double, categoryId: String?) : Ventilation(amount, categoryId) {
     companion object {
         fun fromDomain(ventilation: DebitVentilation) =
-                com.wizaord.moneyweb.infrastructure.domain.DebitVentilation(ventilation.amount, ventilation.category?.id)
+                com.wizaord.moneyweb.infrastructure.domain.DebitVentilation(ventilation.amount, ventilation.categoryId)
     }
 }
 class CreditVentilation(amount: Double, categoryId: String?) : Ventilation(amount, categoryId) {
     companion object {
         fun fromDomain(ventilation: CreditVentilation) =
-                com.wizaord.moneyweb.infrastructure.domain.CreditVentilation(ventilation.amount, ventilation.category?.id)
+                com.wizaord.moneyweb.infrastructure.domain.CreditVentilation(ventilation.amount, ventilation.categoryId)
     }
 }

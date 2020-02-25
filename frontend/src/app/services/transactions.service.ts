@@ -3,6 +3,8 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentification/authentication.service';
 import { Observable } from 'rxjs';
+import { Transaction } from '../domain/account/Transaction';
+import { flatMap, map, toArray } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,19 @@ export class TransactionsService {
   getTransactions(accountName: string): Observable<Transaction[]> {
     const familyName = this.authenticationService.currentUserValue.username;
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${accountName}/transactions`;
-    return this.http.get<Transaction[]>(apiUrl);
+    return this.http.get<Transaction[]>(apiUrl).pipe(
+      flatMap(transactions => transactions),
+      map(transaction => {
+        transaction.accountName = accountName;
+        return transaction;
+      }),
+      toArray()
+    );
+  }
+
+  updateTransaction(transaction: Transaction) {
+    const familyName = this.authenticationService.currentUserValue.username;
+    const apiUrl = `${this.API_URL}/${familyName}/accounts/${transaction.accountName}/transactions/${transaction.id}`;
+    return this.http.patch(apiUrl, transaction);
   }
 }

@@ -1,5 +1,6 @@
 package com.wizaord.moneyweb.infrastructure
 
+import com.wizaord.moneyweb.domain.categories.Category
 import com.wizaord.moneyweb.domain.categories.CategoryFamily
 import com.wizaord.moneyweb.infrastructure.domain.CategoryFamilyRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +19,11 @@ class CategoryFamilyPersistenceImpl(
 
     override fun getAll(): List<CategoryFamily> {
         return categoryFamilyRepository.findAll().map { it.toDomain() }
+    }
+
+    override fun getById(categoryId: String): Category {
+        return getAll().mapNotNull { categoryFamily -> categoryFamily.findById(categoryId) }
+                .first()
     }
 
 }

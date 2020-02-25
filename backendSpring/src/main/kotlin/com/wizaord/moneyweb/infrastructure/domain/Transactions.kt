@@ -1,5 +1,6 @@
 package com.wizaord.moneyweb.infrastructure.domain
 
+import com.wizaord.moneyweb.domain.categories.Category
 import com.wizaord.moneyweb.domain.transactions.Credit
 import com.wizaord.moneyweb.domain.transactions.ventilations.CreditVentilation
 import com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation
@@ -52,7 +53,9 @@ class Debit(id: String) : Transaction(id) {
     }
 
     override fun toDomain(): com.wizaord.moneyweb.domain.transactions.Debit {
-        return com.wizaord.moneyweb.domain.transactions.Debit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id, dateCreation!!)
+        val debit = com.wizaord.moneyweb.domain.transactions.Debit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id, dateCreation!!)
+        ventilations.forEach { debit.addVentilation(it.toDomain()) }
+        return debit
     }
 }
 class Credit(id: String) : Transaction(id) {
@@ -65,14 +68,25 @@ class Credit(id: String) : Transaction(id) {
     }
 
     override fun toDomain(): com.wizaord.moneyweb.domain.transactions.Credit {
-        return Credit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id, dateCreation!!)
+        val credit = Credit(userLibelle!!, bankLibelle!!, bankDetail, amount!!, isPointe!!, id, dateCreation!!)
+        ventilations.forEach { credit.addVentilation(it.toDomain()) }
+        return credit
     }
 }
 
 abstract class Ventilation(
         val amount: Double,
         val categoryId: String?
-)
+) {
+    fun toDomain(): com.wizaord.moneyweb.domain.transactions.ventilations.Ventilation {
+        val ventilation =  when (amount >= 0) {
+            true -> com.wizaord.moneyweb.domain.transactions.ventilations.CreditVentilation(amount)
+            false -> com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation(amount)
+        }
+        categoryId?.let { ventilation.category = Category("", categoryId)}
+        return ventilation
+    }
+}
 
 class DebitVentilation(amount: Double, categoryId: String?) : Ventilation(amount, categoryId) {
     companion object {

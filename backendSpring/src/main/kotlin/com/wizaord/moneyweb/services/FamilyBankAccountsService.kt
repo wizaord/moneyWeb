@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 import java.time.LocalDate
-import java.util.*
 
 @Component
 @Scope("prototype")
@@ -106,11 +105,17 @@ class FamilyBankAccountsService(val familyName: String,
         return this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.getTransactions()?: emptyList()
     }
 
+    fun transactionUpdate(accountName: String, transactionId: String, transaction: Transaction) {
+        if (transactionId != transaction.id) return
+        if (! transaction.isValid()) return
+        this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateTransaction(transaction)
+    }
     fun accountUpdateName(accountName: String, newAccountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateName(newAccountName)
     fun accountUpdateBankName(accountName: String, newBankName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankName(newBankName)
     fun accountUpdateDateCreation(accountName: String, newAccountDate: LocalDate)  = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankAccountDateCreate(newAccountDate)
     fun accountUpdateOwners(accountName: String, newOwners: List<FamilyMember>)= this.familyBankAccounts.changeBankAccountOwners(accountName, newOwners)
     fun bankAccount(accountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)
+
 
 
 }

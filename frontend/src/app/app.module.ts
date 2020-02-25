@@ -26,11 +26,14 @@ import { FamilyCreateComponent } from './components/family/family-create/family-
 import { UploadComponent } from './components/upload/upload.component';
 import { StatistiquesComponent } from './components/statistiques/statistiques.component';
 import { AccountModifyComponent } from './components/account/manage/account-modify/account-modify.component';
-import { AccountDetailsComponent} from './components/account-details/account-details.component';
+import { AccountDetailsComponent } from './components/account-details/account-details.component';
 import { TransactionsShowComponent } from './components/account-details/transactions-show/transactions-show.component';
 import { TransactionShowComponent } from './components/account-details/transactions-show/transaction-show/transaction-show.component';
 import { DateNextMonthExtractPipe, DatePreviousMonthExtractPipe } from './pipes/date-month-extract.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -67,11 +70,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule,
+  ],
+  entryComponents: [
+    TransactionShowComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
 
     // provider used to create fake backend
     // fakeBackendProvider

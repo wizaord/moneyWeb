@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Transaction } from '../../../../domain/account/Transaction';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-transaction-show',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TransactionShowComponent implements OnInit {
 
-  constructor() { }
+  @Input() transaction: Transaction;
+
+  constructor(public activeModal: NgbActiveModal) {
+  }
 
   ngOnInit() {
   }

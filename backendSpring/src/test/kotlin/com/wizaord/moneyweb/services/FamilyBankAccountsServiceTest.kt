@@ -1,15 +1,16 @@
 package com.wizaord.moneyweb.services
 
 import com.nhaarman.mockitokotlin2.*
+import com.wizaord.moneyweb.controllers.Account
 import com.wizaord.moneyweb.domain.BankAccountImpl
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 import com.wizaord.moneyweb.domain.FamilyMember
 import com.wizaord.moneyweb.domain.InfrastructureBankAccountFamilyNotifications
-import com.wizaord.moneyweb.domain.exceptions.OwnerNotKnowException
+import com.wizaord.moneyweb.domain.transactions.Debit
+import com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation
 import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.within
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
@@ -82,7 +83,58 @@ internal class FamilyBankAccountsServiceTest {
         val bankAccount = familyBankAccountsPersisted.bankAccountsOwners[0].bankAccount as BankAccountImpl
         assertThat(bankAccount.accountName).isEqualTo("name")
         assertThat(bankAccount.bankDefinition).isEqualTo("bank")
-        assertThat(bankAccount.dateCreation).isCloseTo(LocalDate.now(), within(1, ChronoUnit.DAYS) )
+        assertThat(bankAccount.dateCreation).isCloseTo(LocalDate.now(), within(1, ChronoUnit.DAYS))
+    }
+
+    @Test
+    internal fun `transactionUpdate - if transactionId is not the same as transaction then do nothing`() {
+        // given
+        val familyBank = FamilyBankAccountsImpl("family")
+        given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+        val familyBankAccountsService = FamilyBankAccountsService("family", false, familyBankAccountPersistence)
+        val debit = Debit("libelle", "bank", null, 10.0)
+
+        // when
+        familyBankAccountsService.transactionUpdate("accountName", "id", debit)
+
+        // then
+        verifyZeroInteractions(familyBankAccountPersistence)
+    }
+
+
+    @Test
+    internal fun `transactionUpdate - if transaction is not valid, then return an exception`() {
+// given
+        val familyBank = FamilyBankAccountsImpl("family")
+        given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+        val familyBankAccountsService = FamilyBankAccountsService("family", false, familyBankAccountPersistence)
+        val debit = Debit("libelle", "bank", null, 10.0)
+
+        // when
+        familyBankAccountsService.transactionUpdate("accountName", debit.id, debit)
+
+        // then
+        verifyZeroInteractions(familyBankAccountPersistence)
+    }
+
+    @Test
+    internal fun `transactionUpdate - when valid call replaceTransaction from domain`() {
+        // given
+        val familyBank = FamilyBankAccountsImpl("family")
+        familyBank.registerFamilyMember(FamilyMember("Me"))
+        familyBank.registerAccount(BankAccountImpl("accountName", "bank"))
+        given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+        val familyBankAccountsService = FamilyBankAccountsService("family", false, familyBankAccountPersistence)
+        val debit = Debit("libelle", "bank", null, 10.0)
+        debit.addVentilation(DebitVentilation(10.0))
+        familyBank.accessToAccountByAccountName("accountName")?.bankAccount?.addTransaction(debit)
+
+        // when
+        familyBankAccountsService.transactionUpdate("accountName", debit.id, debit)
+
+        // then
+        verify(familyBankAccountPersistence).transactionRemove(anyOrNull())
+        verify(familyBankAccountPersistence, times(2)).transactionCreate(anyOrNull(), anyOrNull())
     }
 
 }

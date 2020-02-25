@@ -1,1 +1,29 @@
-<p>transaction-show works!</p>
+<div class="modal-header">
+  <h4 class="modal-title">{{transaction.userLibelle}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <label for="addon-libelle"><h4>Libelle : </h4></label>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control"
+           placeholder="Transaction description" aria-label="Transaction description" aria-describedby="addon-libelle"
+           required
+           [(ngModel)]="transaction.userLibelle" name=userLibelle #accountNameRef="ngModel">
+    <div class="input-group-append">
+      <span class="input-group-text" id="addon-libelle" (click)="transaction.userLibelle = ''">&times;</span>
+    </div>
+  </div>
+
+  <!--  <div class="input-group mb-3">-->
+  <!--    <div class="input-group-prepend">-->
+  <!--      <span class="input-group-text" id="basic-addon1">@</span>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <p>Hello, {{transaction.userLibelle}}!</p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" ngbAutofocus (click)="activeModal.close(transaction)">Update
+  </button>
+</div>

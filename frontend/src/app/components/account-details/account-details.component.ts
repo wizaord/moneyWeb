@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { TransactionsService } from '../../services/transactions.service';
+import { Transaction } from '../../domain/account/Transaction';
 
 @Component({
   selector: 'app-account-details',

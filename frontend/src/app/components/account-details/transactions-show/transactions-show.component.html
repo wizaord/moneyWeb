@@ -12,7 +12,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr [class.table-warning]="!transaction.isPointe" *ngFor="let transaction of transactions$ | async; index as i">
+    <tr [class.table-warning]="!transaction.isPointe"  (dblclick)="openTransactionEditDialog(transaction)"
+        *ngFor="let transaction of transactions$ | async; index as i">
       <th scope="row">{{ i + 1 }}</th>
       <td>{{transaction.userLibelle}}</td>
       <td>{{transaction.bankLibelle}}</td>

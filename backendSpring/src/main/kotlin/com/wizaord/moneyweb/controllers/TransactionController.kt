@@ -5,6 +5,8 @@ import com.wizaord.moneyweb.configuration.toLocalDate
 import com.wizaord.moneyweb.domain.transactions.Credit
 import com.wizaord.moneyweb.domain.transactions.Debit
 import com.wizaord.moneyweb.domain.transactions.Transaction
+import com.wizaord.moneyweb.domain.transactions.ventilations.CreditVentilation
+import com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation
 import com.wizaord.moneyweb.services.FamilyBankAccountServiceFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -47,10 +49,12 @@ data class Transaction(var id: String,
                        ) {
 
     fun toDomain(): Transaction {
-        return when (amount > 0) {
+        val transaction =  when (amount > 0) {
             true -> Credit(userLibelle, bankLibelle, bankDetail, amount, isPointe, id, dateCreation.toLocalDate())
             false -> Debit(userLibelle, bankLibelle, bankDetail, amount, isPointe, id, dateCreation.toLocalDate())
         }
+        this.ventilations.map { transaction.addVentilation(it.toDomain()) }.toMutableList()
+        return transaction
     }
 
     companion object {
@@ -63,6 +67,12 @@ data class Transaction(var id: String,
 
 data class Ventilation(var amount: Double,
                        var categoryId: String?) {
+    fun toDomain(): com.wizaord.moneyweb.domain.transactions.ventilations.Ventilation {
+        return when (amount >= 0) {
+            true -> CreditVentilation(amount, categoryId)
+            false -> DebitVentilation(amount, categoryId)
+        }
+    }
 
     companion object {
         fun fromDomain(v: com.wizaord.moneyweb.domain.transactions.ventilations.Ventilation): Ventilation {

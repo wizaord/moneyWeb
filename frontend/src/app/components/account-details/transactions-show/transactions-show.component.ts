@@ -35,13 +35,15 @@ export class TransactionsShowComponent implements OnInit, OnChanges {
   openTransactionEditDialog(transaction: Transaction) {
     const modalRef = this.modalService.open(TransactionShowComponent,
       {backdropClass: 'light-blue-backdrop', size: 'xl'});
-    modalRef.componentInstance.transaction = transaction;
+    modalRef.componentInstance.transaction = Object.assign({}, transaction);
 
     from(modalRef.result)
       .subscribe(transactionResult => {
-        this.transactionsService.updateTransaction(transactionResult).subscribe(
-          result => console.log('Transaction updated')
-        );
+        if (transactionResult != null) {
+          Object.assign(transaction, transactionResult);
+          this.transactionsService.updateTransaction(transactionResult).subscribe(
+            result => console.log('Transaction updated'));
+        }
       });
   }
 }

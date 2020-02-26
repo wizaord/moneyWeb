@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">{{transaction.userLibelle}}</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.close(null)">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -24,6 +24,6 @@
   <p>Hello, {{transaction.userLibelle}}!</p>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" ngbAutofocus (click)="activeModal.close(transaction)">Update
+  <button type="button" class="btn btn-outline-dark" ngbAutofocus (click)="updateTransaction()">Update
   </button>
 </div>

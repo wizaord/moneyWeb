@@ -17,4 +17,8 @@ export class TransactionShowComponent implements OnInit {
   ngOnInit() {
   }
 
+  updateTransaction() {
+    console.log('Transaction to update ' + JSON.stringify(this.transaction));
+    this.activeModal.close(this.transaction);
+  }
 }

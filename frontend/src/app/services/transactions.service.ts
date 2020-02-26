@@ -30,6 +30,7 @@ export class TransactionsService {
   }
 
   updateTransaction(transaction: Transaction) {
+    console.log('Update transaction => ' + JSON.stringify(transaction));
     const familyName = this.authenticationService.currentUserValue.username;
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${transaction.accountName}/transactions/${transaction.id}`;
     return this.http.patch(apiUrl, transaction);

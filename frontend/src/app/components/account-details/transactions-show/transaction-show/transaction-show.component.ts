@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Transaction } from '../../../../domain/account/Transaction';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Ventilation } from '../../../../domain/account/Ventilation';
 
 @Component({
   selector: 'app-transaction-show',
@@ -10,15 +11,30 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class TransactionShowComponent implements OnInit {
 
   @Input() transaction: Transaction;
+  private accountDate: NgbDateStruct;
 
-  constructor(public activeModal: NgbActiveModal) {
+  constructor(
+    private ngbDateParserFormatter: NgbDateParserFormatter,
+    public activeModal: NgbActiveModal) {
   }
 
   ngOnInit() {
+    console.log(JSON.stringify(this.transaction));
+    this.accountDate = this.ngbDateParserFormatter.parse(this.transaction.dateCreation.toISOString());
   }
 
   updateTransaction() {
-    console.log('Transaction to update ' + JSON.stringify(this.transaction));
+    this.transaction.dateCreation = new Date(this.ngbDateParserFormatter.format(this.accountDate));
     this.activeModal.close(this.transaction);
+  }
+
+  removeVentilation(ventilation: Ventilation) {
+    this.transaction.ventilations.splice(
+      this.transaction.ventilations.findIndex(v => ventilation === v), 1
+    );
+  }
+
+  addNewVentilation() {
+    this.transaction.ventilations.push(new Ventilation(0, '1'));
   }
 }

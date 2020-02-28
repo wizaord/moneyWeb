@@ -22,6 +22,7 @@ export class TransactionsShowComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    // FIXME: Voir pk le amout quand il est affiché remonte beaucoup d'erreur
   }
 
   getSolde(amount: number): number {
@@ -34,7 +35,7 @@ export class TransactionsShowComponent implements OnInit, OnChanges {
 
   openTransactionEditDialog(transaction: Transaction) {
     const modalRef = this.modalService.open(TransactionShowComponent,
-      {backdropClass: 'light-blue-backdrop', size: 'xl'});
+      {backdropClass: 'light-blue-backdrop', size: 'lg'});
     modalRef.componentInstance.transaction = Object.assign({}, transaction);
 
     from(modalRef.result)
@@ -42,7 +43,9 @@ export class TransactionsShowComponent implements OnInit, OnChanges {
         if (transactionResult != null) {
           Object.assign(transaction, transactionResult);
           this.transactionsService.updateTransaction(transactionResult).subscribe(
-            result => console.log('Transaction updated'));
+            result => {
+              console.log('Transaction updated');
+            });
         }
       });
   }

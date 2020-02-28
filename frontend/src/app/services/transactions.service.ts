@@ -21,6 +21,7 @@ export class TransactionsService {
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${accountName}/transactions`;
     return this.http.get<Transaction[]>(apiUrl).pipe(
       flatMap(transactions => transactions),
+      map(transaction => new Transaction(transaction)),
       map(transaction => {
         transaction.accountName = accountName;
         return transaction;

@@ -15,13 +15,63 @@
       <span class="input-group-text" id="addon-libelle" (click)="transaction.userLibelle = ''">&times;</span>
     </div>
   </div>
-
-  <!--  <div class="input-group mb-3">-->
-  <!--    <div class="input-group-prepend">-->
-  <!--      <span class="input-group-text" id="basic-addon1">@</span>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <p>Hello, {{transaction.userLibelle}}!</p>
+  <label for="addon-info"><h4>Info : </h4></label>
+  <div class="row" id="addon-info">
+    <div class="input-group col-4">
+        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="accountDate" ngbDatepicker #datebankNameRef="ngModel" #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+        </div>
+    </div>
+    <div class="input-group col-4">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-euro"></i></span>
+      </div>
+      <input type="text" class="form-control"
+             placeholder="Amount" aria-label="Amount"
+             required
+             [(ngModel)]="transaction.amount" name=amount #accountNameRef="ngModel">
+    </div>
+    <div class="form-check col-4">
+      <input type="checkbox" class="form-check-input"
+             required
+             [(ngModel)]="transaction.isPointe" id="checkIsPointe" name=isPointe #accountNameRef="ngModel">
+      <label class="form-check-label" for="checkIsPointe">Checked ?</label>
+    </div>
+  </div>
+    <div class="card mt-4 col-12">
+      <h4 class="card-header">Ventilations
+        <button class="float-md-right" (click)="addNewVentilation()"><i class="fa fa-plus"></i></button>
+      </h4>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">Category</div>
+          <div class="col-6">Montant</div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let ventilation of transaction.ventilations">
+            <div class="row">
+              <div class="input-group col-4">
+                <input type="text" class="form-control"
+                       required
+                       [(ngModel)]="ventilation.categoryId" name=category #accountNameRef="ngModel">
+              </div>
+              <div class="input-group col-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-euro"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Amount" aria-label="Amount"
+                       required
+                       [(ngModel)]="ventilation.amount" name=amount #accountNameRef="ngModel">
+              </div>
+              <div class="input-group col-2">
+                <button class="float-md-right" (click)="removeVentilation(ventilation)"><i class="fa fa-trash"></i></button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" ngbAutofocus (click)="updateTransaction()">Update

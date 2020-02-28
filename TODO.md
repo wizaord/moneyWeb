@@ -1,5 +1,6 @@
 # En cours
-
+FIXME : le amount qui remonte plein d'erreur
+FIXME : les dates dans mongo / backend / frontend ne concorde pas du tout
 # Next
 En tant que User, je peux editer une transaction 
     -> la pointer

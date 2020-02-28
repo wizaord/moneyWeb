@@ -1,14 +1,8 @@
-export class Ventilation {
-  amount: number;
-  categoryId: string;
+import { Ventilation } from './Ventilation';
 
-  constructor(amount: number, categoryId: string) {
-    this.amount = amount;
-    this.categoryId = categoryId;
-  }
-}
 
 export class Transaction {
+
   id: string;
   amount: number;
   userLibelle: string;
@@ -19,17 +13,15 @@ export class Transaction {
   accountName: string;
   ventilations: Ventilation[];
 
-  constructor(id: string, amount: number, userLibelle: string, bankLibelle: string,
-              bankDetail: string, isPointe: boolean, dateCreation: Date, accountName: string,
-              ventilations: Ventilation[]) {
-    this.id = id;
-    this.amount = amount;
-    this.userLibelle = userLibelle;
-    this.bankLibelle = bankLibelle;
-    this.bankDetail = bankDetail;
-    this.isPointe = isPointe;
-    this.dateCreation = dateCreation;
-    this.accountName = accountName;
-    this.ventilations = ventilations
+  constructor(t: any) {
+    this.id = t.id;
+    this.amount = t.amount;
+    this.userLibelle = t.userLibelle;
+    this.bankLibelle = t.bankLibelle;
+    this.bankDetail = t.bankDetail;
+    this.isPointe = t.isPointe;
+    this.dateCreation = new Date(t.dateCreation);
+    this.accountName = t.accountName;
+    this.ventilations = t.ventilations.map(ventilation => new Ventilation(ventilation.amount, ventilation.categoryId));
   }
 }

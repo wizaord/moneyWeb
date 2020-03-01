@@ -19,7 +19,6 @@ export class TransactionShowComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(JSON.stringify(this.transaction));
     this.accountDate = this.ngbDateParserFormatter.parse(this.transaction.dateCreation.toISOString());
   }
 

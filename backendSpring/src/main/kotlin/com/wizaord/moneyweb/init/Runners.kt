@@ -39,9 +39,6 @@ class InitRunner (
         // load transactions
         debitCreditLoader.loadFamilyBankAccount("mouilleron")
         debitCreditLoader.loadDebitCredit(accountsMap)
-//        debitCreditLoader.loadDetailMontant()
-//        debitCreditLoader.loadEveythingInMongo()
-        // load ventilations
     }
 
     private fun cleanDatabase() {

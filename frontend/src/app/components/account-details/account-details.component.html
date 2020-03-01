@@ -15,7 +15,7 @@
           <button type="button" class="btn btn-info" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}} >></button>
         </div>
       </div>
-      <app-transactions-show [transactions$]="this.currentMonthTransactions$" [soldeInit]="getSoldeInit()"></app-transactions-show>
+      <app-transactions-show [transactions$]="this.currentMonthTransactions$" (transactionUpdate)="transactionUpdated($event)"></app-transactions-show>
     </div>
   </div>
 </div>

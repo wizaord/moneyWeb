@@ -12,6 +12,7 @@ export class Transaction {
   dateCreation: Date;
   accountName: string;
   ventilations: Ventilation[];
+  currentSolde = 0;
 
   constructor(t: any) {
     this.id = t.id;

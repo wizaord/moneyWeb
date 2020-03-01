@@ -27,30 +27,31 @@ export class AccountDetailsComponent implements OnInit {
       this.accountNameTitle = params.get('accountName');
       this.transactionsService.getTransactions(this.accountNameTitle).subscribe(
         transactions => {
-          transactions.forEach(transaction => this.accountTransactions.push(transaction));
-          this.calculateCurrentMonth();
-          this.refreshBehaviorDatas();
-          this.loading = false;
-        }
+            transactions.forEach(transaction => this.accountTransactions.push(transaction));
+            this.refreshTransactionSoldes();
+            this.calculateCurrentMonth();
+            this.prepareObservableTransactionForCurrentMonth();
+            this.loading = false;
+          }
       );
     });
   }
 
   goPreviousMonth() {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, this.currentMonth.getDate());
-    this.refreshBehaviorDatas();
+    this.prepareObservableTransactionForCurrentMonth();
   }
 
   goNextMonth() {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, this.currentMonth.getDate());
-    this.refreshBehaviorDatas();
+    this.prepareObservableTransactionForCurrentMonth();
   }
 
   get currentMonthTransactions$(): Observable<Transaction[]> {
     return this.accountTransactionsBehavior.asObservable();
   }
 
-  private refreshBehaviorDatas() {
+  private prepareObservableTransactionForCurrentMonth() {
     const beginDateTime = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1).getTime();
     const endDateTime = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1).getTime();
     const transactionForMonth = this.accountTransactions.filter(transaction => {
@@ -60,20 +61,31 @@ export class AccountDetailsComponent implements OnInit {
     this.accountTransactionsBehavior.next(transactionForMonth);
   }
 
-  getSoldeInit() {
-    const beginDateTime = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1).getTime();
-    return this.accountTransactions.filter(transaction => {
-      const dateTransaction = new Date(transaction.dateCreation).getTime();
-      return dateTransaction < beginDateTime;
-    }).map(transaction => transaction.amount)
-      .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
-  }
-
   private calculateCurrentMonth() {
     if (this.accountTransactions.length !== 0) {
       const mostRecentDate = this.accountTransactions[this.accountTransactions.length - 1].dateCreation;
       this.currentMonth = new Date(mostRecentDate);
     }
+  }
+
+  private refreshTransactionSoldes() {
+    let initSolde = 0;
+    this.accountTransactions
+        .map(transaction => {
+          transaction.currentSolde = initSolde + transaction.amount;
+          initSolde = transaction.currentSolde;
+        });
+  }
+
+  transactionUpdated(transaction: Transaction) {
+    const transactionToUpdate = this.accountTransactions.find(t => t.id === transaction.id);
+    this.transactionsService.updateTransaction(transaction).subscribe(
+        result => {
+          Object.assign(transactionToUpdate, transaction);
+          console.log('Transaction updated');
+          this.refreshTransactionSoldes();
+          this.prepareObservableTransactionForCurrentMonth();
+        });
   }
 }
 

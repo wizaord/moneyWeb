@@ -4,8 +4,9 @@ import { AccountService } from '../../../../services/account.service';
 import { Account } from '../../../../domain/account/Account';
 import { FamilyService } from '../../../../services/family.service';
 import { AccountOwner } from '../../../../domain/user/AccountOwner';
-import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { MatSelect } from '@angular/material/select';
+import { DateService } from '../../../../services/date.service';
 
 @Component({
   selector: 'app-account-modify',
@@ -24,8 +25,15 @@ export class AccountModifyComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private familyService: FamilyService,
-    private ngbDateParserFormatter: NgbDateParserFormatter) {
-    this.accountToEdit = new Account('', '', new Date(), false, 0.0);
+    private dateService: DateService) {
+    this.accountToEdit = {
+      accountName : '',
+      dateCreate : new Date(),
+      owners : [],
+      bankName : '',
+      solde : 0,
+      isOpened : true
+    };
   }
 
   ngOnInit() {
@@ -33,16 +41,14 @@ export class AccountModifyComponent implements OnInit {
       this.accountNameTitle = params.get('accountName');
       this.accountService.getAccountById(this.accountNameTitle).subscribe(account => {
         this.accountToEdit = account;
-        console.log('Date du compte => ' + JSON.stringify(account.dateCreate));
-        this.accountDate = this.ngbDateParserFormatter.parse(account.dateCreate.toString());
+        this.accountDate = this.dateService.convertToNgDateStruct(account.dateCreate);
       });
     });
     this.familyService.getOwners().subscribe(owners => owners.forEach(owner => this.accountOwners.push(owner)));
   }
 
   onAccountModify() {
-    this.accountToEdit.dateCreate = new Date(this.ngbDateParserFormatter.format(this.accountDate));
-    console.log(JSON.stringify(this.accountToEdit));
+    this.accountToEdit.dateCreate = this.dateService.convertToDate(this.accountDate);
     this.accountService.updateAccountInfo(this.accountNameTitle, this.accountToEdit).subscribe(
       account => this.router.navigate(['/accountManage'])
     );

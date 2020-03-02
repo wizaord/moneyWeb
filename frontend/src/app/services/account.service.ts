@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../domain/account/Account';
-import { concatAll, concatMap, filter, flatMap, map, reduce, toArray } from 'rxjs/operators';
+import { filter, flatMap, map, toArray } from 'rxjs/operators';
 import { AuthenticationService } from './authentification/authentication.service';
-import { TransactionsService } from './transactions.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +30,12 @@ export class AccountService {
   getAccounts(): Observable<Account[]> {
     const familyName = this.authenticationService.currentUserValue.username;
     const apiUrl = `${this.API_URL}/${familyName}/accounts`;
-    return this.http.get<Account[]>(apiUrl);
+    return this.http.get<Account[]>(apiUrl)
+      .pipe(
+        flatMap(accounts => accounts),
+        map(account => new Account(account)),
+        toArray()
+      );
   }
 
   getOpenedAccounts(): Observable<Account> {

@@ -1,5 +1,5 @@
 # En cours
-FIXME : les dates dans mongo / backend / frontend ne concorde pas du tout
+TODO : les dates du mois ne sont pas triés à l'affichage
 # Next
 En tant que User, je peux editer une transaction 
     -> la pointer

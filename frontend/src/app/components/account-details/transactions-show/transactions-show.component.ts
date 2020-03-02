@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { from, Observable } from 'rxjs';
-import { TransactionShowComponent } from './transaction-show/transaction-show.component';
+import { TransactionEditComponent } from './transaction-edit/transaction-edit.component';
 import { Transaction } from '../../../domain/account/Transaction';
-import { TransactionsService } from '../../../services/transactions.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -19,7 +18,7 @@ export class TransactionsShowComponent {
   }
 
   openTransactionEditDialog(transaction: Transaction) {
-    const modalRef = this.modalService.open(TransactionShowComponent,
+    const modalRef = this.modalService.open(TransactionEditComponent,
       {backdropClass: 'light-blue-backdrop', size: 'lg'});
     modalRef.componentInstance.transaction = Object.assign({}, transaction);
 

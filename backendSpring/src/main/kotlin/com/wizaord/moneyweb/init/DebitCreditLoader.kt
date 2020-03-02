@@ -109,25 +109,23 @@ class DebitCreditLoader(
         val amountTotal = ventilationsExtracted!!.stream().mapToDouble { it.amount }.sum()
 
         var transaction: Transaction?
-        val dateCreate = createDateFromString(csvLine[2].split(" ")[0])!!
+        val dateCreate = createDateFromString(csvLine[2])!!
         if (isCredit) {
             transaction = Credit(userLibelle, detailLibellebanque, userLibelle, amountTotal, isPointe, transactionId, dateCreate)
         } else {
             transaction = Debit(userLibelle, detailLibellebanque, userLibelle, amountTotal, isPointe, transactionId, dateCreate)
         }
 
-
         // search account by Id
         ventilationsExtracted.forEach { transaction.addVentilation(it) }
 
-        // TODO : gerer les virements internes
-        serviceBeanForFamily.transactionRegister(accountsMap[csvLine[6]]!!, transaction)
+        serviceBeanForFamily.transactionRegister(accountsMap[accountDestination]!!, transaction)
 
     }
 
     fun createDateFromString(dateSrt: String): LocalDate? {
         if (dateSrt == "NULL") return null
-        return LocalDate.parse(dateSrt)
+        return LocalDate.parse(dateSrt.split(" ")[0])
     }
 
 }

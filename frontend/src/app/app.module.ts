@@ -28,7 +28,7 @@ import { StatistiquesComponent } from './components/statistiques/statistiques.co
 import { AccountModifyComponent } from './components/account/manage/account-modify/account-modify.component';
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
 import { TransactionsShowComponent } from './components/account-details/transactions-show/transactions-show.component';
-import { TransactionShowComponent } from './components/account-details/transactions-show/transaction-show/transaction-show.component';
+import { TransactionEditComponent } from './components/account-details/transactions-show/transaction-edit/transaction-edit.component';
 import { DateNextMonthExtractPipe, DatePreviousMonthExtractPipe } from './pipes/date-month-extract.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -53,7 +53,7 @@ import { MatInputModule } from '@angular/material/input';
     AccountModifyComponent,
     AccountDetailsComponent,
     TransactionsShowComponent,
-    TransactionShowComponent,
+    TransactionEditComponent,
     DatePreviousMonthExtractPipe,
     DateNextMonthExtractPipe,
   ],
@@ -76,7 +76,7 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
   ],
   entryComponents: [
-    TransactionShowComponent
+    TransactionEditComponent
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

@@ -1,5 +1,4 @@
 # En cours
-TODO : les dates du mois ne sont pas triés à l'affichage
 # Next
 En tant que User, je peux editer une transaction 
     -> la pointer

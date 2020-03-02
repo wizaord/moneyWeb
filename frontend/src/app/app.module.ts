@@ -34,6 +34,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { SortTransactionByDatePipe } from './pipes/sort-by.pipe';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { MatInputModule } from '@angular/material/input';
     TransactionEditComponent,
     DatePreviousMonthExtractPipe,
     DateNextMonthExtractPipe,
+    SortTransactionByDatePipe,
   ],
   imports: [
     NgbModule,

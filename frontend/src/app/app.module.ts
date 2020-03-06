@@ -35,6 +35,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { SortTransactionByDatePipe } from './pipes/sort-by.pipe';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { VentilationEditComponent } from './components/account-details/transactions-show/transaction-edit/ventilation-edit/ventilation-edit.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +60,7 @@ import { SortTransactionByDatePipe } from './pipes/sort-by.pipe';
     DatePreviousMonthExtractPipe,
     DateNextMonthExtractPipe,
     SortTransactionByDatePipe,
+    VentilationEditComponent,
   ],
   imports: [
     NgbModule,
@@ -76,6 +79,7 @@ import { SortTransactionByDatePipe } from './pipes/sort-by.pipe';
     MatDialogModule,
     MatButtonModule,
     MatInputModule,
+    NgSelectModule
   ],
   entryComponents: [
     TransactionEditComponent

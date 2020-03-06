@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-6">
+    <ng-select [items]="categories"
+               bindLabel="name"
+               bindValue="id"
+               groupBy="categoryName"
+               [multiple]="false"
+               [(ngModel)]="categorySelected">
+      <ng-template ng-option-tmp let-item="item">
+        {{item.name}}
+      </ng-template>
+    </ng-select>
+  </div>
+  <div class="input-group col-4">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-euro"></i></span>
+    </div>
+    <input type="number" class="form-control" placeholder="Amount" aria-label="Amount"
+           required
+           [(ngModel)]="ventilation.amount" name=amount #accountNameRef="ngModel">
+  </div>
+  <div class="input-group col-2">
+    <button class="float-md-right" (click)="removeVentilation(ventilation)"><i class="fa fa-trash"></i></button>
+  </div>
+</div>

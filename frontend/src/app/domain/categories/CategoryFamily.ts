@@ -1,0 +1,6 @@
+
+class CategoryFamily {
+  public name: string;
+  public id: string;
+  public subCategories: SubCategoryFamily[];
+}

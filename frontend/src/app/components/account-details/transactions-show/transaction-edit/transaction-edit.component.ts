@@ -12,7 +12,7 @@ import { DateService } from '../../../../services/date.service';
 export class TransactionEditComponent implements OnInit {
 
   @Input() transaction: Transaction;
-  private accountDate: NgbDateStruct;
+  accountDate: NgbDateStruct;
 
   constructor(private dateService: DateService,
               public activeModal: NgbActiveModal) {
@@ -20,8 +20,8 @@ export class TransactionEditComponent implements OnInit {
 
   ngOnInit() {
     this.accountDate = this.dateService.convertToNgDateStruct(this.transaction.dateCreation);
-
   }
+
 
   updateTransaction() {
     this.transaction.dateCreation = this.dateService.convertToDate(this.accountDate);
@@ -38,3 +38,5 @@ export class TransactionEditComponent implements OnInit {
     this.transaction.ventilations.push(new Ventilation(0, '1'));
   }
 }
+
+

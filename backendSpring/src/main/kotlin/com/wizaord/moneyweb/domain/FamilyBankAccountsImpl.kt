@@ -62,6 +62,10 @@ data class FamilyBankAccountsImpl(
     override fun accessToAccountsByFamilyMember(familyMember: FamilyMember) = accessToAccounts().filter { it.hasOwner(familyMember) }
     override fun accessToAccountByAccountName(accountName: String) = accessToAccounts().firstOrNull { it.containBankAccountWithName(accountName) }
 
+    fun accessToAccountsSortedByLastTransaction(): List<BankAccountOwners> {
+        return this.accessToAccounts().sortedBy { bankAccountOwners -> bankAccountOwners.bankAccount.getLastTransaction()?.dateCreation }
+    }
+
     @Throws(FamilyMemberAlreadyExistException::class)
     override fun registerFamilyMember(familyMember: FamilyMember) {
         if (isMemberAreRegistered(listOf(familyMember))) {
@@ -106,6 +110,7 @@ data class FamilyBankAccountsImpl(
     fun activateNotifications() {
         notificationActivated = true
     }
+
 }
 
 

@@ -92,6 +92,12 @@ data class BankAccountImpl(
         notifyAccountUpdated()
     }
 
+    override fun getLastTransaction(): Transaction? {
+        return this.transactions
+                .sortedBy { transaction -> transaction.dateCreation }
+                .lastOrNull()
+    }
+
     @Throws(NoSuchElementException::class)
     override fun getTransactionById(transactionId: String): Transaction = transactions.first { it.id == transactionId }
 

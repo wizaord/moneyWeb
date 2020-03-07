@@ -29,5 +29,6 @@ interface BankAccount {
     fun updateName(newAccountName: String)
     fun updateBankName(newAccountBankName: String)
     fun updateBankAccountDateCreate(newAccountDate: LocalDate)
+    fun getLastTransaction(): Transaction?
 }
 

@@ -3,7 +3,6 @@ import { FileUploadService } from '../../services/file-upload.service';
 import { AccountService } from '../../services/account.service';
 import { Observable } from 'rxjs';
 import { Account } from '../../domain/account/Account';
-import { toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-upload',
@@ -24,7 +23,7 @@ export class UploadComponent implements OnInit {
 
   ngOnInit() {
     this.loading = false;
-    this.openedAccounts$ = this.accountService.getOpenedAccounts().pipe(toArray());
+    this.openedAccounts$ = this.accountService.getOpenedAccountsSortedByLastTransactionDESC();
   }
 
   handleFileInput(files: FileList) {

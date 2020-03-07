@@ -1,7 +1,6 @@
 package com.wizaord.moneyweb.services
 
 import com.nhaarman.mockitokotlin2.*
-import com.wizaord.moneyweb.controllers.Account
 import com.wizaord.moneyweb.domain.BankAccountImpl
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 import com.wizaord.moneyweb.domain.FamilyMember
@@ -135,6 +134,11 @@ internal class FamilyBankAccountsServiceTest {
         // then
         verify(familyBankAccountPersistence).transactionRemove(anyOrNull())
         verify(familyBankAccountPersistence, times(2)).transactionCreate(anyOrNull(), anyOrNull())
+    }
+
+    @Test
+    internal fun `bankAccountsSortByLastTransaction`() {
+
     }
 
 }

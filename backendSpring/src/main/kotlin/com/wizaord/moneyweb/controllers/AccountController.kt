@@ -6,7 +6,6 @@ import com.wizaord.moneyweb.domain.BankAccountImpl
 import com.wizaord.moneyweb.domain.BankAccountOwners
 import com.wizaord.moneyweb.domain.FamilyMember
 import com.wizaord.moneyweb.services.FamilyBankAccountServiceFactory
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -16,13 +15,17 @@ import java.util.*
 class AccountController(
         @Autowired private val familyBankAccountServiceFactory: FamilyBankAccountServiceFactory
 ) {
-
-    private val logger = LoggerFactory.getLogger(javaClass.canonicalName)
-
     @PostMapping("")
     fun create(@PathVariable familyName: String, @RequestBody account: AccountCreate) {
         val familyService = familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions(familyName)
         familyService.accountRegister(account.accountName, account.bankName, account.dateCreate.toLocalDate(), account.owners)
+    }
+
+    @RequestMapping("/sortByLastTransaction")
+    @ResponseBody
+    fun accountsSorted(@PathVariable familyName: String): List<Account> {
+        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithTransactions(familyName)
+        return familyService.bankAccountsSortByLastTransactions().map { Account.fromDomain(it) }
     }
 
     @RequestMapping("")
@@ -30,7 +33,6 @@ class AccountController(
     fun accounts(@PathVariable familyName: String): List<Account> {
         val familyService = familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions(familyName)
         return familyService.bankAccounts().map { Account.fromDomain(it) }
-
     }
 
     @PatchMapping("/{accountName}/close")

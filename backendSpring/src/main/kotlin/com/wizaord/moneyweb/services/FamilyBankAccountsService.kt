@@ -69,6 +69,7 @@ class FamilyBankAccountsService(val familyName: String,
     fun accountDelete(accountName: String) = familyBankAccounts.removeAccount(accountName)
 
     fun bankAccounts(): List<BankAccountOwners> = this.familyBankAccounts.accessToAccounts()
+    fun bankAccountsSortByLastTransactions(): List<BankAccountOwners> = this.familyBankAccounts.accessToAccountsSortedByLastTransaction()
 
     fun owners() = familyBankAccounts.getFamily()
 
@@ -115,7 +116,5 @@ class FamilyBankAccountsService(val familyName: String,
     fun accountUpdateDateCreation(accountName: String, newAccountDate: LocalDate)  = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankAccountDateCreate(newAccountDate)
     fun accountUpdateOwners(accountName: String, newOwners: List<FamilyMember>)= this.familyBankAccounts.changeBankAccountOwners(accountName, newOwners)
     fun bankAccount(accountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)
-
-
 
 }

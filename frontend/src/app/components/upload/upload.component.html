@@ -5,7 +5,7 @@
     <mat-form-field>
       <mat-label>Please select the account</mat-label>
       <mat-select [(ngModel)]="accountSelected" name="ownersSelected">
-        <mat-option *ngFor="let account of openedAccounts$ | async" [value]="account.accountName">
+        <mat-option *ngFor="let account of (openedAccounts$ | async).reverse()" [value]="account.accountName">
           {{account.accountName}}
         </mat-option>
       </mat-select>

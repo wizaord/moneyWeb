@@ -78,4 +78,15 @@ export class AccountService {
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${accountName}`;
     return this.http.put<Account>(apiUrl, accountToUpdate);
   }
+
+  getOpenedAccountsSortedByLastTransactionDESC(): Observable<Account[]> {
+    const familyName = this.authenticationService.currentUserValue.username;
+    const apiUrl = `${this.API_URL}/${familyName}/accounts/sortByLastTransaction`;
+    return this.http.get<Account[]>(apiUrl)
+      .pipe(
+        flatMap(accounts => accounts),
+        filter(account => account.isOpened === true),
+        toArray(),
+      );
+  }
 }

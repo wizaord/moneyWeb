@@ -1,8 +1,8 @@
 # En cours
+En tant que user, je veux voir sur la liste des comptes pour chaque compte le nombre de transactions non pointé
+
 # Next
 
-En tant que user, je veux que la liste des upload soit trié par les comptes ayant les plus récentes transactions
-En tant que user, je veux voir sur la liste des comptes pour chaque compte le nombre de transactions non pointé
 En tant que user, lors de l'upload, je veux savoir le nombre de nouveau enregistrement et de doublon
 En tant que user, je veux que quand j'upload 2 fois un fichier, la seconde fois, rien ne soit fait car c'est des doublons
 En tant que user, je veux que quand j'upload 1 fichier, le user libelle soit déterminé en fonction de la bankLibelle

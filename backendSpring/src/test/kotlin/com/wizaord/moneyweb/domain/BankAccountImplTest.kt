@@ -219,5 +219,30 @@ internal class BankAccountImplTest {
         verify(infrastructureBankAccountNotifications).notifyAccountUpdate(anyOrNull())
     }
 
+    @Test
+    internal fun getLastTransaction() {
+        // given
+        bankAccount.addTransaction(Credit("lib", "libBank", "desc", 10.0, dateCreation = LocalDate.of(2020, 1, 1)))
+        bankAccount.addTransaction(Credit("lib", "libBank", "desc", 10.0, dateCreation = LocalDate.of(2020, 1, 2)))
+        bankAccount.addTransaction(Credit("lib", "libBank", "desc", 10.0, dateCreation = LocalDate.of(2020, 1, 3)))
+
+        // when
+        val lastTransaction = bankAccount.getLastTransaction()
+
+        // then
+        assertThat(lastTransaction).isNotNull
+        assertThat(lastTransaction!!.dateCreation).isEqualTo(LocalDate.of(2020, 1, 3))
+    }
+
+    @Test
+    internal fun getLastTransactionWithoutTransaction() {
+        // given
+        // when
+        val lastTransaction = bankAccount.getLastTransaction()
+
+        // then
+        assertThat(lastTransaction).isNull()
+    }
+
 }
 

@@ -37,7 +37,8 @@ internal class FamilyBankAccountsServiceTest {
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
 
         // when
-        FamilyBankAccountsService("family", false, familyBankAccountPersistence)
+        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
 
         // then
         verifyZeroInteractions(infrastructureBankAccountFamilyNotifications)
@@ -51,7 +52,8 @@ internal class FamilyBankAccountsServiceTest {
         familyBank.registerFamilyMember(FamilyMember("You"))
 
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService("family", false, familyBankAccountPersistence)
+        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
 
         // when
         val owners = familyBankAccountsService.owners()
@@ -67,7 +69,8 @@ internal class FamilyBankAccountsServiceTest {
         familyBank.registerFamilyMember(FamilyMember("Me"))
 
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService("family", false, familyBankAccountPersistence)
+        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
 
         // when
         familyBankAccountsService.accountRegister("name", "bank")
@@ -90,7 +93,8 @@ internal class FamilyBankAccountsServiceTest {
         // given
         val familyBank = FamilyBankAccountsImpl("family")
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService("family", false, familyBankAccountPersistence)
+        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
         val debit = Debit("libelle", "bank", null, 10.0)
 
         // when
@@ -106,7 +110,8 @@ internal class FamilyBankAccountsServiceTest {
 // given
         val familyBank = FamilyBankAccountsImpl("family")
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService("family", false, familyBankAccountPersistence)
+        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
         val debit = Debit("libelle", "bank", null, 10.0)
 
         // when
@@ -123,7 +128,8 @@ internal class FamilyBankAccountsServiceTest {
         familyBank.registerFamilyMember(FamilyMember("Me"))
         familyBank.registerAccount(BankAccountImpl("accountName", "bank"))
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService("family", false, familyBankAccountPersistence)
+        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
         val debit = Debit("libelle", "bank", null, 10.0)
         debit.addVentilation(DebitVentilation(10.0))
         familyBank.accessToAccountByAccountName("accountName")?.bankAccount?.addTransaction(debit)

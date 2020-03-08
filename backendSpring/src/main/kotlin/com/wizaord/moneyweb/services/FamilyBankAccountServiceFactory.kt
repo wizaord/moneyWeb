@@ -12,12 +12,22 @@ class FamilyBankAccountServiceFactory(
 ) {
 
     fun getFamilyServiceWithoutTransactions(familyName: String): FamilyBankAccountsService {
-        val loadTransactions = false
-        return applicationContext.getBean("familyBankAccountsService", familyName, loadTransactions, familyBankAccountPersistence) as FamilyBankAccountsService
+        val familyBankAccountsService = applicationContext.getBean("familyBankAccountsService", familyBankAccountPersistence) as FamilyBankAccountsService
+        familyBankAccountsService.loadFamilyBankFromPersistence(familyName)
+        return familyBankAccountsService
     }
 
     fun getFamilyServiceWithTransactions(familyName: String): FamilyBankAccountsService {
-        val loadTransactions = true
-        return applicationContext.getBean("familyBankAccountsService", familyName, loadTransactions, familyBankAccountPersistence) as FamilyBankAccountsService
+        val familyServiceBean = getFamilyServiceWithoutTransactions(familyName)
+        familyServiceBean.loadTransactionsFromPersistence();
+        return familyServiceBean
     }
+
+    fun getFamilyServiceForAccountWithTransactions(familyName: String, accountName: String): FamilyBankAccountsService {
+        val familyServiceBean = getFamilyServiceWithoutTransactions(familyName)
+        familyServiceBean.keepOnlyBankAccount(accountName)
+        familyServiceBean.loadTransactionsFromPersistence();
+        return familyServiceBean
+    }
+
 }

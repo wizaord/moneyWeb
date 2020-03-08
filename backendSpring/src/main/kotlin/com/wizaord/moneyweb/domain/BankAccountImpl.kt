@@ -19,7 +19,7 @@ data class BankAccountImpl(
     private val log = LoggerFactory.getLogger(BankAccountImpl::class.java)
     private val transactions = mutableListOf<Transaction>()
 
-    fun registerInfrastructureBankAccountNotification(infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications) {
+    fun registerInfrastructureBankAccountNotification(infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications?) {
         this.infrastructureBankAccountNotifications = infrastructureBankAccountNotifications
     }
 

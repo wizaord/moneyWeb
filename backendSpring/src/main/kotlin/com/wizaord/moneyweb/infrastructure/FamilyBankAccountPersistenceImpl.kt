@@ -30,6 +30,7 @@ class FamilyBankAccountPersistenceImpl(
     }
 
     override fun loadTransactionsFromAccount(accountInternalId: String): List<Transaction> {
+        logger.info("Loaded transaction for account with id {}", accountInternalId)
         val transactions = transactionsRepository.findByAccountInternalId(accountInternalId)
         return transactions.map { it.toDomain() }
     }

@@ -11,46 +11,64 @@ import java.time.LocalDate
 
 @Component
 @Scope("prototype")
-class FamilyBankAccountsService(val familyName: String,
-                                val loadTransactions: Boolean,
-                                @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence): InfrastructureBankAccountFamilyNotifications, InfrastructureBankAccountNotifications {
+class FamilyBankAccountsService(
+        @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence): InfrastructureBankAccountFamilyNotifications, InfrastructureBankAccountNotifications {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
+    lateinit var familyBankAccounts: FamilyBankAccountsImpl
 
-    val familyBankAccounts = FamilyBankAccountsImpl(this.familyName, this)
-
-    init {
-        logger.info("FamilyBankAccountService will be initialised with family : {}", this.familyName)
+    fun loadFamilyBankFromPersistence(familyName: String) {
+        logger.info("FamilyBankAccountService will be initialised with family : {}", familyName)
+        familyBankAccounts = FamilyBankAccountsImpl(familyName, this)
         val familyBankAccounts = familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(familyName)
         if (familyBankAccounts != null) {
             updateFamilyBankAccount(familyBankAccounts)
         }
         logger.info("FamilyBankAccountService successfully initialised")
+    }
 
+    fun loadTransactionsFromPersistence() {
+        domainNotificationDeActivation()
+        // load transactions from accounts
+        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
+            val transactionsLoaded = familyBankAccountPersistence.loadTransactionsFromAccount(bankAccountOwner.bankAccount.getInternalId())
+            transactionsLoaded.forEach { transaction -> bankAccountOwner.bankAccount.addTransaction(transaction) }
+        }
+        domainNotificationActivation()
     }
 
     private fun updateFamilyBankAccount(familyBankAccountsImpl: FamilyBankAccountsImpl) {
-        familyBankAccounts.deactivateNotifications()
+        domainNotificationDeActivation()
         familyBankAccountsImpl.getFamily().forEach {
             familyBankAccounts.registerFamilyMember(it)
         }
         familyBankAccounts.bankAccountsOwners.addAll(familyBankAccountsImpl.bankAccountsOwners)
 
-        if (loadTransactions) {
-            // load transactions from accounts
-            familyBankAccountsImpl.bankAccountsOwners.forEach { bankAccountOwner ->
-                val transactionsLoaded = familyBankAccountPersistence.loadTransactionsFromAccount(bankAccountOwner.bankAccount.getInternalId())
-                transactionsLoaded.forEach { transaction -> bankAccountOwner.bankAccount.addTransaction(transaction) }
-            }
-        }
+        domainNotificationActivation()
+    }
 
-        // activate notification
-        familyBankAccountsImpl.bankAccountsOwners.forEach { bankAccountOwner ->
+    private fun domainNotificationDeActivation() {
+        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
+            val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
+            bankAccountImpl.registerInfrastructureBankAccountNotification(null)
+        }
+        familyBankAccounts.deactivateNotifications()
+    }
+
+    private fun domainNotificationActivation() {
+        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
             val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
             bankAccountImpl.registerInfrastructureBankAccountNotification(this)
         }
-
         familyBankAccounts.activateNotifications()
+    }
+
+    fun keepOnlyBankAccount(accountName: String) {
+        domainNotificationDeActivation()
+        this.familyBankAccounts.accessToAccounts()
+                .filter { ! it.containBankAccountWithName(accountName) }
+                .forEach { this.familyBankAccounts.removeAccount(it.bankAccount.getName()) }
+        domainNotificationActivation()
     }
 
     fun accountRegister(name: String,

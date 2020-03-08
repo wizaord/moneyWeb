@@ -1,10 +1,8 @@
 package com.wizaord.moneyweb.services
 
 import com.nhaarman.mockitokotlin2.*
-import com.wizaord.moneyweb.domain.BankAccountImpl
-import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
-import com.wizaord.moneyweb.domain.FamilyMember
-import com.wizaord.moneyweb.domain.InfrastructureBankAccountFamilyNotifications
+import com.wizaord.moneyweb.domain.*
+import com.wizaord.moneyweb.domain.transactions.Credit
 import com.wizaord.moneyweb.domain.transactions.Debit
 import com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation
 import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
@@ -12,6 +10,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.within
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import java.time.LocalDate
@@ -21,11 +20,16 @@ import java.time.temporal.ChronoUnit
 internal class FamilyBankAccountsServiceTest {
 
     @Mock
+    lateinit var bankAccount: BankAccount
+
+    @Mock
     lateinit var familyBankAccountPersistence: FamilyBankAccountPersistence
 
     @Mock
     lateinit var infrastructureBankAccountFamilyNotifications: InfrastructureBankAccountFamilyNotifications
 
+    @InjectMocks
+    lateinit var familyBankAccountsService: FamilyBankAccountsService
 
     @Test
     internal fun `constructor - when bean is initialized, FamilyBankAccounts is loaded and notification are disabled`() {
@@ -37,7 +41,6 @@ internal class FamilyBankAccountsServiceTest {
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
 
         // when
-        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
         familyBankAccountsService.loadFamilyBankFromPersistence("family")
 
         // then
@@ -52,7 +55,7 @@ internal class FamilyBankAccountsServiceTest {
         familyBank.registerFamilyMember(FamilyMember("You"))
 
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        
         familyBankAccountsService.loadFamilyBankFromPersistence("family")
 
         // when
@@ -69,7 +72,7 @@ internal class FamilyBankAccountsServiceTest {
         familyBank.registerFamilyMember(FamilyMember("Me"))
 
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        
         familyBankAccountsService.loadFamilyBankFromPersistence("family")
 
         // when
@@ -93,7 +96,7 @@ internal class FamilyBankAccountsServiceTest {
         // given
         val familyBank = FamilyBankAccountsImpl("family")
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        
         familyBankAccountsService.loadFamilyBankFromPersistence("family")
         val debit = Debit("libelle", "bank", null, 10.0)
 
@@ -110,7 +113,7 @@ internal class FamilyBankAccountsServiceTest {
 // given
         val familyBank = FamilyBankAccountsImpl("family")
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        
         familyBankAccountsService.loadFamilyBankFromPersistence("family")
         val debit = Debit("libelle", "bank", null, 10.0)
 
@@ -126,25 +129,42 @@ internal class FamilyBankAccountsServiceTest {
         // given
         val familyBank = FamilyBankAccountsImpl("family")
         familyBank.registerFamilyMember(FamilyMember("Me"))
-        familyBank.registerAccount(BankAccountImpl("accountName", "bank"))
+
         given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
-        val familyBankAccountsService = FamilyBankAccountsService(familyBankAccountPersistence)
+        given(bankAccount.getName()).willReturn("accountName")
+
+        familyBank.registerAccount(bankAccount)
         familyBankAccountsService.loadFamilyBankFromPersistence("family")
+
         val debit = Debit("libelle", "bank", null, 10.0)
         debit.addVentilation(DebitVentilation(10.0))
-        familyBank.accessToAccountByAccountName("accountName")?.bankAccount?.addTransaction(debit)
 
         // when
         familyBankAccountsService.transactionUpdate("accountName", debit.id, debit)
 
         // then
-        verify(familyBankAccountPersistence).transactionRemove(anyOrNull())
-        verify(familyBankAccountPersistence, times(2)).transactionCreate(anyOrNull(), anyOrNull())
+        verify(bankAccount, times(1)).updateTransaction(debit)
     }
 
     @Test
-    internal fun `bankAccountsSortByLastTransaction`() {
+    internal fun `transactionRegistered - if transaction already exist in the same account, then do nothing`() {
+        // given
+        val familyBank = FamilyBankAccountsImpl("family")
+        familyBank.registerFamilyMember(FamilyMember("Me"))
 
+        given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+        given(bankAccount.hasTransactionByProperties(anyOrNull())).willReturn(true)
+        given(bankAccount.getName()).willReturn("accountName")
+
+        familyBank.registerAccount(bankAccount)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
+
+        // when
+        val transactionCredit = Credit("credit", "bank credit", "", 10.0)
+        familyBankAccountsService.transactionRegister("accountName", transactionCredit)
+        
+        // then
+        verify(bankAccount, times(0)).addTransaction(anyOrNull())
     }
 
 }

@@ -244,5 +244,18 @@ internal class BankAccountImplTest {
         assertThat(lastTransaction).isNull()
     }
 
+    @Test
+    internal fun `hasTransactionByProperties - if transaction as the same date, amount and blankLibelle then return true`() {
+        // given
+        val transaction = Credit("userLibelle", "BandLibelle", "", 10.0)
+        bankAccount.addTransaction(transaction)
+
+        // when
+        val hasTransactionByProperties = bankAccount.hasTransactionByProperties(transaction)
+
+        // then
+        assertThat(hasTransactionByProperties).isTrue()
+    }
+
 }
 

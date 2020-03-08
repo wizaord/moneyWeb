@@ -18,6 +18,7 @@ interface BankAccount {
     fun removeTransaction(transaction: Transaction)
     @Throws(java.util.NoSuchElementException::class)
     fun updateTransaction(transaction: Transaction)
+    fun hasTransactionByProperties(transaction: Transaction): Boolean
 
 
     @Throws(NoSuchElementException::class)

@@ -61,6 +61,15 @@ data class BankAccountImpl(
         this.addTransaction(transaction)
     }
 
+    override fun hasTransactionByProperties(transaction: Transaction): Boolean {
+        val nbMatchedTransaction = this.transactions
+                .filter { it.dateCreation.isEqual(transaction.dateCreation) }
+                .filter { it.amount == transaction.amount }
+                .filter { it.bankLibelle == transaction.bankLibelle }
+                .count()
+        return nbMatchedTransaction != 0
+    }
+
     override fun getTransactions(): List<Transaction> = transactions.toList()
     override fun getTransactionsMatched(transaction: Transaction): List<TransactionMatch> {
         return this.transactions.map { TransactionMatch(it, it.matchWith(transaction)) }

@@ -14,7 +14,6 @@ data class FamilyBankAccountsImpl(
     private val logger = LoggerFactory.getLogger(this.javaClass)
     val bankAccountsOwners = mutableListOf<BankAccountOwners>()
     private val familyMembers = mutableListOf<FamilyMember>()
-    private var notificationActivated = true
 
 
     @Throws(BankAccountWithTheSameNameException::class,
@@ -97,19 +96,9 @@ data class FamilyBankAccountsImpl(
     }
 
     private fun notifyBankAccountUpdated() {
-        if (notificationActivated) {
-            this.infrastructureBankAccountFamilyNotifications?.notifyFamilyBankAccountUpdate(this)
-        }
-
+        this.infrastructureBankAccountFamilyNotifications?.notifyFamilyBankAccountUpdate(this)
     }
 
-    fun deactivateNotifications() {
-        notificationActivated = false
-    }
-
-    fun activateNotifications() {
-        notificationActivated = true
-    }
 
 }
 

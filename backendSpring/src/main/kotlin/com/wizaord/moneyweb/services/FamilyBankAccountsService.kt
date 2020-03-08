@@ -12,9 +12,10 @@ import java.time.LocalDate
 @Component
 @Scope("prototype")
 class FamilyBankAccountsService(
-        @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence): InfrastructureBankAccountFamilyNotifications, InfrastructureBankAccountNotifications {
+        @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence) : InfrastructureBankAccountFamilyNotifications, InfrastructureBankAccountNotifications {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
+    private var activatePersistence = false
     lateinit var familyBankAccounts: FamilyBankAccountsImpl
 
     fun loadFamilyBankFromPersistence(familyName: String) {
@@ -34,6 +35,11 @@ class FamilyBankAccountsService(
             val transactionsLoaded = familyBankAccountPersistence.loadTransactionsFromAccount(bankAccountOwner.bankAccount.getInternalId())
             transactionsLoaded.forEach { transaction -> bankAccountOwner.bankAccount.addTransaction(transaction) }
         }
+        //registered account Notification
+        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
+            val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
+            bankAccountImpl.registerInfrastructureBankAccountNotification(this)
+        }
         domainNotificationActivation()
     }
 
@@ -47,28 +53,21 @@ class FamilyBankAccountsService(
         domainNotificationActivation()
     }
 
-    private fun domainNotificationDeActivation() {
-        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
-            val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
-            bankAccountImpl.registerInfrastructureBankAccountNotification(null)
-        }
-        familyBankAccounts.deactivateNotifications()
-    }
-
-    private fun domainNotificationActivation() {
-        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
-            val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
-            bankAccountImpl.registerInfrastructureBankAccountNotification(this)
-        }
-        familyBankAccounts.activateNotifications()
-    }
 
     fun keepOnlyBankAccount(accountName: String) {
         domainNotificationDeActivation()
         this.familyBankAccounts.accessToAccounts()
-                .filter { ! it.containBankAccountWithName(accountName) }
+                .filter { !it.containBankAccountWithName(accountName) }
                 .forEach { this.familyBankAccounts.removeAccount(it.bankAccount.getName()) }
         domainNotificationActivation()
+    }
+
+    private fun domainNotificationDeActivation() {
+        activatePersistence = false
+    }
+
+    private fun domainNotificationActivation() {
+        activatePersistence = true
     }
 
     fun accountRegister(name: String,
@@ -97,42 +96,57 @@ class FamilyBankAccountsService(
     }
 
     override fun notifyFamilyBankAccountUpdate(familyBankAccountsImpl: FamilyBankAccountsImpl) {
-        logger.info("FamilyAccount has been updated")
-        this.familyBankAccountPersistence.updateFamily(familyBankAccountsImpl)
+        if (activatePersistence) {
+            this.familyBankAccountPersistence.updateFamily(familyBankAccountsImpl)
+            logger.info("FamilyAccount has been updated")
+        }
     }
 
     override fun notifyNewTransaction(accountInternalId: String, transaction: Transaction) {
-        this.familyBankAccountPersistence.transactionCreate(accountInternalId, transaction)
-        logger.info("new Transaction has been created")
+        if (activatePersistence) {
+            this.familyBankAccountPersistence.transactionCreate(accountInternalId, transaction)
+            logger.info("new Transaction has been created")
+        }
     }
 
     override fun notifyRemoveTransaction(transaction: Transaction) {
-        this.familyBankAccountPersistence.transactionRemove(transaction)
-        logger.info("Transaction has been deleted")
+        if (activatePersistence) {
+            this.familyBankAccountPersistence.transactionRemove(transaction)
+            logger.info("Transaction has been deleted")
+        }
     }
 
     override fun notifyAccountUpdate(accountImpl: BankAccountImpl) {
-        this.notifyFamilyBankAccountUpdate(this.familyBankAccounts)
+        if (activatePersistence) {
+            this.notifyFamilyBankAccountUpdate(this.familyBankAccounts)
+        }
     }
 
     fun transactionRegister(accountId: String, transaction: Transaction) {
         logger.info("Registering a new transaction for account : $accountId")
-        this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount?.addTransaction(transaction)
+        val bankAccount = this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount
+        if (bankAccount?.hasTransactionByProperties(transaction) == false) {
+            bankAccount.addTransaction(transaction)
+        } else {
+            logger.info("Transaction already registered in account")
+        }
     }
 
     fun transactions(accountName: String): List<Transaction> {
-        return this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.getTransactions()?: emptyList()
+        return this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.getTransactions()
+                ?: emptyList()
     }
 
     fun transactionUpdate(accountName: String, transactionId: String, transaction: Transaction) {
         if (transactionId != transaction.id) return
-        if (! transaction.isValid()) return
+        if (!transaction.isValid()) return
         this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateTransaction(transaction)
     }
+
     fun accountUpdateName(accountName: String, newAccountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateName(newAccountName)
     fun accountUpdateBankName(accountName: String, newBankName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankName(newBankName)
-    fun accountUpdateDateCreation(accountName: String, newAccountDate: LocalDate)  = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankAccountDateCreate(newAccountDate)
-    fun accountUpdateOwners(accountName: String, newOwners: List<FamilyMember>)= this.familyBankAccounts.changeBankAccountOwners(accountName, newOwners)
+    fun accountUpdateDateCreation(accountName: String, newAccountDate: LocalDate) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankAccountDateCreate(newAccountDate)
+    fun accountUpdateOwners(accountName: String, newOwners: List<FamilyMember>) = this.familyBankAccounts.changeBankAccountOwners(accountName, newOwners)
     fun bankAccount(accountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)
 
 }

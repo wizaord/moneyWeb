@@ -122,14 +122,16 @@ class FamilyBankAccountsService(
         }
     }
 
-    fun transactionRegister(accountId: String, transaction: Transaction) {
+    fun transactionRegister(accountId: String, transaction: Transaction): Boolean {
         logger.info("Registering a new transaction for account : $accountId")
         val bankAccount = this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount
         if (bankAccount?.hasTransactionByProperties(transaction) == false) {
             bankAccount.addTransaction(transaction)
+            return true
         } else {
             logger.info("Transaction already registered in account")
         }
+        return false
     }
 
     fun transactions(accountName: String): List<Transaction> {

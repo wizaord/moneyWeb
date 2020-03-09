@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Upload file</h1>
-
+  <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
   <form>
     <mat-form-field>
       <mat-label>Please select the account</mat-label>

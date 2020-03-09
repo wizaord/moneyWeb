@@ -3,12 +3,12 @@ package com.wizaord.moneyweb.services
 import com.nhaarman.mockitokotlin2.*
 import com.wizaord.moneyweb.domain.transactions.Debit
 import com.wizaord.moneyweb.services.fileparsers.FileParser
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
-import java.io.File
 
 @ExtendWith(MockitoExtension::class)
 internal class UploadFileServiceTest {
@@ -57,11 +57,13 @@ internal class UploadFileServiceTest {
                 Debit("libelle", "bank", "desc", 10.0)
         ))
         given(familyBankAccountServiceFactory.getFamilyServiceWithTransactions(anyOrNull())).willReturn(familyBankAccountsService)
+        given(familyBankAccountsService.transactionRegister(anyOrNull(), anyOrNull())).willReturn(true)
 
         // when
-        uploadFileService.loadFileForAccount("familyName", "accountName", "file.qif", inputStream!!)
+        val nbInsert = uploadFileService.loadFileForAccount("familyName", "accountName", "file.qif", inputStream!!)
 
         // then
+        assertThat(nbInsert).isEqualTo(AccountUploadResult("file.qif", 1, 1))
         verify(familyBankAccountsService).transactionRegister(eq("accountName"), anyOrNull())
     }
 }

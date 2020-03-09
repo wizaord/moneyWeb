@@ -161,9 +161,10 @@ internal class FamilyBankAccountsServiceTest {
 
         // when
         val transactionCredit = Credit("credit", "bank credit", "", 10.0)
-        familyBankAccountsService.transactionRegister("accountName", transactionCredit)
+        val result = familyBankAccountsService.transactionRegister("accountName", transactionCredit)
         
         // then
+        assertThat(result).isFalse()
         verify(bankAccount, times(0)).addTransaction(anyOrNull())
     }
 

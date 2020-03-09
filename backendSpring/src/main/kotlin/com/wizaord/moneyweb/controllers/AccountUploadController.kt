@@ -1,7 +1,7 @@
 package com.wizaord.moneyweb.controllers
 
+import com.wizaord.moneyweb.services.AccountUploadResult
 import com.wizaord.moneyweb.services.UploadFileService
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Scope
 import org.springframework.web.bind.annotation.*
@@ -14,14 +14,12 @@ class AccountUploadController(
         @Autowired private val uploadFileService: UploadFileService
 ) {
 
-    private val logger = LoggerFactory.getLogger(javaClass.canonicalName)
-
-
     @PostMapping("")
+    @ResponseBody
     fun uploadFile(@PathVariable familyName: String,
                    @PathVariable accountName: String,
-                   @RequestParam("file") file: MultipartFile) {
-        uploadFileService.loadFileForAccount(familyName, accountName, file.originalFilename!!, file.inputStream)
+                   @RequestParam("file") file: MultipartFile): AccountUploadResult {
+        return uploadFileService.loadFileForAccount(familyName, accountName, file.originalFilename!!, file.inputStream)
     }
 }
 

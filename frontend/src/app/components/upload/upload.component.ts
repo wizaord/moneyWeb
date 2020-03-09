@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FileUploadService } from '../../services/file-upload.service';
 import { AccountService } from '../../services/account.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Account } from '../../domain/account/Account';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-upload',
@@ -15,6 +16,10 @@ export class UploadComponent implements OnInit {
   private openedAccounts$: Observable<Account[]>;
   accountSelected: string;
 
+  // alert
+  successMessage: string;
+  private success$ = new Subject<string>();
+
   constructor(
     private fileUploadService: FileUploadService,
     private accountService: AccountService
@@ -24,6 +29,11 @@ export class UploadComponent implements OnInit {
   ngOnInit() {
     this.loading = false;
     this.openedAccounts$ = this.accountService.getOpenedAccountsSortedByLastTransactionDESC();
+
+    this.success$.subscribe((message) => this.successMessage = message);
+    this.success$.pipe(
+      debounceTime(5000)
+    ).subscribe(() => this.successMessage = null);
   }
 
   handleFileInput(files: FileList) {
@@ -36,6 +46,7 @@ export class UploadComponent implements OnInit {
     this.fileUploadService.uploadFile(this.accountSelected, this.fileToUpload).subscribe(
       result => {
         this.loading = false;
+        this.success$.next(`Upload ${result.transactionToRegistered} - Inserted ${result.transactionReallyRegistered}`);
       }
     );
   }

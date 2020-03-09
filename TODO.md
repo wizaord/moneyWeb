@@ -1,5 +1,4 @@
 # En cours
-En tant que user, je veux que ma transaction match une autre transaction si la bankLibelle est "presque pareil"
 # Next
 
 En tant que user, je veux que quand j'upload 1 fichier, la categorie soit automatiquement assigné en fonction du user libelle

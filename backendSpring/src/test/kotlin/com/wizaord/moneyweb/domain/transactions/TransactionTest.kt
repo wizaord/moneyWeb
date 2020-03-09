@@ -180,4 +180,19 @@ internal class TransactionTest {
         // then
         assertThat(matchPoint).isEqualTo(0.0)
     }
+
+    @Test
+    internal fun `sanitiezLibelle - CARTE 26 02 20 38 CARREFOUR DAC CB*2916 must return CARTE 38 CARREFOUR DAC CB*2916`() {
+        // given
+        val strToSanitize = "    CARTE 26/02/20 38 CARREFOUR DAC CB*2916"
+        val strExpected = "carte  38 carrefour dac"
+
+        val transaction = Credit("lib", "libBank", "desc", 12.3)
+        // when
+        val returnStr = transaction.sanitizeLibelle(strToSanitize)
+
+        // then
+        assertThat(returnStr).isEqualTo(strExpected)
+
+    }
 }

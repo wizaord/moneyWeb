@@ -160,15 +160,17 @@ class FamilyBankAccountsService(
     }
 
     fun getLastTransactionWithBetterMatchScore(transaction: Transaction): Transaction? {
-        return this.bankAccounts()
+        val sortedBy = this.bankAccounts()
                 .asSequence()
                 .map { it.bankAccount.getTransactionsMatched(transaction) }
                 .flatten()
                 .filter { it.matchPoint != 0.0 }
                 .sortedBy { it.transaction.dateCreation }
                 .sortedBy { it.matchPoint }
-                .map { it.transaction }
+                .toList()
+        return sortedBy.map { it.transaction }
                 .lastOrNull()
+
     }
 
     fun accountUpdateName(accountName: String, newAccountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateName(newAccountName)

@@ -37,13 +37,20 @@ abstract class Transaction(
 
     fun matchWith(transaction: Transaction): Double {
         var score = 0.0
-        if (transaction.userLibelle == this.userLibelle) score += 1.0
-        if (transaction.bankLibelle == this.bankLibelle) score += 0.9
-        if (this.bankDetail != null && transaction.bankDetail == this.bankDetail) score += 0.8
+        if (sanitizeLibelle(transaction.userLibelle) == sanitizeLibelle(this.userLibelle)) score += 1.0
+        if (sanitizeLibelle(transaction.bankLibelle) == sanitizeLibelle(this.bankLibelle)) score += 0.9
+        if (transaction.bankDetail != null && sanitizeLibelle(transaction.bankDetail?:"") == sanitizeLibelle(this.bankDetail?:"")) score += 0.8
         if (score > 0) {
             if (transaction.amount == this.amount) score += 0.3
         }
         return score
+    }
+
+    fun sanitizeLibelle(libelle: String): String {
+        return libelle.toLowerCase()
+                .replace(Regex("../../.."), "")
+                .replace(Regex("cb.[0-9][0-9][0-9][0-9]"), "")
+                .trim()
     }
 
 }

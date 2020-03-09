@@ -1,7 +1,6 @@
 package com.wizaord.moneyweb.services.fileparsers
 
 import com.wizaord.moneyweb.domain.transactions.Debit
-import com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -31,7 +30,7 @@ internal class FileParserQifTest {
         val transaction1 = transactions[0]
         assertThat(transaction1).isInstanceOf(Debit::class.java)
         assertThat(transaction1.amount).isEqualTo(-12.40)
-        assertThat(transaction1.userLibelle).isEqualTo(libelleBank)
+        assertThat(transaction1.userLibelle).isEqualTo("")
         assertThat(transaction1.bankLibelle).isEqualTo(libelleBank)
         assertThat(transaction1.bankDetail).isNull()
         assertThat(transaction1.dateCreation).isEqualTo(dateCreation)

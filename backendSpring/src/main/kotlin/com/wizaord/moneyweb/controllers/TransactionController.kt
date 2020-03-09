@@ -35,6 +35,14 @@ class TransactionController(
         val familyService = familyBankAccountServiceFactory.getFamilyServiceWithTransactions(familyName)
         familyService.transactionUpdate(accountName, transactionId, transaction.toDomain())
     }
+
+    @DeleteMapping("/{transactionId}")
+    fun deleteTransaction(@PathVariable familyName: String,
+                          @PathVariable accountName: String,
+                          @PathVariable transactionId: String) {
+        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithTransactions(familyName)
+        familyService.transactionDelete(accountName, transactionId)
+    }
 }
 
 

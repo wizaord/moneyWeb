@@ -13,6 +13,7 @@ export class TransactionsShowComponent {
 
   @Input() transactions$: Observable<Transaction[]>;
   @Output() transactionUpdate = new EventEmitter<Transaction>();
+  @Output() transactionRemove = new EventEmitter<Transaction>();
 
   constructor(private modalService: NgbModal) {
   }
@@ -30,4 +31,8 @@ export class TransactionsShowComponent {
       });
   }
 
+  deleteTransaction(transaction: Transaction) {
+    console.log('Delete transaction');
+    this.transactionRemove.emit(transaction);
+  }
 }

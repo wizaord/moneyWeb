@@ -87,5 +87,14 @@ export class AccountDetailsComponent implements OnInit {
                 this.prepareObservableTransactionForCurrentMonth();
             });
     }
+
+  transactionRemove(transaction: Transaction) {
+    this.accountTransactions.splice(
+      this.accountTransactions.indexOf(transaction), 1);
+    this.refreshTransactionSoldes();
+    this.prepareObservableTransactionForCurrentMonth();
+
+    this.transactionsService.removeTransaction(transaction).subscribe();
+  }
 }
 

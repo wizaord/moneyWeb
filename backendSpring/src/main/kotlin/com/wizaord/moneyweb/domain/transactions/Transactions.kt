@@ -36,12 +36,12 @@ abstract class Transaction(
     }
 
     fun matchWith(transaction: Transaction): Double {
-        return when {
-            transaction.userLibelle == this.userLibelle -> 1.0
-            transaction.bankLibelle == this.bankLibelle -> 0.9
-            transaction.bankDetail == this.bankDetail -> 0.8
-            else -> 0.0
-        }
+        var score = 0.0
+        if (transaction.userLibelle == this.userLibelle) score += 1.0
+        if (transaction.bankLibelle == this.bankLibelle) score += 0.9
+        if (this.bankDetail != null && transaction.bankDetail == this.bankDetail) score += 0.8
+        if (transaction.amount == this.amount) score += 0.3
+        return score
     }
 
 }

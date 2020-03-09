@@ -35,11 +35,6 @@ class FamilyBankAccountsService(
             val transactionsLoaded = familyBankAccountPersistence.loadTransactionsFromAccount(bankAccountOwner.bankAccount.getInternalId())
             transactionsLoaded.forEach { transaction -> bankAccountOwner.bankAccount.addTransaction(transaction) }
         }
-        //registered account Notification
-        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
-            val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
-            bankAccountImpl.registerInfrastructureBankAccountNotification(this)
-        }
         domainNotificationActivation()
     }
 
@@ -50,6 +45,11 @@ class FamilyBankAccountsService(
         }
         familyBankAccounts.bankAccountsOwners.addAll(familyBankAccountsImpl.bankAccountsOwners)
 
+        //registered account Notification
+        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
+            val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
+            bankAccountImpl.registerInfrastructureBankAccountNotification(this)
+        }
         domainNotificationActivation()
     }
 
@@ -122,16 +122,21 @@ class FamilyBankAccountsService(
         }
     }
 
-    fun transactionRegister(accountId: String, transaction: Transaction): Boolean {
+    fun transactionRegister(accountId: String, transaction: Transaction, activateDupDetection: Boolean = false): Boolean {
         logger.info("Registering a new transaction for account : $accountId")
         val bankAccount = this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount
-        if (bankAccount?.hasTransactionByProperties(transaction) == false) {
-            bankAccount.addTransaction(transaction)
-            return true
+        if (activateDupDetection) {
+            return if (bankAccount?.hasTransactionByProperties(transaction) == false) {
+                bankAccount.addTransaction(transaction)
+                true
+            } else {
+                logger.info("Transaction already registered in account")
+                false
+            }
         } else {
-            logger.info("Transaction already registered in account")
+            bankAccount?.addTransaction(transaction)
         }
-        return false
+        return true
     }
 
     fun transactions(accountName: String): List<Transaction> {
@@ -145,10 +150,32 @@ class FamilyBankAccountsService(
         this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateTransaction(transaction)
     }
 
+    fun transactionDelete(accountName: String, transactionId: String) {
+        val transactionById = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.getTransactionById(transactionId)
+        if (transactionById != null) {
+            this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.removeTransaction(transactionById)
+        } else {
+            logger.warn("Transaction with ID {} does not exist in account {}", transactionId, accountName)
+        }
+    }
+
+    fun getLastTransactionWithBetterMatchScore(transaction: Transaction): Transaction? {
+        return this.bankAccounts()
+                .asSequence()
+                .map { it.bankAccount.getTransactionsMatched(transaction) }
+                .flatten()
+                .filter { it.matchPoint != 0.0 }
+                .sortedBy { it.transaction.dateCreation }
+                .sortedBy { it.matchPoint }
+                .map { it.transaction }
+                .lastOrNull()
+    }
+
     fun accountUpdateName(accountName: String, newAccountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateName(newAccountName)
     fun accountUpdateBankName(accountName: String, newBankName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankName(newBankName)
     fun accountUpdateDateCreation(accountName: String, newAccountDate: LocalDate) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankAccountDateCreate(newAccountDate)
     fun accountUpdateOwners(accountName: String, newOwners: List<FamilyMember>) = this.familyBankAccounts.changeBankAccountOwners(accountName, newOwners)
     fun bankAccount(accountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)
+
 
 }

@@ -15,6 +15,10 @@
       <span class="input-group-text" id="addon-libelle" (click)="transaction.userLibelle = ''">&times;</span>
     </div>
   </div>
+  <label for="addon-libelle"><h4>Bank Libelle : </h4></label>
+  <div class="input-group mb-3">
+    <input type="text" readonly class="form-control" [(ngModel)]="transaction.bankLibelle" name=bankLibelle>
+  </div>
   <label for="addon-info"><h4>Info : </h4></label>
   <div class="row" id="addon-info">
     <div class="input-group col-4">

@@ -6,7 +6,6 @@ import com.wizaord.moneyweb.domain.transactions.Transaction
 import com.wizaord.moneyweb.domain.transactions.ventilations.CreditVentilation
 import com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation
 import org.springframework.context.annotation.Scope
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import java.io.InputStream
 import java.time.LocalDate
@@ -52,8 +51,8 @@ class QIFLine(
 
     fun toTransaction(): Transaction {
         val transaction = when (amount > 0) {
-            true -> Credit(descBank, descBank, null, amount, dateCreation = dateCreated)
-            false -> Debit(descBank, descBank, null, amount, dateCreation = dateCreated)
+            true -> Credit("", descBank, null, amount, dateCreation = dateCreated)
+            false -> Debit("", descBank, null, amount, dateCreation = dateCreated)
         }
         val ventilation = when (amount > 0) {
             true -> CreditVentilation(amount)

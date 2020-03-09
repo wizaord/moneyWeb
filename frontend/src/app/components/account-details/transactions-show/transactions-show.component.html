@@ -9,6 +9,7 @@
       <th scope="col">Date</th>
       <th scope="col">Montant</th>
       <th scope="col">Solde</th>
+      <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +22,9 @@
       <td>{{transaction.dateCreation | date}}</td>
       <td>{{transaction.amount}}</td>
       <td>{{transaction.currentSolde | number}}</td>
+      <td>
+        <button><i class="fa fa-trash-o" (click)="deleteTransaction(transaction)"></i></button>
+      </td>
     </tr>
     </tbody>
   </table>

@@ -4,6 +4,7 @@ import com.nhaarman.mockitokotlin2.*
 import com.wizaord.moneyweb.domain.*
 import com.wizaord.moneyweb.domain.transactions.Credit
 import com.wizaord.moneyweb.domain.transactions.Debit
+import com.wizaord.moneyweb.domain.transactions.TransactionMatch
 import com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation
 import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
 import org.assertj.core.api.Assertions.assertThat
@@ -168,4 +169,55 @@ internal class FamilyBankAccountsServiceTest {
         verify(bankAccount, times(0)).addTransaction(anyOrNull())
     }
 
+    @Test
+    internal fun `getLastTransactionWithBetterMatchScore - return the best score`() {
+        // given
+        val familyBank = FamilyBankAccountsImpl("family")
+        familyBank.registerFamilyMember(FamilyMember("Me"))
+
+        given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+        given(bankAccount.getTransactionsMatched(anyOrNull())).willReturn(listOf(
+                TransactionMatch(Debit("debit1", "bank", null, 10.0), 0.9),
+                TransactionMatch(Debit("debit2", "bank", null, 10.0), 1.0),
+                TransactionMatch(Debit("debit3", "bank", null, 10.0), 0.8)
+        ))
+        given(bankAccount.getName()).willReturn("accountName")
+
+        familyBank.registerAccount(bankAccount)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
+
+        val myTransaction = Debit("debit", "bank", null, 10.0)
+
+        // when
+        val lastT = familyBankAccountsService.getLastTransactionWithBetterMatchScore(myTransaction)
+
+        // then
+        assertThat(lastT!!.userLibelle).isEqualTo("debit2")
+    }
+
+    @Test
+    internal fun `getLastTransactionWithBetterMatchScore - If equal return the most recent`() {
+        // given
+        val familyBank = FamilyBankAccountsImpl("family")
+        familyBank.registerFamilyMember(FamilyMember("Me"))
+
+        given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+        given(bankAccount.getTransactionsMatched(anyOrNull())).willReturn(listOf(
+                TransactionMatch(Debit("debit1", "bank", null, 10.0, dateCreation = LocalDate.of(2020, 1, 1)), 1.0),
+                TransactionMatch(Debit("debit2", "bank", null, 10.0, dateCreation = LocalDate.of(2019, 1, 1)), 1.0),
+                TransactionMatch(Debit("debit3", "bank", null, 10.0, dateCreation = LocalDate.of(2021, 1, 1)), 0.8)
+        ))
+        given(bankAccount.getName()).willReturn("accountName")
+
+        familyBank.registerAccount(bankAccount)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
+
+        val myTransaction = Debit("debit", "bank", null, 10.0)
+
+        // when
+        val lastT = familyBankAccountsService.getLastTransactionWithBetterMatchScore(myTransaction)
+
+        // then
+        assertThat(lastT!!.userLibelle).isEqualTo("debit1")
+    }
 }

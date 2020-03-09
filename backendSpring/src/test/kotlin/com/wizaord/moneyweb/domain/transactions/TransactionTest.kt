@@ -120,7 +120,7 @@ internal class TransactionTest {
     internal fun `matchWith - transaction with the same banklibelle, return 0,9`() {
         // given
         val transaction = Credit("lib", "libBank", "desc", 12.3)
-        val transactionMatch = Credit("lib2", "libBank", "desc", 12.3)
+        val transactionMatch = Credit("lib2", "libBank", "desc2", 1.0)
 
         // when
         val matchPoint = transaction.matchWith(transactionMatch)
@@ -130,10 +130,36 @@ internal class TransactionTest {
     }
 
     @Test
+    internal fun `matchWith - transaction with the amount, return 0,3`() {
+        // given
+        val transaction = Credit("lib", "libBank", "desc", 12.3)
+        val transactionMatch = Credit("lib2", "libBank2", "desc2", 12.3)
+
+        // when
+        val matchPoint = transaction.matchWith(transactionMatch)
+
+        // then
+        assertThat(matchPoint).isEqualTo(0.3)
+    }
+
+    @Test
+    internal fun `matchWith - transaction with the userLibelle and bankLibelle, return 1,8`() {
+        // given
+        val transaction = Credit("lib", "libBank", "desc", 12.3)
+        val transactionMatch = Credit("lib", "libBank", "desc2", 12.0)
+
+        // when
+        val matchPoint = transaction.matchWith(transactionMatch)
+
+        // then
+        assertThat(matchPoint).isEqualTo(1.9)
+    }
+
+    @Test
     internal fun `matchWith - transaction with the same bankDescription, return 0,8`() {
         // given
         val transaction = Credit("lib", "libBank", "desc", 12.3)
-        val transactionMatch = Credit("lib2", "libBank2", "desc", 12.3)
+        val transactionMatch = Credit("lib2", "libBank2", "desc", 1.0)
 
         // when
         val matchPoint = transaction.matchWith(transactionMatch)
@@ -146,7 +172,7 @@ internal class TransactionTest {
     internal fun `matchWith - transaction with the nothing equals, return 0,0`() {
         // given
         val transaction = Credit("lib", "libBank", "desc", 12.3)
-        val transactionMatch = Credit("lib2", "libBank2", "desc2", 12.3)
+        val transactionMatch = Credit("lib2", "libBank2", "desc2", 1.0)
 
         // when
         val matchPoint = transaction.matchWith(transactionMatch)

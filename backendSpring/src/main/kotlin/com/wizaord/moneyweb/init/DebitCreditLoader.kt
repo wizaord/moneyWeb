@@ -111,15 +111,15 @@ class DebitCreditLoader(
         var transaction: Transaction?
         val dateCreate = createDateFromString(csvLine[2])!!
         if (isCredit) {
-            transaction = Credit(userLibelle, detailLibellebanque, userLibelle, amountTotal, isPointe, transactionId, dateCreate)
+            transaction = Credit(userLibelle, userLibelle, detailLibellebanque, amountTotal, isPointe, transactionId, dateCreate)
         } else {
-            transaction = Debit(userLibelle, detailLibellebanque, userLibelle, amountTotal, isPointe, transactionId, dateCreate)
+            transaction = Debit(userLibelle, userLibelle, detailLibellebanque, amountTotal, isPointe, transactionId, dateCreate)
         }
 
         // search account by Id
         ventilationsExtracted.forEach { transaction.addVentilation(it) }
 
-        serviceBeanForFamily.transactionRegister(accountsMap[accountDestination]!!, transaction)
+        serviceBeanForFamily.transactionRegister(accountsMap[accountDestination]!!, transaction, activateDupDetection = false)
 
     }
 

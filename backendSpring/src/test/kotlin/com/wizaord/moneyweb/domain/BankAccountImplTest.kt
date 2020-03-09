@@ -152,7 +152,7 @@ internal class BankAccountImplTest {
     }
 
     @Test
-    internal fun `getTransactionMatched - transaction with the same userlibelle, return 1,0`() {
+    internal fun `getTransactionMatched - transaction with the same userlibelle, return 3,0`() {
         // given
         val transaction = Credit("lib", "libBank", "desc", 10.0)
         bankAccount.addTransaction(transaction)
@@ -162,7 +162,7 @@ internal class BankAccountImplTest {
 
         //then
         assertThat(transactionsMatched).hasSize(1)
-        assertThat(transactionsMatched[0]).isEqualTo(TransactionMatch(transaction, 1.0))
+        assertThat(transactionsMatched[0]).isEqualTo(TransactionMatch(transaction, 3.0))
     }
 
     @Test

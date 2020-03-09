@@ -47,8 +47,7 @@ class FamilyBankAccountsService(
 
         //registered account Notification
         familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
-            val bankAccountImpl = bankAccountOwner.bankAccount as BankAccountImpl
-            bankAccountImpl.registerInfrastructureBankAccountNotification(this)
+            bankAccountOwner.bankAccount.registerInfrastructureBankAccountNotification(this)
         }
         domainNotificationActivation()
     }
@@ -122,7 +121,8 @@ class FamilyBankAccountsService(
         }
     }
 
-    fun transactionRegister(accountId: String, transaction: Transaction, activateDupDetection: Boolean = false): Boolean {
+    fun transactionRegister(accountId: String, transaction: Transaction) = transactionRegister(accountId, transaction, true)
+    fun transactionRegister(accountId: String, transaction: Transaction, activateDupDetection: Boolean = true): Boolean {
         logger.info("Registering a new transaction for account : $accountId")
         val bankAccount = this.familyBankAccounts.accessToAccountByAccountName(accountId)?.bankAccount
         if (activateDupDetection) {

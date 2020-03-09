@@ -31,5 +31,6 @@ interface BankAccount {
     fun updateBankName(newAccountBankName: String)
     fun updateBankAccountDateCreate(newAccountDate: LocalDate)
     fun getLastTransaction(): Transaction?
+    fun registerInfrastructureBankAccountNotification(infrastructureBankAccountNotifications: InfrastructureBankAccountNotifications)
 }
 

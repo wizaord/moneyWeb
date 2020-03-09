@@ -130,16 +130,16 @@ internal class TransactionTest {
     }
 
     @Test
-    internal fun `matchWith - transaction with the amount, return 0,3`() {
+    internal fun `matchWith - transaction score with a basic score different from 0 are increase of 0,3`() {
         // given
         val transaction = Credit("lib", "libBank", "desc", 12.3)
-        val transactionMatch = Credit("lib2", "libBank2", "desc2", 12.3)
+        val transactionMatch = Credit("lib", "libBank2", "desc2", 12.3)
 
         // when
         val matchPoint = transaction.matchWith(transactionMatch)
 
         // then
-        assertThat(matchPoint).isEqualTo(0.3)
+        assertThat(matchPoint).isEqualTo(1.3)
     }
 
     @Test

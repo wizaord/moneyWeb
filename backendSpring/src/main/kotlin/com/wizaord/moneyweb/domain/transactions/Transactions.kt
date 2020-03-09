@@ -40,7 +40,9 @@ abstract class Transaction(
         if (transaction.userLibelle == this.userLibelle) score += 1.0
         if (transaction.bankLibelle == this.bankLibelle) score += 0.9
         if (this.bankDetail != null && transaction.bankDetail == this.bankDetail) score += 0.8
-        if (transaction.amount == this.amount) score += 0.3
+        if (score > 0) {
+            if (transaction.amount == this.amount) score += 0.3
+        }
         return score
     }
 

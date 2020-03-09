@@ -3,6 +3,7 @@ import { AccountService } from '../../../services/account.service';
 import { Account } from '../../../domain/account/Account';
 import { TransactionsService } from '../../../services/transactions.service';
 import { count, filter, flatMap, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-show',
@@ -14,7 +15,8 @@ export class AccountShowComponent implements OnInit {
   private accounts: AccountShowList[] = [];
 
   constructor(private accountService: AccountService,
-              private transactionsService: TransactionsService) {
+              private transactionsService: TransactionsService,
+              private router: Router) {
   }
 
   ngOnInit() {

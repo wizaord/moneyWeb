@@ -2,12 +2,11 @@ package com.wizaord.moneyweb.infrastructure.domain
 
 import com.wizaord.moneyweb.domain.categories.CategoryFamily
 import org.springframework.data.mongodb.core.mapping.Document
-import java.util.*
 
 @Document
 class CategoryFamily(
         name: String,
-        id: String = UUID.randomUUID().toString(),
+        id: String,
         val categories: MutableList<Category> = mutableListOf()
 ) : Category(name, id) {
 
@@ -27,7 +26,7 @@ class CategoryFamily(
 
 open class Category(
         var name: String,
-        var id: String = UUID.randomUUID().toString()
+        var id: String
 ) {
 
     open fun toDomain() = com.wizaord.moneyweb.domain.categories.Category(name, id)

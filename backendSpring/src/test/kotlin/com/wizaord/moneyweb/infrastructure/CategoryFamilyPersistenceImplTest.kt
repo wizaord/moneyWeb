@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.given
 import com.wizaord.moneyweb.infrastructure.domain.Category
 import com.wizaord.moneyweb.infrastructure.domain.CategoryFamily
 import com.wizaord.moneyweb.infrastructure.domain.CategoryFamilyRepository
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -23,8 +23,8 @@ internal class CategoryFamilyPersistenceImplTest {
     @Test
     internal fun `getAll - return all category from database`() {
         // given
-        val category1 = CategoryFamily("category")
-        val category2 = CategoryFamily("category2")
+        val category1 = CategoryFamily("category", "id")
+        val category2 = CategoryFamily("category2", "id2")
         given(categoryFamilyRepository.findAll()).willReturn(mutableListOf(
                 category1,
                 category2
@@ -42,8 +42,8 @@ internal class CategoryFamilyPersistenceImplTest {
     @Test
     internal fun `getById - return only category with Id`() {
         // given
-        val category1 = CategoryFamily("category")
-        val category2 = CategoryFamily("category2")
+        val category1 = CategoryFamily("category", "id")
+        val category2 = CategoryFamily("category2", "id2")
         given(categoryFamilyRepository.findAll()).willReturn(mutableListOf(
                 category1,
                 category2
@@ -60,10 +60,10 @@ internal class CategoryFamilyPersistenceImplTest {
     @Test
     internal fun `getById - return only category with sub category with Id`() {
         // given
-        val category1 = CategoryFamily("category")
-        category1.categories.add(Category("subCategory"))
-        val category2 = CategoryFamily("category2")
-        category2.categories.add(Category("SubCategory2"))
+        val category1 = CategoryFamily("category", "id")
+        category1.categories.add(Category("subCategory", "id2"))
+        val category2 = CategoryFamily("category2", "id3")
+        category2.categories.add(Category("SubCategory2", "id4"))
         given(categoryFamilyRepository.findAll()).willReturn(mutableListOf(
                 category1,
                 category2

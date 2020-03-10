@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 
 @Component
+@Transactional
 class InitRunner (
         @Autowired var categoryLoader: CategoryLoader,
         @Autowired var categoryFamilyRepository: CategoryFamilyRepository,
@@ -30,10 +32,11 @@ class InitRunner (
             return
         }
         cleanDatabase()
-        categoryLoader.loadCategories()
-
         // load account
         accountLoader.loadAccounts()
+
+        categoryLoader.loadCategories()
+
         val accountsMap = accountLoader.accountsMapping
 
         // load transactions

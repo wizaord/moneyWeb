@@ -3,6 +3,7 @@ package com.wizaord.moneyweb.init
 import com.wizaord.moneyweb.domain.categories.Category
 import com.wizaord.moneyweb.domain.categories.CategoryFamily
 import com.wizaord.moneyweb.services.CategoryService
+import com.wizaord.moneyweb.services.FamilyBankAccountServiceFactory
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -11,7 +12,8 @@ import java.io.File
 
 @Component
 class CategoryLoader(
-        @Autowired var categoryService: CategoryService
+        @Autowired val categoryService: CategoryService,
+        @Autowired val familyBankAccountServiceFactory: FamilyBankAccountServiceFactory
 ) {
 
     @Value("\${moneyweb.init.initdatabase.fileLocation.categoriesFamily}")
@@ -38,12 +40,16 @@ class CategoryLoader(
         // replacement de tous les Ids
         categoriesFamily.forEach { categoryService.createCategory(it) }
         // creation d'une dernière category VIREMENT INTERNE
-        createVirementInterneCategory()
+        createInternalVirements()
         logger.info("All categories have been loaded")
     }
 
-    private fun createVirementInterneCategory() {
-        val categoryFamily = CategoryFamily("VIREMENT INTERNE", "1")
+    private fun createInternalVirements() {
+        val categoryFamily = CategoryFamily("VIREMENT INTERNE", CategoryFamily.VIREMENT_INTERNE_ID)
+        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions("mouilleron")
+        familyService.bankAccounts()
+                .forEach { bao -> categoryFamily.addSubCategory(Category("VIREMENT - ${bao.bankAccount.getName()}", bao.bankAccount.getInternalId())) }
+
         categoryService.createCategory(categoryFamily)
     }
 

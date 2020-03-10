@@ -1,6 +1,7 @@
 package com.wizaord.moneyweb.init
 
 import com.wizaord.moneyweb.domain.categories.Category
+import com.wizaord.moneyweb.domain.categories.CategoryFamily
 import com.wizaord.moneyweb.domain.transactions.Credit
 import com.wizaord.moneyweb.domain.transactions.Debit
 import com.wizaord.moneyweb.domain.transactions.Transaction
@@ -35,19 +36,22 @@ class DebitCreditLoader(
     private lateinit var serviceBeanForFamily: FamilyBankAccountsService
 
     private val transactionVentilations: MutableMap<String, MutableList<Ventilation>> = mutableMapOf()
-    private val categories = categoryService.getAll()
-
+    private lateinit var categories : List<CategoryFamily>
+    private var accountsMap: Map<String, String>? = null;
 
     fun loadFamilyBankAccount(familyName: String) {
         serviceBeanForFamily = familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions(familyName)
+        this.categories = categoryService.getAll()
     }
 
     fun loadDebitCredit(accountsMap: Map<String, String>) {
+        this.accountsMap = accountsMap
+
         loadDetailMontant()
         File(transactionsFilePath)
                 .forEachLine {
                     val splitStr = it.split(";").map { splitedChar -> splitedChar.replace("\"", "") }
-                    transformCsvDebitCreditLineInTransactionAndAddToAccount(splitStr, accountsMap)
+                    transformCsvDebitCreditLineInTransactionAndAddToAccount(splitStr)
                 }
     }
 
@@ -80,8 +84,17 @@ class DebitCreditLoader(
             false -> DebitVentilation(amount.absoluteValue)
         }
         if (categorieId == "NULL") {
-            // il s'agit d'un virement interne
-            categorieId = "1"
+            if (compteVirementInterne == "NULL") {
+                categorieId = CategoryFamily.VIREMENT_INTERNE_ID
+            } else {
+                // on recherche le virement du compte
+                val accountName = this.accountsMap?.get(compteVirementInterne)
+                if (accountName == null) {
+                    logger.error("Unable to find account for ID - $compteVirementInterne")
+                }
+                val categoryVirement = findCategoryByName("VIREMENT - $accountName")
+                categorieId = categoryVirement.id
+            }
         }
         ventilation.categoryId = findCategoryById(categorieId).id
         return ventilation
@@ -94,8 +107,15 @@ class DebitCreditLoader(
         return categoryFamily.findById(categoryId)!!
     }
 
+    private fun findCategoryByName(categoryName: String): Category {
+        val categoryFamily = categories.firstOrNull { categoryFamily ->
+            categoryFamily.findByName(categoryName) != null
+        } ?: error("Impossible de trouver la categorie avec le nom $categoryName")
+        return categoryFamily.findByName(categoryName)!!
+    }
+
     //"149645";"BP LEP";"2010-01-08 00:00:00";"1";"2010-01-08 00:00:00";"7700.00";"33";"SOUSCRIPTION LIVRET EPARG"
-    fun transformCsvDebitCreditLineInTransactionAndAddToAccount(csvLine: List<String>, accountsMap: Map<String, String>) {
+    fun transformCsvDebitCreditLineInTransactionAndAddToAccount(csvLine: List<String>) {
         val montantTransfere = csvLine[5].replace("\"", "").toDouble()
         val accountDestination = csvLine[6]
         val detailLibellebanque = csvLine.getOrElse(7) { "" }
@@ -119,7 +139,7 @@ class DebitCreditLoader(
         // search account by Id
         ventilationsExtracted.forEach { transaction.addVentilation(it) }
 
-        serviceBeanForFamily.transactionRegister(accountsMap[accountDestination]!!, transaction, activateDupDetection = false)
+        serviceBeanForFamily.transactionRegister(this.accountsMap?.get(accountDestination)!!, transaction, activateDupDetection = false)
 
     }
 

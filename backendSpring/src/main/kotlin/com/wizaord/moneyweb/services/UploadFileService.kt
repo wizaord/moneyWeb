@@ -25,12 +25,23 @@ class UploadFileService(
         val familyService = familyBankAccountServiceFactory.getFamilyServiceWithTransactions(familyName)
 
         val transactionRegistered = transactions
+                .asSequence()
                 .map { enrichUserLibelleTransaction(it, familyService)}
+                .map { enrichCategoryTransaction(it, familyService)}
                 .map { transaction -> familyService.transactionRegister(accountName, transaction) }
                 .filter { it }
                 .count()
 
         return AccountUploadResult(fileName, transactions.size, transactionRegistered)
+    }
+
+    private fun enrichCategoryTransaction(transaction: Transaction, familyService: FamilyBankAccountsService): Transaction {
+        val transactionMatch = familyService.getLastTransactionWithBetterMatchScore(transaction)
+        for ((index, ventilation) in transaction.ventilations.withIndex()) {
+            ventilation.categoryId = transactionMatch?.ventilations?.getOrNull(index)?.categoryId
+        }
+        transaction.ventilations.forEach { logger.info("Enrich category to {}", it.categoryId) }
+        return transaction
     }
 
     private fun enrichUserLibelleTransaction(transaction: Transaction, familyService: FamilyBankAccountsService): Transaction {

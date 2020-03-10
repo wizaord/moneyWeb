@@ -40,6 +40,11 @@ export class VentilationEditComponent implements OnInit {
   removeVentilation(ventilation: Ventilation) {
     this.ventilationRemoveEvent.emit(ventilation);
   }
+
+  categorySelectedChange(categoryId: number) {
+    console.log('Selection de la category avec l id ' + categoryId);
+    this.ventilation.categoryId = categoryId.toString();
+  }
 }
 
 class CategorySelect {

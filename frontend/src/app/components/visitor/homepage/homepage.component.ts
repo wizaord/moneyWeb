@@ -16,8 +16,8 @@ export class HomepageComponent implements OnInit {
   };
 
   loading = false;
+  error = '';
   private returnUrl: string;
-  private error = '';
 
   constructor(private authentificationService: AuthenticationService,
               private route: ActivatedRoute,

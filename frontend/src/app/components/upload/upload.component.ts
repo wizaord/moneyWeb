@@ -12,8 +12,8 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class UploadComponent implements OnInit {
   fileToUpload: File = null;
-  private loading: boolean;
-  private openedAccounts$: Observable<Account[]>;
+  loading: boolean;
+  openedAccounts$: Observable<Account[]>;
   accountSelected: string;
 
   // alert

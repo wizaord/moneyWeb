@@ -11,11 +11,11 @@ import { DateService } from '../../services/date.service';
     styleUrls: ['./account-details.component.css']
 })
 export class AccountDetailsComponent implements OnInit {
-    private accountNameTitle: string;
-    private currentMonth: Date = new Date();
-    private accountTransactions: Transaction[] = [];
+    accountNameTitle: string;
+    currentMonth: Date = new Date();
+    accountTransactions: Transaction[] = [];
+    loading = true;
     private accountTransactionsBehavior = new BehaviorSubject<Transaction[]>([]);
-    public loading = true;
 
     constructor(
         private route: ActivatedRoute,

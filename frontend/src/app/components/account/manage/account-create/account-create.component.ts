@@ -4,7 +4,6 @@ import { AccountService } from '../../../../services/account.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AccountOwner } from '../../../../domain/user/AccountOwner';
-import { UserService } from '../../../../services/user.service';
 import { FamilyService } from '../../../../services/family.service';
 
 @Component({
@@ -13,14 +12,14 @@ import { FamilyService } from '../../../../services/family.service';
   styleUrls: ['./account-create.component.css']
 })
 export class AccountCreateComponent implements OnInit {
-  private loading = false;
-  private error = '';
+  loading = false;
+  error = '';
 
-  private accountName: string;
-  private openDate: NgbDateStruct;
-  private accountOwners: AccountOwner[] = [];
-  private ownersSelected: string[];
-  private bankName: string;
+  accountName: string;
+  openDate: NgbDateStruct;
+  accountOwners: AccountOwner[] = [];
+  ownersSelected: string[];
+  bankName: string;
 
   constructor(private ngbDateParserFormatter: NgbDateParserFormatter,
               private router: Router,

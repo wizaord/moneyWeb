@@ -9,9 +9,8 @@ import { User } from './domain/authenticated/user';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'moneyWeb';
   collapsed = true;
-  private currentUser: User;
+  currentUser: User;
 
   constructor(
     private router: Router,

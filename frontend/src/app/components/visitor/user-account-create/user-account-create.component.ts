@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UserAccountDetails } from '../../../domain/user/UserAccountDetails';
-import { AccountOwner } from '../../../domain/user/AccountOwner';
 import { UserService } from '../../../services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -13,10 +12,10 @@ import { AuthenticationService } from '../../../services/authentification/authen
 })
 export class UserAccountCreateComponent implements OnInit {
 
-  private accountInfo: UserAccountDetails;
-  private loading: boolean;
-  private error = '';
-  private warning = '';
+  accountInfo: UserAccountDetails;
+  loading: boolean;
+  error = '';
+  warning = '';
 
 
   constructor(private userService: UserService,

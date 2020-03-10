@@ -5,7 +5,6 @@ import { Account } from '../../../../domain/account/Account';
 import { FamilyService } from '../../../../services/family.service';
 import { AccountOwner } from '../../../../domain/user/AccountOwner';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { MatSelect } from '@angular/material/select';
 import { DateService } from '../../../../services/date.service';
 
 @Component({
@@ -15,10 +14,10 @@ import { DateService } from '../../../../services/date.service';
 })
 export class AccountModifyComponent implements OnInit {
 
-  private accountNameTitle: string;
-  private accountToEdit: Account;
-  private accountOwners: AccountOwner[] = [];
-  private accountDate: NgbDateStruct;
+  accountNameTitle: string;
+  accountToEdit: Account;
+  accountOwners: AccountOwner[] = [];
+  accountDate: NgbDateStruct;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,9 +51,5 @@ export class AccountModifyComponent implements OnInit {
     this.accountService.updateAccountInfo(this.accountNameTitle, this.accountToEdit).subscribe(
       account => this.router.navigate(['/accountManage'])
     );
-  }
-
-  selectIsValid(selectOwnerRef: MatSelect): boolean {
-    return selectOwnerRef.value != null && selectOwnerRef.value.length !== 0;
   }
 }

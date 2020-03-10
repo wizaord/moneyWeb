@@ -61,10 +61,9 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div [hidden]="selectIsValid(selectOwnerRef)" class="alert alert-danger">Select at least one owner</div>
       </div>
       <div class="col-6">
-        <button type="submit" class="btn btn-warning btn-lg" [disabled]="!accountModifyForm.form.valid || datebankNameRef.value == null || !selectIsValid(selectOwnerRef)">
+        <button type="submit" class="btn btn-warning btn-lg" [disabled]="!accountModifyForm.form.valid || datebankNameRef.value == null">
           Modifier
         </button>
       </div>

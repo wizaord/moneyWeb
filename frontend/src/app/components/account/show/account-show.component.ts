@@ -4,6 +4,9 @@ import { Account } from '../../../domain/account/Account';
 import { TransactionsService } from '../../../services/transactions.service';
 import { count, filter, flatMap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { FamilyService } from '../../../services/family.service';
+import { AccountOwner } from '../../../domain/user/AccountOwner';
 
 @Component({
   selector: 'app-show',
@@ -13,13 +16,21 @@ import { Router } from '@angular/router';
 export class AccountShowComponent implements OnInit {
 
   private accounts: AccountShowList[] = [];
+  private accountsToShow: AccountShowList[] = [];
+
+  filterFamilyMemberSelected: string[] = [];
+  filterFamilyMember$: Observable<AccountOwner[]>;
 
   constructor(private accountService: AccountService,
               private transactionsService: TransactionsService,
+              private familyService: FamilyService,
               private router: Router) {
   }
 
   ngOnInit() {
+
+    this.filterFamilyMember$ = this.familyService.getOwners();
+
     this.accountService.getOpenedAccounts()
       .pipe(
         map(account => new AccountShowList(account))
@@ -27,6 +38,7 @@ export class AccountShowComponent implements OnInit {
       .subscribe(
       account => {
         this.accounts.push(account);
+        this.accountsToShow.push(account);
         this.transactionsService.getTransactions(account.accountName)
           .pipe(
             flatMap(transactions => transactions),
@@ -39,7 +51,18 @@ export class AccountShowComponent implements OnInit {
   }
 
   get accountsSortedByName() {
-    return this.accounts.sort((a, b) => a.accountName.localeCompare(b.accountName));
+    return this.accountsToShow.sort((a, b) => a.accountName.localeCompare(b.accountName));
+  }
+
+  filterFamilyMemberChange() {
+    console.log('User selected => ' + this.filterFamilyMemberSelected);
+    if (this.filterFamilyMemberSelected.length === 0) {
+      this.accountsToShow = this.accounts;
+    } else {
+      this.accountsToShow = this.accounts.filter(
+        account => account.owners.find(
+          owner => this.filterFamilyMemberSelected.indexOf(owner) !== -1) !== undefined);
+    }
   }
 }
 

@@ -1,15 +1,27 @@
 <div class="container">
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Bank</th>
-      <th scope="col">Name</th>
-      <th scope="col">Amount</th>
-      <th scope="col">Owners</th>
-    </tr>
-    </thead>
-    <tbody>
+  <div class="row">
+    <ng-select [items]="filterFamilyMember$ | async"
+               [multiple]="true"
+               [hideSelected]="true"
+               bindLabel="name"
+               autofocus
+               bindValue="name"
+               [(ngModel)]="filterFamilyMemberSelected"
+               (change)="filterFamilyMemberChange()">
+    </ng-select>
+  </div>
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Bank</th>
+        <th scope="col">Name</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Owners</th>
+      </tr>
+      </thead>
+      <tbody>
       <tr [class.table-warning]="account.nbNonChecked !== 0" *ngFor="let account of accountsSortedByName ; index as i"
           routerLink="/account/{{account.accountName}}">
         <th scope="row">{{ i + 1 }}</th>
@@ -18,6 +30,7 @@
         <td>{{account.solde | number}}</td>
         <td>{{account.owners}}</td>
       </tr>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </div>

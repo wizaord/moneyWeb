@@ -6,6 +6,7 @@
       <th scope="col">Libelle</th>
       <th scope="col">Bank Libelle</th>
       <th scope="col">Bank Detail</th>
+      <th scope="col">Category</th>
       <th scope="col">Date</th>
       <th scope="col">Montant</th>
       <th scope="col">Solde</th>
@@ -19,6 +20,7 @@
       <td>{{transaction.userLibelle}}</td>
       <td>{{transaction.bankLibelle}}</td>
       <td>{{transaction.bankDetail}}</td>
+      <td>{{getCategoryName(transaction)}}</td>
       <td>{{transaction.dateCreation | date}}</td>
       <td>{{transaction.amount}}</td>
       <td>{{transaction.currentSolde | number}}</td>

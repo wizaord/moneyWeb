@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Ventilation } from '../../../../../domain/account/Ventilation';
 import { concatAll, flatMap, map, toArray } from 'rxjs/operators';
 import { CategoriesService } from '../../../../../services/categories.service';
+import { CategoryFamily } from '../../../../../domain/categories/CategoryFamily';
 
 @Component({
   selector: 'app-ventilation-edit',

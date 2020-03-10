@@ -1,5 +1,5 @@
 
-class SubCategoryFamily {
+export class SubCategoryFamily {
   public name: string;
   public id: string;
 

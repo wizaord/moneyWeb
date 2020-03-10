@@ -25,4 +25,5 @@ export class Transaction {
     this.accountName = t.accountName;
     this.ventilations = t.ventilations.map(ventilation => new Ventilation(ventilation.amount, ventilation.categoryId));
   }
+
 }

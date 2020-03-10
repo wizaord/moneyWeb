@@ -1,5 +1,6 @@
+import { SubCategoryFamily } from './SubCategoryFamily';
 
-class CategoryFamily {
+export class CategoryFamily {
   public name: string;
   public id: string;
   public subCategories: SubCategoryFamily[];

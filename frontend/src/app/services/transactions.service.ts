@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentification/authentication.service';
 import { Observable } from 'rxjs';
 import { Transaction } from '../domain/account/Transaction';
-import { flatMap, map, toArray } from 'rxjs/operators';
+import { filter, flatMap, map, toArray } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,16 @@ export class TransactionsService {
       }),
       toArray()
     );
+  }
+
+  getDistinctTransactionUserLibelle(accountName: string, userLibelleMatch: string): Observable<string[]> {
+    return this.getTransactions(accountName)
+      .pipe(
+        flatMap(t => t),
+        filter(transaction => transaction.userLibelle.includes(userLibelleMatch)),
+        map(transaction => transaction.userLibelle),
+        toArray()
+      );
   }
 
   updateTransaction(transaction: Transaction) {

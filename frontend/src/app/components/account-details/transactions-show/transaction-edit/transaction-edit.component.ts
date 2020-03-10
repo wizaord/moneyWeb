@@ -3,6 +3,7 @@ import { Transaction } from '../../../../domain/account/Transaction';
 import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Ventilation } from '../../../../domain/account/Ventilation';
 import { DateService } from '../../../../services/date.service';
+import { TransactionsService } from '../../../../services/transactions.service';
 
 @Component({
   selector: 'app-transaction-edit',
@@ -14,8 +15,13 @@ export class TransactionEditComponent implements OnInit {
   @Input() transaction: Transaction;
   accountDate: NgbDateStruct;
 
+  userLibellePropositions: string[] = [];
+  userLibelleSearch: string;
+  isLoadingResult = false;
+
   constructor(private dateService: DateService,
-              public activeModal: NgbActiveModal) {
+              public activeModal: NgbActiveModal,
+              public transactionsService: TransactionsService) {
   }
 
   ngOnInit() {
@@ -37,6 +43,22 @@ export class TransactionEditComponent implements OnInit {
   addNewVentilation() {
     this.transaction.ventilations.push(new Ventilation(0, '1'));
   }
+
+  onChangeSearch(val: string) {
+    console.log('Valeur à rechercher => ' + val);
+    this.isLoadingResult = true;
+    this.transactionsService.getDistinctTransactionUserLibelle(this.transaction.accountName, val)
+      .subscribe(userlibelles => {
+        this.userLibellePropositions = [];
+        userlibelles.filter((item, i, ar) => ar.indexOf(item) === i)
+                    .forEach(userLibelle => {
+                      this.userLibellePropositions.push(userLibelle);
+                    });
+
+        this.isLoadingResult = false;
+      });
+  }
+
 }
 
 

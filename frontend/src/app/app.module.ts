@@ -38,6 +38,7 @@ import { SortTransactionByDatePipe } from './pipes/sort-by.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { VentilationEditComponent } from './components/account-details/transactions-show/transaction-edit/ventilation-edit/ventilation-edit.component';
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
     MatDialogModule,
     MatButtonModule,
     MatInputModule,
-    NgSelectModule
+    NgSelectModule,
+    AutocompleteLibModule
   ],
   entryComponents: [
     TransactionEditComponent,

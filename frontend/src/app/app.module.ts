@@ -37,6 +37,7 @@ import { MatInputModule } from '@angular/material/input';
 import { SortTransactionByDatePipe } from './pipes/sort-by.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { VentilationEditComponent } from './components/account-details/transactions-show/transaction-edit/ventilation-edit/ventilation-edit.component';
+import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { VentilationEditComponent } from './components/account-details/transacti
     DateNextMonthExtractPipe,
     SortTransactionByDatePipe,
     VentilationEditComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     NgbModule,
@@ -82,7 +84,8 @@ import { VentilationEditComponent } from './components/account-details/transacti
     NgSelectModule
   ],
   entryComponents: [
-    TransactionEditComponent
+    TransactionEditComponent,
+    ConfirmationDialogComponent
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

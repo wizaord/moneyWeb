@@ -5,6 +5,8 @@ import { Transaction } from '../../../domain/account/Transaction';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoriesService } from '../../../services/categories.service';
 import { flatMap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-transactions-show',
@@ -20,7 +22,8 @@ export class TransactionsShowComponent implements OnInit {
   private categoriesMap: Map<string, string> = new Map<string, string>();
 
   constructor(private modalService: NgbModal,
-              private categoriesService: CategoriesService) {
+              private categoriesService: CategoriesService,
+              public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -44,9 +47,18 @@ export class TransactionsShowComponent implements OnInit {
   }
 
   deleteTransaction(transaction: Transaction) {
-    console.log('Delete transaction');
-    this.transactionRemove.emit(transaction);
-  }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: 'Do you confirm the deletion of this transaction ?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Delete transaction');
+        this.transactionRemove.emit(transaction);
+      }
+    });
+    }
 
   getCategoryName(transaction: Transaction): string {
       if (transaction.ventilations.length === 0) {
@@ -58,4 +70,8 @@ export class TransactionsShowComponent implements OnInit {
       return this.categoriesMap.get(transaction.ventilations[0].categoryId);
   }
 
+  pointTransaction(transaction: Transaction) {
+    transaction.isPointe = true;
+    this.transactionUpdate.emit(transaction);
+  }
 }

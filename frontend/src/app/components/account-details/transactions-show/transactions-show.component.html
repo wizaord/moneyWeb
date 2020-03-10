@@ -25,6 +25,7 @@
       <td>{{transaction.amount}}</td>
       <td>{{transaction.currentSolde | number}}</td>
       <td>
+        <button *ngIf="!transaction.isPointe"><i class="fa fa-check-circle" (click)="pointTransaction(transaction)"></i></button>
         <button><i class="fa fa-trash-o" (click)="deleteTransaction(transaction)"></i></button>
       </td>
     </tr>

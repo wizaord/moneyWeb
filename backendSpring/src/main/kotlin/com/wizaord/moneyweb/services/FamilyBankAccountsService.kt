@@ -12,7 +12,8 @@ import java.time.LocalDate
 @Component
 @Scope("prototype")
 class FamilyBankAccountsService(
-        @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence) : InfrastructureBankAccountFamilyNotifications, InfrastructureBankAccountNotifications {
+        @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence,
+        @Autowired val categoryService: CategoryService) : InfrastructureBankAccountFamilyNotifications, InfrastructureBankAccountNotifications {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
     private var activatePersistence = false
@@ -147,6 +148,15 @@ class FamilyBankAccountsService(
     fun transactionUpdate(accountName: String, transactionId: String, transaction: Transaction) {
         if (transactionId != transaction.id) return
         if (!transaction.isValid()) return
+        val isVirementToInternalAccount = transaction.ventilations
+                .filter { categoryService.isVirementCategory(it.categoryId) }
+                .map { categoryService.getAccountNameVirementDestination(it.categoryId!!) }
+                .firstOrNull()
+
+        if (isVirementToInternalAccount != null) {
+            logger.info("New virement to another account => {}", isVirementToInternalAccount)
+            this.transactionRegister(isVirementToInternalAccount, transaction.reverseTransaction())
+        }
         this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateTransaction(transaction)
     }
 

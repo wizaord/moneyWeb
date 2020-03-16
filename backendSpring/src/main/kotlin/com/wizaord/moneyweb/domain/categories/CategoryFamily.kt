@@ -9,7 +9,7 @@ data class CategoryFamily(
 ) : Category(name, id) {
 
     companion object {
-        val VIREMENT_INTERNE_ID = "1"
+        const val VIREMENT_INTERNE_ID = "1"
     }
 
     private val categories: MutableList<Category> = mutableListOf()

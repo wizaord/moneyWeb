@@ -53,4 +53,6 @@ abstract class Transaction(
                 .trim()
     }
 
+    abstract fun reverseTransaction(): Transaction
+
 }

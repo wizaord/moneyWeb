@@ -75,4 +75,5 @@ internal class CategoryFamilyPersistenceImplTest {
         // then
         assertThat(categoryReturned.name).isEqualTo("SubCategory2")
     }
+
 }

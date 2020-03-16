@@ -8,5 +8,4 @@ interface CategoryFamilyPersistence {
     fun init(categoryFamily: CategoryFamily)
     fun getAll(): List<CategoryFamily>
     fun getById(categoryId: String): Category
-
 }

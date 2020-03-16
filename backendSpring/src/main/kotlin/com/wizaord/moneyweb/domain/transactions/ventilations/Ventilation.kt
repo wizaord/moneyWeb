@@ -8,4 +8,5 @@ abstract class Ventilation(
         val id: String = UUID.randomUUID().toString()
 ) {
 
+    abstract fun reverseVentilation(): Ventilation
 }

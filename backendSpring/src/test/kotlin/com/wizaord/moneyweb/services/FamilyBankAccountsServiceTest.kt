@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -28,6 +29,9 @@ internal class FamilyBankAccountsServiceTest {
 
     @Mock
     lateinit var infrastructureBankAccountFamilyNotifications: InfrastructureBankAccountFamilyNotifications
+
+    @Mock
+    lateinit var categoryService: CategoryService
 
     @InjectMocks
     lateinit var familyBankAccountsService: FamilyBankAccountsService
@@ -145,6 +149,49 @@ internal class FamilyBankAccountsServiceTest {
 
         // then
         verify(bankAccount, times(1)).updateTransaction(debit)
+    }
+
+    @Test
+    internal fun `transactionUpdate - when transaction is Pointed and contains virement to another account, then add a new transaction in another account`() {
+        // given
+        val familyBank = FamilyBankAccountsImpl("family")
+        familyBank.registerFamilyMember(FamilyMember("Me"))
+        given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+
+        val bankAccountRef = bankAccount
+        val bankAccountDestination = Mockito.mock(BankAccount::class.java)
+        given(bankAccountRef.getName()).willReturn("accountName")
+        given(bankAccountDestination.getName()).willReturn( "bankAccountRefName")
+
+        familyBank.registerAccount(bankAccountRef)
+        familyBank.registerAccount(bankAccountDestination)
+
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
+
+        val debit = Debit("libelle", "bank", null, 10.0, isPointe = true, id = "1")
+        debit.addVentilation(DebitVentilation(10.0, "1"))
+
+        val debitRef = Debit("libelle", "bank", null, 10.0,isPointe = false, id = "1")
+        debitRef.addVentilation(DebitVentilation(10.0, "1"))
+
+        given(categoryService.isVirementCategory("1")).willReturn {true}
+        given(categoryService.getAccountNameVirementDestination("1")).willReturn { "bankAccountRefName" }
+
+        // when
+        familyBankAccountsService.transactionUpdate("accountName", debit.id, debit)
+
+        // then
+        verify(bankAccountDestination).addTransaction(anyOrNull())
+        verify(bankAccountRef).updateTransaction(anyOrNull())
+    }
+
+
+    internal fun `transactionUpdate - when transaction is already Pointed and contains virement to another account, then do nothing in another account`() {
+        // given
+
+        // when
+
+        // then
     }
 
     @Test

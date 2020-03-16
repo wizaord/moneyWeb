@@ -195,4 +195,74 @@ internal class TransactionTest {
         assertThat(returnStr).isEqualTo(strExpected)
 
     }
+
+    @Test
+    internal fun `reverseTransaction - If transaction is Debit, then reverse is Credit`() {
+        // given
+        val debitRef = Debit("libelle", "bankLibelle", "desc", 10.0, false, "1")
+
+        // when
+        val reverseTransaction = debitRef.reverseTransaction()
+
+        // then
+        assertThat(reverseTransaction).isInstanceOf(Credit::class.java)
+        assertThat(reverseTransaction.id).isNotEqualTo("1")
+        assertThat(reverseTransaction.userLibelle).isEqualTo("libelle")
+        assertThat(reverseTransaction.bankLibelle).isEqualTo("bankLibelle")
+        assertThat(reverseTransaction.bankDetail).isEqualTo("desc")
+        assertThat(reverseTransaction.amount).isEqualTo(10.0)
+        assertThat(reverseTransaction.isPointe).isFalse()
+    }
+
+    @Test
+    internal fun `reverseTransaction - If transaction is Credit, then reverse is Debit`() {
+        // given
+        val creditRef = Credit("libelle", "bankLibelle", "desc", 10.0, false, "1")
+
+        // when
+        val reverseTransaction = creditRef.reverseTransaction()
+
+        // then
+        assertThat(reverseTransaction).isInstanceOf(Debit::class.java)
+        assertThat(reverseTransaction.id).isNotEqualTo("1")
+        assertThat(reverseTransaction.userLibelle).isEqualTo("libelle")
+        assertThat(reverseTransaction.bankLibelle).isEqualTo("bankLibelle")
+        assertThat(reverseTransaction.bankDetail).isEqualTo("desc")
+        assertThat(reverseTransaction.amount).isEqualTo(-10.0)
+        assertThat(reverseTransaction.isPointe).isFalse()
+    }
+
+    @Test
+    internal fun `reverseTransaction - If transaction ventilation is Debit, then reverse is ventilation Credit`() {
+        // given
+        val debitRef = Debit("libelle", "bankLibelle", "desc", 10.0, false, "1")
+        debitRef.addVentilation(DebitVentilation(10.0, "10"))
+
+        // when
+        val reverseTransaction = debitRef.reverseTransaction()
+
+        // then
+        assertThat(reverseTransaction.ventilations).hasSize(1)
+        assertThat(reverseTransaction.ventilations[0]).isInstanceOf(CreditVentilation::class.java)
+        assertThat(reverseTransaction.ventilations[0].id).isNotEqualTo(debitRef.ventilations[0].id)
+        assertThat(reverseTransaction.ventilations[0].amount).isEqualTo(10.0)
+        assertThat(reverseTransaction.ventilations[0].categoryId).isEqualTo("10")
+    }
+
+    @Test
+    internal fun `reverseTransaction - If transaction ventilation is Credit, then reverse is ventilation Debit`() {
+        // given
+        val creditRef = Credit("libelle", "bankLibelle", "desc", 10.0, false, "1")
+        creditRef.addVentilation(CreditVentilation(10.0, "10"))
+
+        // when
+        val reverseTransaction = creditRef.reverseTransaction()
+
+        // then
+        assertThat(reverseTransaction.ventilations).hasSize(1)
+        assertThat(reverseTransaction.ventilations[0]).isInstanceOf(DebitVentilation::class.java)
+        assertThat(reverseTransaction.ventilations[0].id).isNotEqualTo(creditRef.ventilations[0].id)
+        assertThat(reverseTransaction.ventilations[0].amount).isEqualTo(-10.0)
+        assertThat(reverseTransaction.ventilations[0].categoryId).isEqualTo("10")
+    }
 }

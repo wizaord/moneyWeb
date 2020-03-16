@@ -11,4 +11,13 @@ class Credit(
         amount: Double,
         isPointe: Boolean = false,
         id: String = UUID.randomUUID().toString(),
-        dateCreation: LocalDate = LocalDate.now()) : Transaction(amount.absoluteValue, libelle, libelleBanque, descriptionBanque, isPointe, dateCreation, id)
+        dateCreation: LocalDate = LocalDate.now()) : Transaction(amount.absoluteValue, libelle, libelleBanque, descriptionBanque, isPointe, dateCreation, id) {
+
+    override fun reverseTransaction(): Transaction {
+        val debit = Debit(this.userLibelle, this.bankLibelle, this.bankDetail,
+                this.amount, this.isPointe, dateCreation = this.dateCreation)
+        this.ventilations.map { it.reverseVentilation() }
+                .forEach { debit.addVentilation(it) }
+        return debit
+    }
+}

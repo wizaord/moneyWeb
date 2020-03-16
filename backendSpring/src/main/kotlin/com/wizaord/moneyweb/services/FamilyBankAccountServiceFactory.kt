@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service
 @Service
 class FamilyBankAccountServiceFactory(
         @Autowired val applicationContext: ApplicationContext,
-        @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence
+        @Autowired val familyBankAccountPersistence: FamilyBankAccountPersistence,
+        @Autowired val categoryService: CategoryService
 ) {
 
     fun getFamilyServiceWithoutTransactions(familyName: String): FamilyBankAccountsService {
-        val familyBankAccountsService = applicationContext.getBean("familyBankAccountsService", familyBankAccountPersistence) as FamilyBankAccountsService
+        val familyBankAccountsService = applicationContext.getBean("familyBankAccountsService", familyBankAccountPersistence, categoryService) as FamilyBankAccountsService
         familyBankAccountsService.loadFamilyBankFromPersistence(familyName)
         return familyBankAccountsService
     }

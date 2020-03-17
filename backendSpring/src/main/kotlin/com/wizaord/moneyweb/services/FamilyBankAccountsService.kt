@@ -183,11 +183,13 @@ class FamilyBankAccountsService(
 
     }
 
-    fun accountUpdateName(accountName: String, newAccountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateName(newAccountName)
+    fun accountUpdateName(accountName: String, newAccountName: String) {
+        this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateName(newAccountName)
+        this.categoryService.renameCategoryVirement(accountName, newAccountName)
+    }
+
     fun accountUpdateBankName(accountName: String, newBankName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankName(newBankName)
     fun accountUpdateDateCreation(accountName: String, newAccountDate: LocalDate) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankAccountDateCreate(newAccountDate)
     fun accountUpdateOwners(accountName: String, newOwners: List<FamilyMember>) = this.familyBankAccounts.changeBankAccountOwners(accountName, newOwners)
     fun bankAccount(accountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)
-
-
 }

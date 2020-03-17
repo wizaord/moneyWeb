@@ -1,6 +1,7 @@
 package com.wizaord.moneyweb.services
 
 import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.verify
 import com.wizaord.moneyweb.domain.categories.Category
@@ -26,13 +27,13 @@ internal class CategoryServiceTest {
     internal fun `init - when function is called, function from persistence is called`() {
         // given
         val categoryFamily = CategoryFamily("name", "id")
-        given(categoryFamilyPersistence.init(anyOrNull())).willAnswer { i -> i.arguments[0] }
+        given(categoryFamilyPersistence.save(anyOrNull())).willAnswer { i -> i.arguments[0] }
 
         // when
         categoryService.createCategory(categoryFamily)
 
         // then
-        verify(categoryFamilyPersistence).init(categoryFamily)
+        verify(categoryFamilyPersistence).save(categoryFamily)
     }
 
     @Test
@@ -82,6 +83,28 @@ internal class CategoryServiceTest {
 
         // then
         assertThat(accountName).isEqualTo("BO-LivreA")
+    }
+
+    @Test
+    internal fun `renameCategoryVirement - when call category is renamed`() {
+        // given
+        val newCategoryName = "Hello"
+        val oldCategoryName = "PLOP"
+
+        val virementCategoryFamily = CategoryFamily("name", CategoryFamily.VIREMENT_INTERNE_ID)
+        virementCategoryFamily.addSubCategory(Category("VIREMENT - PLOP", "2"))
+
+        given(categoryFamilyPersistence.getAll()).willReturn(listOf(virementCategoryFamily))
+
+        // when
+        categoryService.renameCategoryVirement(oldCategoryName, newCategoryName)
+
+        // then
+        val argumentCaptor = argumentCaptor<CategoryFamily>()
+        verify(categoryFamilyPersistence).save(argumentCaptor.capture())
+        val categorySaved = argumentCaptor.firstValue
+
+        assertThat(categorySaved.getSubCategories()[0].name).isEqualTo("VIREMENT - Hello")
     }
 
 }

@@ -267,4 +267,23 @@ internal class FamilyBankAccountsServiceTest {
         // then
         assertThat(lastT!!.userLibelle).isEqualTo("debit1")
     }
+
+    @Test
+    internal fun `accountUpdateName - when name is changed then virement category is changed`() {
+        // given
+        val familyBank = FamilyBankAccountsImpl("family")
+        familyBank.registerFamilyMember(FamilyMember("Me"))
+
+        given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+        given(bankAccount.getName()).willReturn("accountName")
+
+        familyBank.registerAccount(bankAccount)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
+
+        // when
+        familyBankAccountsService.accountUpdateName("oldName", "new name")
+
+        // then
+        verify(categoryService).renameCategoryVirement(anyOrNull(), anyOrNull())
+    }
 }

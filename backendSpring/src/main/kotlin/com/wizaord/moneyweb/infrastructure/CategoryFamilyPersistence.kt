@@ -5,7 +5,7 @@ import com.wizaord.moneyweb.domain.categories.CategoryFamily
 
 interface CategoryFamilyPersistence {
 
-    fun init(categoryFamily: CategoryFamily)
+    fun save(categoryFamily: CategoryFamily)
     fun getAll(): List<CategoryFamily>
     fun getById(categoryId: String): Category
 }

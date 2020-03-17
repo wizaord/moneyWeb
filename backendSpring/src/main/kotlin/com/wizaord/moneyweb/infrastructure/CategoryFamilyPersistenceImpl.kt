@@ -13,7 +13,7 @@ class CategoryFamilyPersistenceImpl(
         @Autowired val categoryFamilyRepository: CategoryFamilyRepository
 ): CategoryFamilyPersistence {
 
-    override fun init(categoryFamily: CategoryFamily) {
+    override fun save(categoryFamily: CategoryFamily) {
         categoryFamilyRepository.save(com.wizaord.moneyweb.infrastructure.domain.CategoryFamily(categoryFamily))
     }
 

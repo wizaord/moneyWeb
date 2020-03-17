@@ -25,8 +25,10 @@
       <tr [class.table-warning]="account.nbNonChecked !== 0" *ngFor="let account of accountsSortedByName ; index as i"
           routerLink="/account/{{account.accountName}}">
         <th scope="row">{{ i + 1 }}</th>
-        <td>{{account.accountName}} <b *ngIf="account.nbNonChecked !== 0">({{account.nbNonChecked}})</b></td>
-        <td>{{account.accountName}}</td>
+        <td>{{account.bankName}}</td>
+        <td>{{account.accountName}}
+          <b *ngIf="account.nbNonChecked !== 0">({{account.nbNonChecked}})</b>
+          <b class="text-danger" *ngIf="account.nbAnomalies !== 0">(ANOMALIES : {{account.nbAnomalies}})</b></td>
         <td>{{account.solde | number}}</td>
         <td>{{account.owners}}</td>
       </tr>

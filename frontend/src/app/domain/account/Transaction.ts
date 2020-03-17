@@ -2,8 +2,6 @@ import { Ventilation } from './Ventilation';
 
 
 export class Transaction {
-
-
   id: string;
   amount: number;
   userLibelle: string;
@@ -16,7 +14,8 @@ export class Transaction {
   currentSolde = 0;
 
   static fromTransaction(t: any): Transaction {
-    return new Transaction(t.id, t.amount, t.userLibelle, t.bankLibelle, t.bankDetail, t.isPointe, t.dateCreation, t.accountName, t.ventilations);
+    return new Transaction(t.id, t.amount, t.userLibelle, t.bankLibelle,
+      t.bankDetail, t.isPointe, t.dateCreation, t.accountName, t.ventilations);
   }
 
   constructor(id: string, amount: number, userLibelle: string,
@@ -31,6 +30,10 @@ export class Transaction {
     this.dateCreation = new Date(dateCreation);
     this.accountName = accountName;
     this.ventilations = ventilations.map(ventilation => new Ventilation(ventilation.amount, ventilation.categoryId));
+  }
+
+  isValid(): boolean {
+    return this.ventilations.filter(v => v.categoryId === null || v.categoryId.length === 0).length === 0;
   }
 
 }

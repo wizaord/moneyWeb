@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { Account } from '../../../domain/account/Account';
 import { TransactionsService } from '../../../services/transactions.service';
-import { count, filter, flatMap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FamilyService } from '../../../services/family.service';
 import { AccountOwner } from '../../../domain/user/AccountOwner';
@@ -37,13 +37,11 @@ export class AccountShowComponent implements OnInit {
       account => {
         this.accounts.push(account);
         this.accountsToShow.push(account);
-        this.transactionsService.getTransactions(account.accountName)
-          .pipe(
-            flatMap(transactions => transactions),
-            filter(transaction => transaction.isPointe === false),
-            count()
-          )
-          .subscribe(value => account.nbNonChecked = value);
+        this.transactionsService.getTransactions(account.accountName).subscribe(
+          transactions => {
+            account.nbNonChecked = transactions.filter(transaction => transaction.isPointe === false).length;
+            account.nbAnomalies = transactions.filter(transaction => transaction.isValid() === false).length;
+          });
       }
     );
   }
@@ -67,9 +65,11 @@ export class AccountShowComponent implements OnInit {
 
 class AccountShowList extends Account {
   nbNonChecked: number;
+  nbAnomalies: number;
 
   constructor(account: Account) {
     super(account);
     this.nbNonChecked = 0;
+    this.nbAnomalies = 0;
   }
 }

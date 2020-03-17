@@ -30,6 +30,12 @@ export class TransactionsService {
     );
   }
 
+  getFlattenTransaction(accountName: string): Observable<Transaction> {
+    return this.getTransactions(accountName).pipe(
+      flatMap(value => value)
+    );
+  }
+
   getDistinctTransactionUserLibelle(accountName: string, userLibelleMatch: string): Observable<string[]> {
     return this.getTransactions(accountName)
       .pipe(

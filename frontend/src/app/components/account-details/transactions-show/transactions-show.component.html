@@ -3,11 +3,11 @@
     <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Date</th>
       <th scope="col">Libelle</th>
       <th scope="col">Bank Libelle</th>
       <th scope="col">Bank Detail</th>
       <th scope="col">Category</th>
-      <th scope="col">Date</th>
       <th scope="col">Montant</th>
       <th scope="col">Solde</th>
       <th scope="col">Actions</th>
@@ -17,11 +17,11 @@
     <tr [class.table-success]="transaction.amount > 0" [class.table-warning]="!transaction.isPointe"  (dblclick)="openTransactionEditDialog(transaction)"
         *ngFor="let transaction of transactions$ | async | sortTransactionByDate; index as i">
       <th scope="row">{{ i + 1 }}</th>
+      <td>{{transaction.dateCreation | date}}</td>
       <td>{{transaction.userLibelle}}</td>
       <td>{{transaction.bankLibelle}}</td>
       <td>{{transaction.bankDetail}}</td>
       <td>{{getCategoryName(transaction)}}</td>
-      <td>{{transaction.dateCreation | date}}</td>
       <td>{{transaction.amount}}</td>
       <td>{{transaction.currentSolde | number}}</td>
       <td>

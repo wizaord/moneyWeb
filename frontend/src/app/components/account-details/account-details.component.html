@@ -1,23 +1,45 @@
+<div class="container">
+  <div class="row">
+    <ul class="nav nav-pills nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.ALL}" (click)="switchFilteringMode(FilteringMode.ALL)">Tous</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.DATE}" (click)="switchFilteringMode(FilteringMode.DATE)">Par Date</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.NONPOINTE}" (click)="switchFilteringMode(FilteringMode.NONPOINTE)">Non Pointe</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.CRITERIA}" (click)="switchFilteringMode(FilteringMode.CRITERIA)"
+           aria-disabled="true">Par critères</a>
+      </li>
+    </ul>
+  </div>
+</div>
 <div class="container-fluid">
   <div class="spinner-container" *ngIf="this.loading">
     <mat-spinner></mat-spinner>
   </div>
   <div *ngIf="!this.loading" class="card">
     <div class="card-body">
-      <div class="row">
+      <div class="row" *ngIf="filteringMode === FilteringMode.DATE">
         <div class="col-2 text-center">
-          <button type="button" class="btn btn-info" (click)="goPreviousMonth()"><< {{currentMonth | datePreviousMonthExtract}}</button>
+          <button type="button" class="btn btn-info" (click)="goPreviousMonth()">
+            << {{currentMonth | datePreviousMonthExtract}}</button>
         </div>
         <div class="col-8 text-center">
-          <h5 class="card-title">Transaction pour le compte {{accountNameTitle}}</h5>
+          <h5 class="card-title">{{currentMonth | dateCurrentMonthExtract}}</h5>
         </div>
         <div class="col-2 text-center">
-          <button type="button" class="btn btn-info" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}} >></button>
+          <button type="button" class="btn btn-info" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}}
+            >>
+          </button>
         </div>
       </div>
-      <app-transactions-show [transactions$]="this.currentMonthTransactions$"
+      <app-transactions-show [transactions$]="this.transactionsFiltered$"
                              (transactionUpdate)="transactionUpdated($event)"
-                              (transactionRemove)="transactionRemove($event)"></app-transactions-show>
+                             (transactionRemove)="transactionRemove($event)"></app-transactions-show>
     </div>
   </div>
 </div>

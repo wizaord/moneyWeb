@@ -25,3 +25,13 @@ export class DatePreviousMonthExtractPipe implements PipeTransform {
     return `${transformedDate.getFullYear()} - ${monthNames[transformedDate.getMonth()]}`;
   }
 }
+
+@Pipe({
+  name: 'dateCurrentMonthExtract'
+})
+export class DateCurrentMonthExtractPipe implements PipeTransform {
+
+  transform(date: Date): string {
+    return `${date.getFullYear()} - ${monthNames[date.getMonth()]}`;
+  }
+}

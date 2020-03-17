@@ -29,7 +29,11 @@ import { AccountModifyComponent } from './components/account/manage/account-modi
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
 import { TransactionsShowComponent } from './components/account-details/transactions-show/transactions-show.component';
 import { TransactionEditComponent } from './components/account-details/transactions-show/transaction-edit/transaction-edit.component';
-import { DateNextMonthExtractPipe, DatePreviousMonthExtractPipe } from './pipes/date-month-extract.pipe';
+import {
+  DateCurrentMonthExtractPipe,
+  DateNextMonthExtractPipe,
+  DatePreviousMonthExtractPipe
+} from './pipes/date-month-extract.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -61,9 +65,11 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     TransactionEditComponent,
     DatePreviousMonthExtractPipe,
     DateNextMonthExtractPipe,
+    DateCurrentMonthExtractPipe,
     SortTransactionByDatePipe,
     VentilationEditComponent,
-    ConfirmationDialogComponent,
+    ConfirmationDialogComponent
+
   ],
   imports: [
     NgbModule,
@@ -83,7 +89,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     MatButtonModule,
     MatInputModule,
     NgSelectModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
   ],
   entryComponents: [
     TransactionEditComponent,

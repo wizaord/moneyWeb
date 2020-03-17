@@ -41,7 +41,11 @@ export class TransactionEditComponent implements OnInit {
   }
 
   addNewVentilation() {
-    this.transaction.ventilations.push(new Ventilation(0, '1'));
+    const amountAllTransactions = this.transaction.ventilations.map(t => t.amount).reduce(
+      (previousValue, currentValue) => previousValue + currentValue
+    );
+    const newVentilation = new Ventilation(this.transaction.amount - amountAllTransactions, null);
+    this.transaction.ventilations.push(newVentilation);
   }
 
   onChangeSearch(val: string) {

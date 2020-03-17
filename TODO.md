@@ -2,7 +2,6 @@
 
 # Next
 En tant que user, je veux que lorsque je choisis une autocompletion, cela assigne la categorie (si non saisie)
-En tant que user, je veux que lorsque je rajoute une ventilation, la somme soit mise automatiquement
 En tant que user, je veux pouvoir filter sur des critères dans la vue transaction
 En tant que user, je veux pouvoir créer moi même une transaction sur un compte
 

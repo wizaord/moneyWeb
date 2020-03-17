@@ -37,10 +37,9 @@ export class TransactionsService {
   }
 
   getDistinctTransactionUserLibelle(accountName: string, userLibelleMatch: string): Observable<string[]> {
-    return this.getTransactions(accountName)
+    return this.getFlattenTransaction(accountName)
       .pipe(
-        flatMap(t => t),
-        filter(transaction => transaction.userLibelle.includes(userLibelleMatch)),
+        filter(transaction => transaction.userLibelle.toLowerCase().includes(userLibelleMatch.toLowerCase())),
         map(transaction => transaction.userLibelle),
         toArray()
       );

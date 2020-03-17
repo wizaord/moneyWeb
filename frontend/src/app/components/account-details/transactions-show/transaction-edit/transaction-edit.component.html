@@ -15,8 +15,8 @@
                        (inputChanged)='onChangeSearch($event)'
                        [itemTemplate]="itemTemplate"
                        [isLoading]="isLoadingResult"
-                       [minQueryLength]="2"
-                       [debounceTime]="600"
+                       [minQueryLength]="3"
+                       [debounceTime]="1000"
                        placeHolder="Please set your libelle">
       </ng-autocomplete>
       <ng-template #itemTemplate let-item>

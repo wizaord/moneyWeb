@@ -57,7 +57,7 @@ internal class UploadFileServiceTest {
                 Debit("libelle", "bank", "desc", 10.0)
         ))
         given(familyBankAccountServiceFactory.getFamilyServiceWithTransactions(anyOrNull())).willReturn(familyBankAccountsService)
-        given(familyBankAccountsService.transactionRegister(anyOrNull(), anyOrNull())).willReturn(true)
+        given(familyBankAccountsService.transactionRegister(anyOrNull(), anyOrNull())).willAnswer { i -> i.arguments[1] }
 
         // when
         val nbInsert = uploadFileService.loadFileForAccount("familyName", "accountName", "file.qif", inputStream!!)

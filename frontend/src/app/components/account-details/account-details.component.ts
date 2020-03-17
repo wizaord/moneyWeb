@@ -57,10 +57,17 @@ export class AccountDetailsComponent implements OnInit {
 
   private extractTransactionsBasedOnFilteringModeSelected() {
     switch (this.filteringMode) {
-      case FilteringMode.ALL: this.extractAllTransaction(); break;
-      case FilteringMode.CRITERIA: break;
-      case FilteringMode.DATE: this.extractTransactionsBasedOnDate(); break;
-      case FilteringMode.NONPOINTE: this.extractTransactionNonPointe(); break;
+      case FilteringMode.ALL:
+        this.extractAllTransaction();
+        break;
+      case FilteringMode.CRITERIA:
+        break;
+      case FilteringMode.DATE:
+        this.extractTransactionsBasedOnDate();
+        break;
+      case FilteringMode.NONPOINTE:
+        this.extractTransactionNonPointe();
+        break;
     }
   }
 
@@ -118,12 +125,22 @@ export class AccountDetailsComponent implements OnInit {
     this.transactionsService.removeTransaction(transaction).subscribe();
   }
 
+  transactionCreate(transaction: Transaction) {
+    transaction.accountName = this.accountNameTitle;
+    this.transactionsService.createTransaction(transaction).subscribe(
+      result => {
+        this.accountTransactions.push(result);
+        this.refreshTransactionSoldes();
+        this.extractTransactionsBasedOnFilteringModeSelected();
+      }
+    );
+  }
+
   switchFilteringMode(typeFilter: FilteringMode) {
     console.log('Switch to =>' + typeFilter);
     this.filteringMode = typeFilter;
     this.extractTransactionsBasedOnFilteringModeSelected();
   }
-
 }
 
 export enum FilteringMode {

@@ -3,7 +3,6 @@ import { AccountService } from '../../../services/account.service';
 import { Account } from '../../../domain/account/Account';
 import { TransactionsService } from '../../../services/transactions.service';
 import { count, filter, flatMap, map } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FamilyService } from '../../../services/family.service';
 import { AccountOwner } from '../../../domain/user/AccountOwner';
@@ -23,8 +22,7 @@ export class AccountShowComponent implements OnInit {
 
   constructor(private accountService: AccountService,
               private transactionsService: TransactionsService,
-              private familyService: FamilyService,
-              private router: Router) {
+              private familyService: FamilyService) {
   }
 
   ngOnInit() {

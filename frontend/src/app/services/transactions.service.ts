@@ -21,7 +21,7 @@ export class TransactionsService {
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${accountName}/transactions`;
     return this.http.get<Transaction[]>(apiUrl).pipe(
       flatMap(transactions => transactions),
-      map(transaction => new Transaction(transaction)),
+      map(transaction => Transaction.fromTransaction(transaction)),
       map(transaction => {
         transaction.accountName = accountName;
         return transaction;
@@ -51,5 +51,19 @@ export class TransactionsService {
     const familyName = this.authenticationService.currentUserValue.username;
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${transaction.accountName}/transactions/${transaction.id}`;
     return this.http.delete(apiUrl);
+  }
+
+  createTransaction(transaction: Transaction): Observable<Transaction> {
+    console.log('create transaction => ' + JSON.stringify(transaction));
+    const familyName = this.authenticationService.currentUserValue.username;
+    const apiUrl = `${this.API_URL}/${familyName}/accounts/${transaction.accountName}/transactions`;
+    return this.http.post<Transaction>(apiUrl, transaction)
+      .pipe(
+        map(t => Transaction.fromTransaction(t)),
+        map(t => {
+          t.accountName = transaction.accountName;
+          return t;
+        })
+      );
   }
 }

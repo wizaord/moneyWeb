@@ -29,7 +29,7 @@ class UploadFileService(
                 .map { enrichUserLibelleTransaction(it, familyService)}
                 .map { enrichCategoryTransaction(it, familyService)}
                 .map { transaction -> familyService.transactionRegister(accountName, transaction) }
-                .filter { it }
+                .filterNotNull()
                 .count()
 
         return AccountUploadResult(fileName, transactions.size, transactionRegistered)

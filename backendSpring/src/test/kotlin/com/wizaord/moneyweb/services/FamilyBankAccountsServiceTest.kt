@@ -212,7 +212,7 @@ internal class FamilyBankAccountsServiceTest {
         val result = familyBankAccountsService.transactionRegister("accountName", transactionCredit)
         
         // then
-        assertThat(result).isFalse()
+        assertThat(result).isNull()
         verify(bankAccount, times(0)).addTransaction(anyOrNull())
     }
 

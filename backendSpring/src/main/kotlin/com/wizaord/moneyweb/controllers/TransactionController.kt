@@ -43,10 +43,19 @@ class TransactionController(
         val familyService = familyBankAccountServiceFactory.getFamilyServiceWithTransactions(familyName)
         familyService.transactionDelete(accountName, transactionId)
     }
+
+    @PostMapping
+    @ResponseBody
+    fun createTransaction(@PathVariable familyName: String,
+                          @PathVariable accountName: String,
+                          @RequestBody transaction: com.wizaord.moneyweb.controllers.Transaction): Transaction? {
+        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithTransactions(familyName)
+        return familyService.transactionRegister(accountName, transaction.toDomain())
+    }
 }
 
 
-data class Transaction(var id: String,
+data class Transaction(var id: String?,
                        var amount: Double,
                        var userLibelle: String,
                        var bankLibelle: String,
@@ -57,9 +66,10 @@ data class Transaction(var id: String,
                        ) {
 
     fun toDomain(): Transaction {
+        val transactionId = id?: UUID.randomUUID().toString()
         val transaction =  when (amount > 0) {
-            true -> Credit(userLibelle, bankLibelle, bankDetail, amount, isPointe, id, dateCreation.toLocalDate())
-            false -> Debit(userLibelle, bankLibelle, bankDetail, amount, isPointe, id, dateCreation.toLocalDate())
+            true -> Credit(userLibelle, bankLibelle, bankDetail, amount, isPointe, transactionId, dateCreation.toLocalDate())
+            false -> Debit(userLibelle, bankLibelle, bankDetail, amount, isPointe, transactionId, dateCreation.toLocalDate())
         }
         this.ventilations.map { transaction.addVentilation(it.toDomain()) }.toMutableList()
         return transaction

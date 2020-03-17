@@ -18,6 +18,7 @@ export class TransactionsShowComponent implements OnInit {
   @Input() transactions$: Observable<Transaction[]>;
   @Output() transactionUpdate = new EventEmitter<Transaction>();
   @Output() transactionRemove = new EventEmitter<Transaction>();
+  @Output() transactionCreate = new EventEmitter<Transaction>();
 
   private categoriesMap: Map<string, string> = new Map<string, string>();
 
@@ -58,20 +59,33 @@ export class TransactionsShowComponent implements OnInit {
         this.transactionRemove.emit(transaction);
       }
     });
-    }
+  }
 
   getCategoryName(transaction: Transaction): string {
-      if (transaction.ventilations.length === 0) {
-        return '';
-      }
-      if (transaction.ventilations.length > 1) {
-        return 'Ventilation';
-      }
-      return this.categoriesMap.get(transaction.ventilations[0].categoryId);
+    if (transaction.ventilations.length === 0) {
+      return '';
+    }
+    if (transaction.ventilations.length > 1) {
+      return 'Ventilation';
+    }
+    return this.categoriesMap.get(transaction.ventilations[0].categoryId);
   }
 
   pointTransaction(transaction: Transaction) {
     transaction.isPointe = true;
     this.transactionUpdate.emit(transaction);
+  }
+
+  createNewTransaction() {
+    const modalRef = this.modalService.open(TransactionEditComponent,
+      {backdropClass: 'light-blue-backdrop', size: 'lg'});
+    modalRef.componentInstance.transaction = new Transaction(null, 0, '', '', '', false, new Date(), '', []);
+
+    from(modalRef.result).subscribe(
+      transactionResult => {
+        if (transactionResult != null) {
+          this.transactionCreate.emit(transactionResult);
+        }
+      });
   }
 }

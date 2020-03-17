@@ -2,16 +2,20 @@
   <div class="row">
     <ul class="nav nav-pills nav-tabs">
       <li class="nav-item">
-        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.ALL}" (click)="switchFilteringMode(FilteringMode.ALL)">Tous</a>
+        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.ALL}"
+           (click)="switchFilteringMode(FilteringMode.ALL)">Tous</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.DATE}" (click)="switchFilteringMode(FilteringMode.DATE)">Par Date</a>
+        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.DATE}"
+           (click)="switchFilteringMode(FilteringMode.DATE)">Par Date</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.NONPOINTE}" (click)="switchFilteringMode(FilteringMode.NONPOINTE)">Non Pointe</a>
+        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.NONPOINTE}"
+           (click)="switchFilteringMode(FilteringMode.NONPOINTE)">Non Pointe</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.CRITERIA}" (click)="switchFilteringMode(FilteringMode.CRITERIA)"
+        <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.CRITERIA}"
+           (click)="switchFilteringMode(FilteringMode.CRITERIA)"
            aria-disabled="true">Par critères</a>
       </li>
     </ul>
@@ -39,7 +43,9 @@
       </div>
       <app-transactions-show [transactions$]="this.transactionsFiltered$"
                              (transactionUpdate)="transactionUpdated($event)"
-                             (transactionRemove)="transactionRemove($event)"></app-transactions-show>
+                             (transactionRemove)="transactionRemove($event)"
+                             (transactionCreate)="transactionCreate($event)"></app-transactions-show>
     </div>
+
   </div>
 </div>

@@ -15,8 +15,7 @@
     </thead>
     <tbody>
     <tr [class.table-success]="transaction.amount > 0" [class.table-warning]="!transaction.isPointe"  (dblclick)="openTransactionEditDialog(transaction)"
-        *ngFor="let transaction of transactions$ | async | sortTransactionByDate; index as i">
-      <th scope="row">{{ i + 1 }}</th>
+        *ngFor="let transaction of transactions$ | async | sortTransactionByDate">
       <td>{{transaction.dateCreation | date}}</td>
       <td>{{transaction.userLibelle}}</td>
       <td>{{transaction.bankLibelle}}</td>
@@ -31,4 +30,8 @@
     </tr>
     </tbody>
   </table>
+</div>
+
+<div class="container">
+  <button type="button" class="btn btn-primary pull-right" (click)="createNewTransaction()">Add</button>
 </div>

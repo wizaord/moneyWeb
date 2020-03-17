@@ -7,12 +7,7 @@ import { Transaction } from '../domain/account/Transaction';
 export class SortTransactionByDatePipe implements PipeTransform {
 
   transform(value: Transaction[]): Transaction[] {
-    return value.sort((a, b) => {
-      if (a.dateCreation.getTime() < b.dateCreation.getTime()) {
-        return -1;
-      }
-      return 1;
-    });
+    return value.sort((a, b) => (a.dateCreation.getTime() < b.dateCreation.getTime()) ? -1 : 1);
   }
 
 }

@@ -91,6 +91,7 @@ export class AccountDetailsComponent implements OnInit {
   private refreshTransactionSoldes() {
     let initSolde = 0;
     this.accountTransactions
+      .sort((a, b) => (a.dateCreation.getTime() < b.dateCreation.getTime()) ? -1 : 1)
       .map(transaction => {
         transaction.currentSolde = initSolde + transaction.amount;
         initSolde = transaction.currentSolde;

@@ -49,6 +49,13 @@ class AccountController(
         familyService.accountOpen(accountName)
     }
 
+    @PatchMapping("/{accountName}/solde")
+    fun accountRefreshSolde(@PathVariable familyName: String,
+                    @PathVariable accountName: String) {
+        val familyService = familyBankAccountServiceFactory.getFamilyServiceWithTransactions(familyName)
+        familyService.refreshSolde(accountName)
+    }
+
     @DeleteMapping("/{accountName}")
     fun accountDelete(@PathVariable familyName: String,
                       @PathVariable accountName: String) {

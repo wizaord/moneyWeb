@@ -192,4 +192,5 @@ class FamilyBankAccountsService(
     fun accountUpdateDateCreation(accountName: String, newAccountDate: LocalDate) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankAccountDateCreate(newAccountDate)
     fun accountUpdateOwners(accountName: String, newOwners: List<FamilyMember>) = this.familyBankAccounts.changeBankAccountOwners(accountName, newOwners)
     fun bankAccount(accountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)
+    fun refreshSolde(accountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.soldeRefresh()
 }

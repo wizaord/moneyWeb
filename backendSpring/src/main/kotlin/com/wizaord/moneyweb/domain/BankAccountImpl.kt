@@ -23,7 +23,12 @@ data class BankAccountImpl(
         this.infrastructureBankAccountNotifications = infrastructureBankAccountNotifications
     }
 
+
     override fun solde() = this.solde
+    override fun soldeRefresh() {
+        this.solde = 0.0
+        this.transactions.forEach { this.solde += it.amount}
+    }
 
     override fun getName() = this.accountName
     override fun getBankName() = this.bankDefinition
@@ -41,15 +46,15 @@ data class BankAccountImpl(
     override fun addTransaction(transaction: Transaction) {
         log.debug("Added transaction to account {}", this.accountName)
         this.transactions.add(transaction)
-        this.solde += transaction.amount
+        this.soldeRefresh()
         infrastructureBankAccountNotifications?.notifyNewTransaction(this.accountId, transaction)
         notifyAccountUpdated()
 
     }
 
     override fun removeTransaction(transaction: Transaction) {
-        this.solde -= transaction.amount
         transactions.remove(transaction)
+        this.soldeRefresh()
         infrastructureBankAccountNotifications?.notifyRemoveTransaction(transaction)
         notifyAccountUpdated()
     }

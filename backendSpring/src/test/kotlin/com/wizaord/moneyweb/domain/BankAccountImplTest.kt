@@ -257,5 +257,20 @@ internal class BankAccountImplTest {
         assertThat(hasTransactionByProperties).isTrue()
     }
 
+    @Test
+    internal fun `soldeRefresh - check debit and credit value`() {
+        // given
+        bankAccount.addTransaction(Credit("userLibelle", "BandLibelle", "", 10.0))
+        bankAccount.addTransaction(Credit("userLibelle", "BandLibelle", "", 10.0))
+        bankAccount.addTransaction(Debit("userLibelle", "BandLibelle", "", 5.0))
+
+
+        // when
+        bankAccount.soldeRefresh()
+
+        // then
+        assertThat(bankAccount.solde).isEqualTo(15.0)
+    }
+
 }
 

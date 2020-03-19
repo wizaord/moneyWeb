@@ -12,6 +12,7 @@ export class Transaction {
   accountName: string;
   ventilations: Ventilation[];
   currentSolde = 0;
+  owners: string[];
 
   static fromTransaction(t: any): Transaction {
     return new Transaction(t.id, t.amount, t.userLibelle, t.bankLibelle,
@@ -30,6 +31,7 @@ export class Transaction {
     this.dateCreation = new Date(dateCreation);
     this.accountName = accountName;
     this.ventilations = ventilations.map(ventilation => new Ventilation(ventilation.amount, ventilation.categoryId));
+    this.owners = [];
   }
 
   isValid(): boolean {

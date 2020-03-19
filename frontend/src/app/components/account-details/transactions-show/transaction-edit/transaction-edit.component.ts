@@ -7,6 +7,8 @@ import { TransactionsService } from '../../../../services/transactions.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { VentilationEditComponent } from './ventilation-edit/ventilation-edit.component';
+import { AccountService } from '../../../../services/account.service';
+import { Account } from '../../../../domain/account/Account';
 
 @Component({
   selector: 'app-transaction-edit',
@@ -22,14 +24,20 @@ export class TransactionEditComponent implements OnInit {
   isLoadingResult = false;
   transactionTypeAHead: Transaction;
 
+  private account: Account;
+
   constructor(private dateService: DateService,
               public activeModal: NgbActiveModal,
-              public transactionsService: TransactionsService) {
+              public transactionsService: TransactionsService,
+              private accountService: AccountService) {
   }
 
   ngOnInit() {
     this.accountDate = this.dateService.convertToNgDateStruct(this.transaction.dateCreation);
     this.transactionTypeAHead = new Transaction('', 0.0, this.transaction.userLibelle, '', '', false, new Date(), '', []);
+    this.accountService.getAccountByName(this.transaction.accountName).subscribe(
+      result => this.account = result
+    );
   }
 
 
@@ -60,7 +68,7 @@ export class TransactionEditComponent implements OnInit {
       tap(() => this.isLoadingResult = true),
       filter(term => term.length >= 3),
       switchMap(term =>
-        this.transactionsService.getMatchTransactionsBasedOnUserLibelle(this.transaction.accountName, term).pipe(
+        this.transactionsService.getMatchTransactionsBasedOnUserLibelle(this.account, term).pipe(
           map(transactions => transactions.slice(0, 10))
         )
       ),

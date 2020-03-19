@@ -46,11 +46,11 @@ export class AccountService {
       );
   }
 
-  getAccountById(accountId: string): Observable<Account> {
+  getAccountByName(accountName: string): Observable<Account> {
     return this.getAccounts()
       .pipe(
         flatMap(account => account),
-        filter(account => account.accountName === accountId)
+        filter(account => account.accountName === accountName)
       );
   }
 

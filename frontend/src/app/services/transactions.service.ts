@@ -5,6 +5,7 @@ import { AuthenticationService } from './authentification/authentication.service
 import { Observable } from 'rxjs';
 import { Transaction } from '../domain/account/Transaction';
 import { filter, flatMap, map, toArray } from 'rxjs/operators';
+import { Account } from '../domain/account/Account';
 
 @Injectable({
   providedIn: 'root'
@@ -16,28 +17,29 @@ export class TransactionsService {
               private authenticationService: AuthenticationService) {
   }
 
-  getTransactions(accountName: string): Observable<Transaction[]> {
+  getTransactionsByAccount(account: Account): Observable<Transaction[]> {
     const familyName = this.authenticationService.currentUserValue.username;
-    const apiUrl = `${this.API_URL}/${familyName}/accounts/${accountName}/transactions`;
+    const apiUrl = `${this.API_URL}/${familyName}/accounts/${account.accountName}/transactions`;
     return this.http.get<Transaction[]>(apiUrl).pipe(
       flatMap(transactions => transactions),
       map(transaction => Transaction.fromTransaction(transaction)),
       map(transaction => {
-        transaction.accountName = accountName;
+        transaction.accountName = account.accountName;
+        transaction.owners = account.owners;
         return transaction;
       }),
       toArray()
     );
   }
 
-  getFlattenTransaction(accountName: string): Observable<Transaction> {
-    return this.getTransactions(accountName).pipe(
+  getFlattenTransaction(account: Account): Observable<Transaction> {
+    return this.getTransactionsByAccount(account).pipe(
       flatMap(value => value)
     );
   }
 
-  getMatchTransactionsBasedOnUserLibelle(accountName: string, userLibelleMatch: string): Observable<Transaction[]> {
-    return this.getFlattenTransaction(accountName)
+  getMatchTransactionsBasedOnUserLibelle(account: Account, userLibelleMatch: string): Observable<Transaction[]> {
+    return this.getFlattenTransaction(account)
       .pipe(
         filter(transaction => transaction.userLibelle.toLowerCase().includes(userLibelleMatch.toLowerCase())),
         toArray()

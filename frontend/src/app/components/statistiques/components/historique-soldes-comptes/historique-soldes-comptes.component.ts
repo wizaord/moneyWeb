@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TransactionsService } from '../../../../services/transactions.service';
 import { AccountService } from '../../../../services/account.service';
-import { flatMap, groupBy, map, mergeMap, reduce, toArray } from 'rxjs/operators';
+import { filter, flatMap, groupBy, map, mergeMap, reduce, toArray } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { AccountOwner } from '../../../../domain/user/AccountOwner';
+import { FamilyService } from '../../../../services/family.service';
 
 @Component({
   selector: 'app-historique-soldes-comptes',
@@ -24,16 +27,35 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
     new Filter(2, 'Les 2 années précédentes'),
     new Filter(3, 'Toutes les dates')];
 
+  filterFamilyMemberSelected: string = null;
+  filterFamilyMember$: Observable<AccountOwner[]>;
+
+
   constructor(
     private accountService: AccountService,
-    private transactionsService: TransactionsService) {
+    private transactionsService: TransactionsService,
+    private familyService: FamilyService) {
   }
 
   ngOnInit() {
     this.filterSelected = 0;
+    this.filterFamilyMember$ = this.familyService.getOwners();
+    this.refreshData();
+  }
+
+  dateTickFormatting(val: any): string {
+    if (val instanceof Date) {
+      return val.getFullYear() + '/' + (val.getMonth() + 1) + '/' + val.getDate();
+    }
+    return val;
+  }
+
+  refreshData() {
+    console.log('plop ' + this.filterFamilyMemberSelected);
     this.accountService.getAccounts().pipe(
       flatMap(a => a),
-      flatMap(account => this.transactionsService.getFlattenTransaction(account.accountName)),
+      flatMap(account => this.transactionsService.getFlattenTransaction(account)),
+      filter(transaction => this.filterFamilyMemberSelected === null || transaction.owners.includes(this.filterFamilyMemberSelected)),
       groupBy(transaction => transaction.dateCreation.getTime()),
       mergeMap(group => group.pipe(
         map(transaction => new TransactionReduceByDay(transaction.dateCreation, transaction.amount)),
@@ -53,18 +75,11 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
           t.solde = currentSolde;
           return t;
         });
-      this.refreshView();
+      this.refreshViewDate();
     });
   }
 
-  dateTickFormatting(val: any): string {
-    if (val instanceof Date) {
-      return val.getFullYear() + '/' + (val.getMonth() + 1) + '/' + val.getDate();
-    }
-    return val;
-  }
-
-  public refreshView() {
+  refreshViewDate() {
     let limiteDate: Date = new Date(1900, 0, 0);
     const currentDate = new Date();
     switch (this.filterSelected) {

@@ -4,6 +4,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { TransactionsService } from '../../services/transactions.service';
 import { Transaction } from '../../domain/account/Transaction';
 import { DateService } from '../../services/date.service';
+import { AccountService } from '../../services/account.service';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-details',
@@ -22,14 +24,17 @@ export class AccountDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private transactionsService: TransactionsService,
-    private dateService: DateService
+    private dateService: DateService,
+    private accountService: AccountService
   ) {
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.accountNameTitle = params.get('accountName');
-      this.transactionsService.getTransactions(this.accountNameTitle).subscribe(
+      this.accountService.getAccountByName(this.accountNameTitle).pipe(
+        flatMap(account => this.transactionsService.getTransactionsByAccount(account))
+      ).subscribe(
         transactions => {
           transactions.forEach(transaction => this.accountTransactions.push(transaction));
           this.refreshTransactionSoldes();

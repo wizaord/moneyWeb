@@ -38,7 +38,7 @@ export class AccountModifyComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.accountNameTitle = params.get('accountName');
-      this.accountService.getAccountById(this.accountNameTitle).subscribe(account => {
+      this.accountService.getAccountByName(this.accountNameTitle).subscribe(account => {
         this.accountToEdit = account;
         this.accountDate = this.dateService.convertToNgDateStruct(account.dateCreate);
       });

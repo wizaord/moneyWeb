@@ -37,7 +37,7 @@ export class AccountShowComponent implements OnInit {
       account => {
         this.accounts.push(account);
         this.accountsToShow.push(account);
-        this.transactionsService.getTransactions(account.accountName).subscribe(
+        this.transactionsService.getTransactionsByAccount(account).subscribe(
           transactions => {
             account.nbNonChecked = transactions.filter(transaction => transaction.isPointe === false).length;
             account.nbAnomalies = transactions.filter(transaction => transaction.isValid() === false).length;

@@ -1,0 +1,36 @@
+<div class="container h-100">
+  <div class="row">
+    <h1>HISTORIQUE SOLDE TOUS COMPTES</h1>
+  </div>
+  <form>
+    <div class="form-row align-items-center">
+      <div class="col-2 ">
+        <label for="inlineFormCustomSelectPref" class="text-">Affichage</label>
+      </div>
+      <div class="col-10 ">
+        <ng-select id="inlineFormCustomSelectPref" [multiple]="false"
+                   [items]="filters"
+                   bindLabel="desc"
+                   bindValue="id"
+                   name="selectFilter"
+                   [(ngModel)]="filterSelected"
+                   (change)="refreshView()">
+        </ng-select>
+      </div>
+    </div>
+  </form>
+  <div class="row stretchy-wrapper">
+    <ngx-charts-line-chart
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [xAxis]="true"
+      [xAxisTickFormatting]="dateTickFormatting"
+      [yAxis]="true"
+      [yAxisLabel]="'Montant'"
+      [timeline]="true"
+      [animations]="false"
+      [results]="soldes"
+    >
+    </ngx-charts-line-chart>
+  </div>
+</div>

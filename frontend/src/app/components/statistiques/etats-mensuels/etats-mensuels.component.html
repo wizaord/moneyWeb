@@ -1,0 +1,8 @@
+<div class="card">
+  <h5 class="card-header">ETATS MENSUELS</h5>
+  <div class="card-body">
+    <ul>
+      <li *ngFor="let date of dates">{{date | dateCurrentMonthExtract}}</li>
+    </ul>
+  </div>
+</div>

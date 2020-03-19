@@ -42,6 +42,12 @@ import { SortTransactionByDatePipe } from './pipes/sort-by.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { VentilationEditComponent } from './components/account-details/transactions-show/transaction-edit/ventilation-edit/ventilation-edit.component';
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
+import { EtatsMensuelsComponent } from './components/statistiques/etats-mensuels/etats-mensuels.component';
+import { RevenusEtDepensesComponent } from './components/statistiques/revenus-et-depenses/revenus-et-depenses.component';
+import { ActifsEtPassifsComponent } from './components/statistiques/actifs-et-passifs/actifs-et-passifs.component';
+import { EtatsDeComparaisonComponent } from './components/statistiques/etats-de-comparaison/etats-de-comparaison.component';
+import { HistoriqueSoldesComptesComponent } from './components/statistiques/components/historique-soldes-comptes/historique-soldes-comptes.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -67,28 +73,34 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
     DateCurrentMonthExtractPipe,
     SortTransactionByDatePipe,
     VentilationEditComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    EtatsMensuelsComponent,
+    RevenusEtDepensesComponent,
+    ActifsEtPassifsComponent,
+    EtatsDeComparaisonComponent,
+    HistoriqueSoldesComptesComponent
 
   ],
-  imports: [
-    NgbModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatToolbarModule,
-    MatCardModule,
-    AngularFontAwesomeModule,
-    HttpClientModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatProgressSpinnerModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatInputModule,
-    NgSelectModule
-  ],
+    imports: [
+        NgbModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        FormsModule,
+        MatToolbarModule,
+        MatCardModule,
+        AngularFontAwesomeModule,
+        HttpClientModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatProgressSpinnerModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatInputModule,
+        NgSelectModule,
+        NgxChartsModule
+    ],
   entryComponents: [
     TransactionEditComponent,
     ConfirmationDialogComponent

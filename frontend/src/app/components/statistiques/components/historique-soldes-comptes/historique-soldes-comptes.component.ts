@@ -10,7 +10,6 @@ import { flatMap, groupBy, map, mergeMap, reduce, toArray } from 'rxjs/operators
 })
 export class HistoriqueSoldesComptesComponent implements OnInit {
 
-  // transactionsByDay: TransactionReduceByDay[] = [];
   soldes = [
     {
       name: 'Solde',

@@ -4,11 +4,9 @@
   </div>
   <form>
     <div class="form-row align-items-center">
-      <div class="col-2 ">
-        <label for="inlineFormCustomSelectPref" class="text-">Affichage</label>
-      </div>
-      <div class="col-10 ">
-        <ng-select id="inlineFormCustomSelectPref" [multiple]="false"
+      <div class="col-6 ">
+        <label for="inlineFormCustomSelectPref" class="my-1 mr-2">Affichage</label>
+        <ng-select id="inlineFormCustomSelectPref" class="my-1 mr-sm-2" [multiple]="false"
                    [items]="filters"
                    bindLabel="desc"
                    bindValue="id"

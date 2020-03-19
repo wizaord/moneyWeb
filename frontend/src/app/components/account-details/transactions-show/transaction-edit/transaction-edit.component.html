@@ -5,25 +5,19 @@
   </button>
 </div>
 <div class="modal-body">
+  <ng-template #rt let-r="result" let-t="term">
+    <ngb-highlight [result]="r.userLibelle" [term]="t"></ngb-highlight>
+  </ng-template>
   <label for="addon-libelle"><h4>Libelle : </h4></label>
   <div id="addon-libelle" class="input-group mb-3">
-    <div class="ng-autocomplete">
-      <ng-autocomplete [data]="userLibellePropositions"
-                       [searchKeyword]="userLibelleSearch"
-                       name="userLibelle"
-                       [(ngModel)]="transaction.userLibelle"
-                       (inputChanged)='onChangeSearch($event)'
-                       [itemTemplate]="itemTemplate"
-                       [isLoading]="isLoadingResult"
-                       [minQueryLength]="3"
-                       [debounceTime]="1000"
-                       placeHolder="Please set your libelle">
-      </ng-autocomplete>
-      <ng-template #itemTemplate let-item>
-        <a [innerHTML]="item"></a>
-      </ng-template>
-    </div>
-
+      <input id="typeahead-http" type="text" class="form-control mx-sm-3"
+             [(ngModel)]="transactionTypeAHead"
+             [ngbTypeahead]="searchUserLibelle"
+             [resultTemplate]="rt"
+             [inputFormatter]="typeaheadFormatter"
+             (selectItem)="updateTransactionWithTypeAHead($event)"
+             placeholder="Please set your libelle" />
+      <small *ngIf="isLoadingResult" class="form-text text-muted">searching...</small>
   </div>
   <label for="addon-bankLibelle"><h4>Bank Libelle : </h4></label>
   <div id="addon-bankLibelle" class="input-group mb-3">

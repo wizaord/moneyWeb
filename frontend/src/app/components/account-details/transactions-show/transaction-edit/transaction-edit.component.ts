@@ -1,9 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Transaction } from '../../../../domain/account/Transaction';
-import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateStruct, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Ventilation } from '../../../../domain/account/Ventilation';
 import { DateService } from '../../../../services/date.service';
 import { TransactionsService } from '../../../../services/transactions.service';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import { VentilationEditComponent } from './ventilation-edit/ventilation-edit.component';
 
 @Component({
   selector: 'app-transaction-edit',
@@ -13,11 +16,11 @@ import { TransactionsService } from '../../../../services/transactions.service';
 export class TransactionEditComponent implements OnInit {
 
   @Input() transaction: Transaction;
-  accountDate: NgbDateStruct;
+  @ViewChildren(VentilationEditComponent) ventilationsComponents !: QueryList<VentilationEditComponent>;
 
-  userLibellePropositions: string[] = [];
-  userLibelleSearch: string;
+  accountDate: NgbDateStruct;
   isLoadingResult = false;
+  transactionTypeAHead: Transaction;
 
   constructor(private dateService: DateService,
               public activeModal: NgbActiveModal,
@@ -26,11 +29,13 @@ export class TransactionEditComponent implements OnInit {
 
   ngOnInit() {
     this.accountDate = this.dateService.convertToNgDateStruct(this.transaction.dateCreation);
+    this.transactionTypeAHead = new Transaction('', 0.0, this.transaction.userLibelle, '', '', false, new Date(), '', []);
   }
 
 
   updateTransaction() {
     this.transaction.dateCreation = this.dateService.convertToDate(this.accountDate);
+    this.transaction.userLibelle = this.transactionTypeAHead.userLibelle;
     this.activeModal.close(this.transaction);
   }
 
@@ -48,21 +53,31 @@ export class TransactionEditComponent implements OnInit {
     this.transaction.ventilations.push(newVentilation);
   }
 
-  onChangeSearch(val: string) {
-    console.log('Valeur à rechercher => ' + val);
-    this.isLoadingResult = true;
-    this.transactionsService.getDistinctTransactionUserLibelle(this.transaction.accountName, val)
-      .subscribe(userlibelles => {
-        this.userLibellePropositions = [];
-        userlibelles.filter((item, i, ar) => ar.indexOf(item) === i)
-                    .forEach(userLibelle => {
-                      this.userLibellePropositions.push(userLibelle);
-                    });
+  searchUserLibelle = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(600),
+      distinctUntilChanged(),
+      tap(() => this.isLoadingResult = true),
+      filter(term => term.length >= 3),
+      switchMap(term =>
+        this.transactionsService.getMatchTransactionsBasedOnUserLibelle(this.transaction.accountName, term).pipe(
+          map(transactions => transactions.slice(0, 10))
+        )
+      ),
+      tap(() => this.isLoadingResult = false)
+    )
 
-        this.isLoadingResult = false;
-      });
+  typeaheadFormatter = (x: Transaction) => x.userLibelle;
+
+  updateTransactionWithTypeAHead($event: NgbTypeaheadSelectItemEvent) {
+    const transactionSelected: Transaction = $event.item;
+    this.transaction.ventilations.forEach((ventilation, index) => {
+      if (transactionSelected.ventilations.length >= index) {
+        ventilation.categoryId = transactionSelected.ventilations[index].categoryId;
+      }
+    });
+    this.ventilationsComponents.forEach(item => item.refreshCategoryName());
   }
-
 }
 
 

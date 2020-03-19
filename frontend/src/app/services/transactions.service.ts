@@ -36,11 +36,10 @@ export class TransactionsService {
     );
   }
 
-  getDistinctTransactionUserLibelle(accountName: string, userLibelleMatch: string): Observable<string[]> {
+  getMatchTransactionsBasedOnUserLibelle(accountName: string, userLibelleMatch: string): Observable<Transaction[]> {
     return this.getFlattenTransaction(accountName)
       .pipe(
         filter(transaction => transaction.userLibelle.toLowerCase().includes(userLibelleMatch.toLowerCase())),
-        map(transaction => transaction.userLibelle),
         toArray()
       );
   }

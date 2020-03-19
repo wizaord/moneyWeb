@@ -18,9 +18,9 @@ export class VentilationEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.categorySelected = this.ventilation.categoryId;
     this.categoriesService.getCategoriesFlatMapAsSubCategories()
       .subscribe(subCategories => this.categories = subCategories);
+    this.refreshCategoryName();
   }
 
   removeVentilation(ventilation: Ventilation) {
@@ -30,5 +30,9 @@ export class VentilationEditComponent implements OnInit {
   categorySelectedChange(categoryId: number) {
     console.log('Selection de la category avec l id ' + categoryId);
     this.ventilation.categoryId = categoryId.toString();
+  }
+
+  refreshCategoryName() {
+    this.categorySelected = this.ventilation.categoryId;
   }
 }

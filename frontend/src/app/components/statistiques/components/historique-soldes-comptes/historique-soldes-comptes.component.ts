@@ -60,7 +60,7 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
 
   dateTickFormatting(val: any): string {
     if (val instanceof Date) {
-      return val.getFullYear() + '/' + val.getMonth() + '/' + val.getDay();
+      return val.getFullYear() + '/' + (val.getMonth() + 1) + '/' + val.getDate();
     }
     return val;
   }

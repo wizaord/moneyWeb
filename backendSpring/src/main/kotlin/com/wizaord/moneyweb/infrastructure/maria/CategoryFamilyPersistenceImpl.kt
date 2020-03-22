@@ -21,11 +21,15 @@ class CategoryFamilyPersistenceImpl(
                 com.wizaord.moneyweb.infrastructure.maria.domain.CategoryFamily.fromDomain(categoryFamily)))
     }
 
+    @Transactional(readOnly = true)
     override fun getAll(): List<CategoryFamily> {
-        return categoryFamilyRepositorySql.findAll()
-                .map { it.family!!.toDomain() }
+        val categoriesFromDb = mutableListOf<CategoryFamily>()
+        categoryFamilyRepositorySql.findAll()
+                .forEach { categoriesFromDb.add(it.family!!.toDomain()) }
+        return categoriesFromDb
     }
 
+    @Transactional(readOnly = true)
     override fun getById(categoryId: String): Category {
         return getAll().mapNotNull { categoryFamily -> categoryFamily.findById(categoryId) }
                 .first()

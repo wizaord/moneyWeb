@@ -5,7 +5,7 @@ import com.wizaord.moneyweb.infrastructure.UserPersistence
 import com.wizaord.moneyweb.infrastructure.maria.domain.UserRepositorySql
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
@@ -13,10 +13,12 @@ import javax.transaction.Transactional
 class UserPersistenceImpl(
         private val userRepository: UserRepositorySql
 ): UserPersistence {
+    @Transactional(readOnly = true)
     override fun findByUsername(login: String): User? {
         return this.userRepository.findByUsername(login)?.toDomain()
     }
 
+    @Transactional(readOnly = true)
     override fun findByEmail(email: String): User? {
         return this.userRepository.findByEmail(email)?.toDomain()
     }

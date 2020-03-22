@@ -23,6 +23,7 @@ class FamilyBankAccountPersistenceImpl(
 
     private val logger = LoggerFactory.getLogger(FamilyBankAccountPersistenceImpl::class.java)
 
+    @Transactional(readOnly = true)
     override fun loadFamilyBankAccountByFamilyName(familyName: String): FamilyBankAccountsImpl? {
         val familyFromRepository = familyBankAccountsRepositorySql.findById(familyName).map { it -> it.family!!.toDomain() }
         return when {
@@ -31,6 +32,7 @@ class FamilyBankAccountPersistenceImpl(
         }
     }
 
+    @Transactional(readOnly = true)
     override fun loadTransactionsFromAccount(accountInternalId: String): List<Transaction> {
         logger.info("Loaded transaction for account with id {}", accountInternalId)
         val transactions = transactionsRespositorySql.findByAccountInternalId(accountInternalId)

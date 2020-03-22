@@ -79,6 +79,7 @@ export class TransactionEditComponent implements OnInit {
 
   updateTransactionWithTypeAHead($event: NgbTypeaheadSelectItemEvent) {
     const transactionSelected: Transaction = $event.item;
+    this.transaction.isPointe = true;
     this.transaction.ventilations.forEach((ventilation, index) => {
       if (transactionSelected.ventilations.length >= index) {
         ventilation.categoryId = transactionSelected.ventilations[index].categoryId;

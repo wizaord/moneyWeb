@@ -8,4 +8,5 @@ interface CategoryFamilyPersistence {
     fun save(categoryFamily: CategoryFamily)
     fun getAll(): List<CategoryFamily>
     fun getById(categoryId: String): Category
+    fun deleteAll()
 }

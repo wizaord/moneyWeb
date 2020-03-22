@@ -1,6 +1,5 @@
-package com.wizaord.moneyweb.infrastructure.domain
+package com.wizaord.moneyweb.infrastructure.mongo.domain
 
-import com.wizaord.moneyweb.infrastructure.domain.User
 import org.springframework.data.mongodb.repository.MongoRepository
 
 interface UserRepository : MongoRepository<User, String> {

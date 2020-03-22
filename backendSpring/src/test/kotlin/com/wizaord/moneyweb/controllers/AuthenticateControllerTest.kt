@@ -1,6 +1,6 @@
 package com.wizaord.moneyweb.controllers
 
-import com.wizaord.moneyweb.infrastructure.domain.User
+import com.wizaord.moneyweb.domain.User
 import com.wizaord.moneyweb.helpers.mapToJson
 import com.wizaord.moneyweb.services.AuthentificationService
 import com.wizaord.moneyweb.services.JwtService

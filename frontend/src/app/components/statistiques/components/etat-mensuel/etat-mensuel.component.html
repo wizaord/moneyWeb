@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="row justify-content-between my-1">
+    <div class="col-2">
+      <button type="button" class="btn btn-primary pull-left" (click)="goPreviousMonth()">{{currentMonth | datePreviousMonthExtract}}</button>
+    </div>
+    <div class="col-auto text-center">
+      <h2>Etat pour {{currentMonth | dateCurrentMonthExtract}}</h2>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-primary pull-right" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}}</button>
+    </div>
+  </div>
+  <div class="row my-1">
+    <div class="col-12">
+      <div class="card">
+        <h5 class="card-header">Revenus et Dépenses</h5>
+        <div class="card-body">
+          <app-revenu-depenses [transactions]="revenusDepenseTransactions$" [currentMonth]="currentMonth"></app-revenu-depenses>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-1">
+    <div class="col-12">
+      <div class="card">
+        <h5 class="card-header">Comparaison des dépenses mensuelles</h5>
+        <div class="card-body">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-1">
+    <div class="col-12">
+      <div class="card">
+        <h5 class="card-header">Votre situation patrimoniale</h5>
+        <div class="card-body">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-1">
+    <div class="col-12">
+      <div class="card">
+        <h5 class="card-header">Prévision et trésorerie</h5>
+        <div class="card-body">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

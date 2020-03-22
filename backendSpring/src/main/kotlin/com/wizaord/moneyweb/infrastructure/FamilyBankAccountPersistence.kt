@@ -10,4 +10,6 @@ interface FamilyBankAccountPersistence {
     fun updateFamily(familyBankAccountsImpl: FamilyBankAccountsImpl): FamilyBankAccountsImpl
     fun transactionCreate(accountInternalId: String, transaction: Transaction)
     fun transactionRemove(transaction: Transaction)
+    fun transactionDeleteAll()
+    fun familyBankAccountDeleteAll()
 }

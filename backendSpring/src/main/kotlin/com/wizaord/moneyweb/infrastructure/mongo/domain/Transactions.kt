@@ -1,6 +1,5 @@
-package com.wizaord.moneyweb.infrastructure.domain
+package com.wizaord.moneyweb.infrastructure.mongo.domain
 
-import com.wizaord.moneyweb.domain.categories.Category
 import com.wizaord.moneyweb.domain.transactions.Credit
 import com.wizaord.moneyweb.domain.transactions.ventilations.CreditVentilation
 import com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation
@@ -31,8 +30,8 @@ abstract class Transaction (
         this.dateCreation = transaction.dateCreation
         transaction.ventilations.forEach { ventilation ->
             val ventilationInfra = when (ventilation) {
-                is DebitVentilation -> com.wizaord.moneyweb.infrastructure.domain.DebitVentilation.fromDomain(ventilation)
-                is CreditVentilation -> com.wizaord.moneyweb.infrastructure.domain.CreditVentilation.fromDomain(ventilation)
+                is DebitVentilation -> com.wizaord.moneyweb.infrastructure.mongo.domain.DebitVentilation.fromDomain(ventilation)
+                is CreditVentilation -> com.wizaord.moneyweb.infrastructure.mongo.domain.CreditVentilation.fromDomain(ventilation)
                 else -> error("Not possible")
             }
             this.ventilations.add(ventilationInfra)
@@ -60,7 +59,7 @@ class Debit(id: String) : Transaction(id) {
 }
 class Credit(id: String) : Transaction(id) {
     companion object {
-        fun fromDomain(credit: Credit): com.wizaord.moneyweb.infrastructure.domain.Credit {
+        fun fromDomain(credit: Credit): com.wizaord.moneyweb.infrastructure.mongo.domain.Credit {
             val c = Credit(credit.id)
             c.loadTransaction(credit)
             return c
@@ -91,12 +90,12 @@ abstract class Ventilation(
 class DebitVentilation(amount: Double, categoryId: String?) : Ventilation(amount, categoryId) {
     companion object {
         fun fromDomain(ventilation: DebitVentilation) =
-                com.wizaord.moneyweb.infrastructure.domain.DebitVentilation(ventilation.amount, ventilation.categoryId)
+                com.wizaord.moneyweb.infrastructure.mongo.domain.DebitVentilation(ventilation.amount, ventilation.categoryId)
     }
 }
 class CreditVentilation(amount: Double, categoryId: String?) : Ventilation(amount, categoryId) {
     companion object {
         fun fromDomain(ventilation: CreditVentilation) =
-                com.wizaord.moneyweb.infrastructure.domain.CreditVentilation(ventilation.amount, ventilation.categoryId)
+                com.wizaord.moneyweb.infrastructure.mongo.domain.CreditVentilation(ventilation.amount, ventilation.categoryId)
     }
 }

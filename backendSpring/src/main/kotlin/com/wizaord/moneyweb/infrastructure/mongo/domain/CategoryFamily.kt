@@ -1,4 +1,4 @@
-package com.wizaord.moneyweb.infrastructure.domain
+package com.wizaord.moneyweb.infrastructure.mongo.domain
 
 import com.wizaord.moneyweb.domain.categories.CategoryFamily
 import org.springframework.data.mongodb.core.mapping.Document

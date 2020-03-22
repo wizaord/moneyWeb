@@ -1,9 +1,9 @@
-package com.wizaord.moneyweb.infrastructure
+package com.wizaord.moneyweb.infrastructure.mongo
 
 import com.nhaarman.mockitokotlin2.given
-import com.wizaord.moneyweb.infrastructure.domain.Category
-import com.wizaord.moneyweb.infrastructure.domain.CategoryFamily
-import com.wizaord.moneyweb.infrastructure.domain.CategoryFamilyRepository
+import com.wizaord.moneyweb.infrastructure.mongo.domain.Category
+import com.wizaord.moneyweb.infrastructure.mongo.domain.CategoryFamily
+import com.wizaord.moneyweb.infrastructure.mongo.domain.CategoryFamilyRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

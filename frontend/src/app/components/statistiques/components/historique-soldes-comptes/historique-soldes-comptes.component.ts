@@ -5,6 +5,7 @@ import { filter, flatMap, groupBy, map, mergeMap, reduce, toArray } from 'rxjs/o
 import { Observable } from 'rxjs';
 import { AccountOwner } from '../../../../domain/user/AccountOwner';
 import { FamilyService } from '../../../../services/family.service';
+import * as shape from 'd3-shape';
 
 @Component({
   selector: 'app-historique-soldes-comptes',
@@ -20,6 +21,8 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
     }
   ];
 
+  curve: any = shape.curveBasis;
+
   private allGroupedTransactions: TransactionReduceByDay[];
   filterSelected: number;
   filters = [new Filter(0, 'Les 6 derniers mois'),
@@ -29,6 +32,7 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
 
   filterFamilyMemberSelected: string = null;
   filterFamilyMember$: Observable<AccountOwner[]>;
+  loading: boolean;
 
 
   constructor(
@@ -38,6 +42,7 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.filterSelected = 0;
     this.filterFamilyMember$ = this.familyService.getOwners();
     this.refreshData();
@@ -51,7 +56,7 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
   }
 
   refreshData() {
-    console.log('plop ' + this.filterFamilyMemberSelected);
+    this.loading = true;
     this.accountService.getAccounts().pipe(
       flatMap(a => a),
       flatMap(account => this.transactionsService.getFlattenTransaction(account)),
@@ -76,6 +81,7 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
           return t;
         });
       this.refreshViewDate();
+      this.loading = false;
     });
   }
 

@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+
+    </div>
+    <div class="col-6">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">{{previousMonth | dateCurrentMonthExtract}}</th>
+          <th scope="col">{{currentMonth | dateCurrentMonthExtract}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">Total des revenus</th>
+          <td>{{previousMonthTotalRevenus$ | async | number}}</td>
+          <td>{{currentMonthTotalRevenus | number}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Total des dépenses</th>
+          <td>{{previousMonthTotalDepenses$ | async | number}}</td>
+          <td>{{currentMonthTotalDepenses$ | async | number}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Epargne éventuelle</th>
+          <td>{{previousMonthEpargne$ | async | number}}</td>
+          <td>{{currentMonthEpargne$ | async | number}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <p>Ablablablabla</p>
+  </div>
+  <div class="row">
+    <p>Ablablablabla</p>
+  </div>
+</div>

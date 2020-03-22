@@ -1,6 +1,6 @@
 package com.wizaord.moneyweb.controllers
 
-import com.wizaord.moneyweb.infrastructure.domain.User
+import com.wizaord.moneyweb.domain.User
 import com.wizaord.moneyweb.helpers.mapToJson
 import com.wizaord.moneyweb.services.AuthentificationService
 import com.wizaord.moneyweb.services.FamilyBankAccountsCreateService
@@ -10,7 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito.*
+import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest

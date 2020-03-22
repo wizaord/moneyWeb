@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentification/authentication.service';
 import { Observable } from 'rxjs';
 import { Transaction } from '../domain/account/Transaction';
-import { filter, flatMap, map, toArray } from 'rxjs/operators';
+import { distinct, filter, flatMap, map, toArray } from 'rxjs/operators';
 import { Account } from '../domain/account/Account';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class TransactionsService {
   API_URL = `${environment.apiUrl}/family`;
 
   constructor(private http: HttpClient,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private accountService: AccountService) {
   }
 
   getTransactionsByAccount(account: Account): Observable<Transaction[]> {
@@ -42,7 +44,8 @@ export class TransactionsService {
     return this.getFlattenTransaction(account)
       .pipe(
         filter(transaction => transaction.userLibelle.toLowerCase().includes(userLibelleMatch.toLowerCase())),
-        toArray()
+        distinct(transaction => transaction.userLibelle),
+        toArray(),
       );
   }
 
@@ -71,5 +74,13 @@ export class TransactionsService {
           return t;
         })
       );
+  }
+
+  getAllTransactions(): Observable<Transaction[]> {
+    return this.accountService.getAccounts().pipe(
+      flatMap(a => a),
+      flatMap(account => this.getFlattenTransaction(account)),
+      toArray()
+    );
   }
 }

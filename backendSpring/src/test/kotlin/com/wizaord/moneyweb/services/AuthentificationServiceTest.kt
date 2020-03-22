@@ -1,7 +1,9 @@
 package com.wizaord.moneyweb.services
 
-import com.wizaord.moneyweb.infrastructure.domain.User
-import com.wizaord.moneyweb.infrastructure.domain.UserRepository
+import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.same
+import com.wizaord.moneyweb.domain.User
+import com.wizaord.moneyweb.infrastructure.UserPersistence
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -15,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 internal class AuthentificationServiceTest {
 
     @Mock
-    lateinit var userRepository: UserRepository
+    lateinit var userPersistence: UserPersistence
 
     @InjectMocks
     lateinit var userAuthentificationService: AuthentificationService
@@ -23,7 +25,7 @@ internal class AuthentificationServiceTest {
     @Test
     fun `when getUsernameAndPassword when user is not found then return null`() {
         // given
-        given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(null)
+        given(userPersistence.findByUsername(ArgumentMatchers.anyString())).willReturn(null)
 
         // when
         val userFromBdd = userAuthentificationService.getUserByUsernameAndPassword("username", "password")
@@ -36,7 +38,7 @@ internal class AuthentificationServiceTest {
     fun `when getUsernameAndPassword when user is found but password is incorrect then return null`() {
         // given
         val userMongo = User("id", "username", "password", "email")
-        given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(userMongo)
+        given(userPersistence.findByUsername(ArgumentMatchers.anyString())).willReturn(userMongo)
 
         // when
         val userFromBdd = userAuthentificationService.getUserByUsernameAndPassword("username", "password2")
@@ -48,8 +50,8 @@ internal class AuthentificationServiceTest {
     @Test
     fun `when getUsernameAndPassword when user is found and password is correct then return User`() {
         // given
-        val userMongo = User("id", "username", "password", "email")
-        given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(userMongo)
+        val userMongo = User( "username", "password", "email", "id")
+        given(userPersistence.findByUsername(same("username"))).willReturn(userMongo)
 
         // when
         val userFromBdd = userAuthentificationService.getUserByUsernameAndPassword("username", "password")
@@ -62,7 +64,7 @@ internal class AuthentificationServiceTest {
     internal fun `when create user already exist then return null`() {
         //given
         val userMongo = User("id", "login", "password", "email")
-        given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(userMongo)
+        given(userPersistence.findByUsername(ArgumentMatchers.anyString())).willReturn(userMongo)
 
         // when
         val userCreated = userAuthentificationService.createUser("login", "password", "email")
@@ -75,8 +77,8 @@ internal class AuthentificationServiceTest {
     internal fun `when create user already email exist then return null`() {
         //given
         val userMongo = User("id", "login", "password", "email")
-        given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(null)
-        given(userRepository.findByEmail(ArgumentMatchers.anyString())).willReturn(userMongo)
+        given(userPersistence.findByUsername(ArgumentMatchers.anyString())).willReturn(null)
+        given(userPersistence.findByEmail(ArgumentMatchers.anyString())).willReturn(userMongo)
 
         // when
         val userCreated = userAuthentificationService.createUser("login", "password", "email")
@@ -88,10 +90,9 @@ internal class AuthentificationServiceTest {
     @Test
     internal fun `when create a user then return the user`() {
         // given
-        val userMongo = User("id", "login", "password", "email")
-        given(userRepository.findByUsername(ArgumentMatchers.anyString())).willReturn(null)
-        given(userRepository.findByEmail(ArgumentMatchers.anyString())).willReturn(null)
-        given(userRepository.save(ArgumentMatchers.any(User::class.java))).willReturn(userMongo)
+        given(userPersistence.findByUsername(ArgumentMatchers.anyString())).willReturn(null)
+        given(userPersistence.findByEmail(ArgumentMatchers.anyString())).willReturn(null)
+        given(userPersistence.save(anyOrNull())).willAnswer { it.arguments[0] }
 
         // when
         val createUser = userAuthentificationService.createUser("login", "password", "email")

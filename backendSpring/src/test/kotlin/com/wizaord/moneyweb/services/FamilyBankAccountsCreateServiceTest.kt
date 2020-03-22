@@ -1,15 +1,11 @@
 package com.wizaord.moneyweb.services
 
 import com.nhaarman.mockitokotlin2.anyOrNull
-import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 import com.wizaord.moneyweb.domain.FamilyMember
 import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
-import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccountsRepository
-import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccount
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.given
 import org.mockito.InjectMocks
 import org.mockito.Mock

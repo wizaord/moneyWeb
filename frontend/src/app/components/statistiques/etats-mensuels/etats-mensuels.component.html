@@ -2,7 +2,9 @@
   <h5 class="card-header">ETATS MENSUELS</h5>
   <div class="card-body">
     <ul>
-      <li *ngFor="let date of dates">{{date | dateCurrentMonthExtract}}</li>
+      <li *ngFor="let date of dates">
+        <a [routerLink]="['/statistiques/etats-mensuel']" [queryParams]="{date: date.getTime()}">{{date | dateCurrentMonthExtract}}</a>
+      </li>
     </ul>
   </div>
 </div>

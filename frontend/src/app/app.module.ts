@@ -48,6 +48,9 @@ import { ActifsEtPassifsComponent } from './components/statistiques/actifs-et-pa
 import { EtatsDeComparaisonComponent } from './components/statistiques/etats-de-comparaison/etats-de-comparaison.component';
 import { HistoriqueSoldesComptesComponent } from './components/statistiques/components/historique-soldes-comptes/historique-soldes-comptes.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { EvolutionRevenusDepensesComponent } from './components/statistiques/components/evolution-revenus-depenses/evolution-revenus-depenses.component';
+import { EtatMensuelComponent } from './components/statistiques/components/etat-mensuel/etat-mensuel.component';
+import { RevenuDepensesComponent } from './components/statistiques/components/etat-mensuel/revenu-depenses/revenu-depenses.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +81,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     RevenusEtDepensesComponent,
     ActifsEtPassifsComponent,
     EtatsDeComparaisonComponent,
-    HistoriqueSoldesComptesComponent
+    HistoriqueSoldesComptesComponent,
+    EvolutionRevenusDepensesComponent,
+    EtatMensuelComponent,
+    RevenuDepensesComponent
 
   ],
     imports: [

@@ -1,11 +1,10 @@
-package com.wizaord.moneyweb.infrastructure.domain
+package com.wizaord.moneyweb.infrastructure.mongo.domain
 
 import com.wizaord.moneyweb.domain.BankAccountImpl
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
-import java.util.*
 
 @Document
 class FamilyBankAccount(
@@ -33,7 +32,8 @@ class FamilyBankAccount(
 }
 
 
-data class FamilyMember(val username: String) {
+data class FamilyMember(
+        val username: String) {
 
     companion object {
         fun fromDomain(familyMember: com.wizaord.moneyweb.domain.FamilyMember): FamilyMember {

@@ -1,19 +1,22 @@
-package com.wizaord.moneyweb.infrastructure
+package com.wizaord.moneyweb.infrastructure.mongo
 
 import com.wizaord.moneyweb.domain.FamilyBankAccountsImpl
 import com.wizaord.moneyweb.domain.transactions.Credit
 import com.wizaord.moneyweb.domain.transactions.Debit
 import com.wizaord.moneyweb.domain.transactions.Transaction
-import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccount
-import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccountsRepository
-import com.wizaord.moneyweb.infrastructure.domain.TransactionsRepository
+import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
+import com.wizaord.moneyweb.infrastructure.mongo.domain.FamilyBankAccount
+import com.wizaord.moneyweb.infrastructure.mongo.domain.FamilyBankAccountsRepository
+import com.wizaord.moneyweb.infrastructure.mongo.domain.TransactionsRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
+@Profile("mongo")
 class FamilyBankAccountPersistenceImpl(
         @Autowired val familyBankAccountsRepository: FamilyBankAccountsRepository,
         @Autowired val transactionsRepository: TransactionsRepository
@@ -45,10 +48,10 @@ class FamilyBankAccountPersistenceImpl(
     }
 
     override fun transactionCreate(accountInternalId: String, transaction: Transaction) {
-        lateinit var tr: com.wizaord.moneyweb.infrastructure.domain.Transaction
+        lateinit var tr: com.wizaord.moneyweb.infrastructure.mongo.domain.Transaction
         when (transaction) {
-            is Credit -> tr = com.wizaord.moneyweb.infrastructure.domain.Credit.fromDomain(transaction)
-            is Debit -> tr = com.wizaord.moneyweb.infrastructure.domain.Debit.fromDomain(transaction)
+            is Credit -> tr = com.wizaord.moneyweb.infrastructure.mongo.domain.Credit.fromDomain(transaction)
+            is Debit -> tr = com.wizaord.moneyweb.infrastructure.mongo.domain.Debit.fromDomain(transaction)
         }
         tr.accountInternalId = accountInternalId
         logger.info("Persist new transaction with ID ${tr.id}")
@@ -57,6 +60,14 @@ class FamilyBankAccountPersistenceImpl(
 
     override fun transactionRemove(transaction: Transaction) {
         transactionsRepository.deleteById(transaction.id)
+    }
+
+    override fun transactionDeleteAll() {
+        transactionsRepository.deleteAll()
+    }
+
+    override fun familyBankAccountDeleteAll() {
+        familyBankAccountsRepository.deleteAll()
     }
 
 }

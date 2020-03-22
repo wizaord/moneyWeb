@@ -45,8 +45,7 @@ class AccountLoader(
         val familyBean = this.familyBankAccountServiceFactory.getFamilyServiceWithoutTransactions("mouilleron")
 
         accounts.forEach { account ->
-            familyBean.accountRegister(account.name,
-                    "TO_BE_DEFINED", account.dateCreation.toLocalDate())
+            familyBean.accountRegister(account.name, "TO_BE_DEFINED", account.dateCreation.toLocalDate())
             if (!account.isOpen) familyBean.accountClose(account.name)
 
         }

@@ -1,25 +1,21 @@
 package com.wizaord.moneyweb.init
 
-import com.wizaord.moneyweb.infrastructure.domain.CategoryFamilyRepository
-import com.wizaord.moneyweb.infrastructure.domain.FamilyBankAccountsRepository
-import com.wizaord.moneyweb.infrastructure.domain.TransactionsRepository
+import com.wizaord.moneyweb.infrastructure.CategoryFamilyPersistence
+import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 
 @Component
-@Transactional
 class InitRunner (
         @Autowired var categoryLoader: CategoryLoader,
-        @Autowired var categoryFamilyRepository: CategoryFamilyRepository,
+        @Autowired var categoryFamilyPersistence: CategoryFamilyPersistence,
         @Autowired var accountLoader: AccountLoader,
-        @Autowired var familyBankAccountsRepository: FamilyBankAccountsRepository,
-        @Autowired var debitCreditLoader: DebitCreditLoader,
-        @Autowired var transactionsRepository: TransactionsRepository
+        @Autowired var familyBankAccountPersistence: FamilyBankAccountPersistence,
+        @Autowired var debitCreditLoader: DebitCreditLoader
         ): CommandLineRunner {
     private val logger = LoggerFactory.getLogger(InitRunner::class.java)
 
@@ -45,9 +41,8 @@ class InitRunner (
     }
 
     private fun cleanDatabase() {
-        categoryFamilyRepository.deleteAll()
-        familyBankAccountsRepository.deleteAll()
-        transactionsRepository.deleteAll()
-
+        familyBankAccountPersistence.transactionDeleteAll()
+        familyBankAccountPersistence.familyBankAccountDeleteAll()
+        categoryFamilyPersistence.deleteAll()
     }
 }

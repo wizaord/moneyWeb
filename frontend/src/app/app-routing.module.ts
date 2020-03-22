@@ -14,6 +14,7 @@ import { StatistiquesComponent } from './components/statistiques/statistiques.co
 import { AccountModifyComponent } from './components/account/manage/account-modify/account-modify.component';
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
 import { HistoriqueSoldesComptesComponent } from './components/statistiques/components/historique-soldes-comptes/historique-soldes-comptes.component';
+import { EtatMensuelComponent } from './components/statistiques/components/etat-mensuel/etat-mensuel.component';
 
 const routes: Routes = [
   { path: '', component: UserHomepageComponent, canActivate: [AuthGuard] },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'upload', component: UploadComponent, canActivate: [AuthGuard] },
   { path: 'statistiques', component: StatistiquesComponent, canActivate: [AuthGuard] },
   { path: 'statistiques/historiques-soldes-comptes', component: HistoriqueSoldesComptesComponent, canActivate: [AuthGuard] },
+  { path: 'statistiques/etats-mensuel', component: EtatMensuelComponent, canActivate: [AuthGuard] },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }];

@@ -15,7 +15,7 @@ class Family(
     @Id
     var familyName: String? = null,
     @Convert(converter = FamilyConverterJson::class)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "longtext")
     var family: FamilyBankAccount? = null) {
 
 }

@@ -28,7 +28,7 @@ class Transaction(
     var accountInternalId: String? = null
 
     @Convert(converter = VentilationConverterJson::class)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "longtext")
     var ventilations: Ventilations? = null
 
     fun toDomain(): Transaction {

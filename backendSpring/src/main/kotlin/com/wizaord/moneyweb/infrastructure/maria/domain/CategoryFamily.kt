@@ -11,7 +11,7 @@ class Categories(
         @Id
         var categoryId: String? = null,
         @Convert(converter = CategoryFamilyConverterJson::class)
-        @Column(columnDefinition = "json")
+        @Column(columnDefinition = "longtext")
         var family: com.wizaord.moneyweb.infrastructure.maria.domain.CategoryFamily? = null) {
 
 }

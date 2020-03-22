@@ -25,6 +25,7 @@ export class TransactionEditComponent implements OnInit {
   transactionTypeAHead: Transaction;
 
   private account: Account;
+  private userLabelSelected: string = '';
 
   constructor(private dateService: DateService,
               public activeModal: NgbActiveModal,
@@ -43,7 +44,11 @@ export class TransactionEditComponent implements OnInit {
 
   updateTransaction() {
     this.transaction.dateCreation = this.dateService.convertToDate(this.accountDate);
-    this.transaction.userLibelle = this.transactionTypeAHead.userLibelle;
+    if (this.transactionTypeAHead.userLibelle === undefined) {
+      this.transaction.userLibelle = this.userLabelSelected;
+    } else {
+      this.transaction.userLibelle = this.transactionTypeAHead.userLibelle;
+    }
     this.activeModal.close(this.transaction);
   }
 
@@ -55,7 +60,7 @@ export class TransactionEditComponent implements OnInit {
 
   addNewVentilation() {
     const amountAllTransactions = this.transaction.ventilations.map(t => t.amount).reduce(
-      (previousValue, currentValue) => previousValue + currentValue
+      (previousValue, currentValue) => previousValue + currentValue, 0
     );
     const newVentilation = new Ventilation(this.transaction.amount - amountAllTransactions, null);
     this.transaction.ventilations.push(newVentilation);
@@ -86,6 +91,10 @@ export class TransactionEditComponent implements OnInit {
       }
     });
     this.ventilationsComponents.forEach(item => item.refreshCategoryName());
+  }
+
+  traceUserSelection($event: any) {
+    this.userLabelSelected = $event;
   }
 }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentification/authentication.service';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { Transaction } from '../domain/account/Transaction';
 import { distinct, filter, flatMap, map, toArray } from 'rxjs/operators';
 import { Account } from '../domain/account/Account';
@@ -20,6 +20,7 @@ export class TransactionsService {
   }
 
   getTransactionsByAccount(account: Account): Observable<Transaction[]> {
+    if (account === undefined) { return EMPTY; }
     const familyName = this.authenticationService.currentUserValue.username;
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${account.accountName}/transactions`;
     return this.http.get<Transaction[]>(apiUrl).pipe(

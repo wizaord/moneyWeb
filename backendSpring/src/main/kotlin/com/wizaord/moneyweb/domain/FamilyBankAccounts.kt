@@ -21,6 +21,7 @@ interface FamilyBankAccounts {
     fun accessToAccountsByBankname(bankName: String): List<BankAccountOwners>
     fun accessToAccountsByFamilyMember(familyMember: FamilyMember): List<BankAccountOwners>
     fun accessToAccountByAccountName(accountName: String): BankAccountOwners?
+    fun accessToAccountByInternalId(accountId: String): BankAccountOwners?
 
     @Throws(FamilyMemberAlreadyExistException::class)
     fun registerFamilyMember(familyMember: FamilyMember)

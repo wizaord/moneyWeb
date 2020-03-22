@@ -10,7 +10,7 @@ export class Transaction {
   isPointe: boolean;
   dateCreation: Date;
   accountName: string;
-  ventilations: Ventilation[];
+  ventilations: Ventilation[] = [];
   currentSolde = 0;
   owners: string[];
 
@@ -30,7 +30,9 @@ export class Transaction {
     this.isPointe = isPointe;
     this.dateCreation = new Date(dateCreation);
     this.accountName = accountName;
-    this.ventilations = ventilations.map(ventilation => new Ventilation(ventilation.amount, ventilation.categoryId));
+    if (ventilations != null) {
+      this.ventilations = ventilations.map(ventilation => new Ventilation(ventilation.amount, ventilation.categoryId));
+    }
     this.owners = [];
   }
 

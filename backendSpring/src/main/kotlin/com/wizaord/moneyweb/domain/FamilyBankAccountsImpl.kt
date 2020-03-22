@@ -60,6 +60,9 @@ data class FamilyBankAccountsImpl(
     override fun accessToAccountsByBankname(bankName: String) = accessToAccounts().filter { it.bankAccount.getBankName() == bankName }
     override fun accessToAccountsByFamilyMember(familyMember: FamilyMember) = accessToAccounts().filter { it.hasOwner(familyMember) }
     override fun accessToAccountByAccountName(accountName: String) = accessToAccounts().firstOrNull { it.containBankAccountWithName(accountName) }
+    override fun accessToAccountByInternalId(accountId: String): BankAccountOwners? {
+        return accessToAccounts().firstOrNull { it.bankAccount?.getInternalId() == accountId }
+    }
 
     fun accessToAccountsSortedByLastTransaction(): List<BankAccountOwners> {
         return this.accessToAccounts().sortedBy { bankAccountOwners -> bankAccountOwners.bankAccount.getLastTransaction()?.dateCreation }

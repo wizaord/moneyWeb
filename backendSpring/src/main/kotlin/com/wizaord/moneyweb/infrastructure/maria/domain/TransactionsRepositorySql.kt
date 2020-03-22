@@ -8,6 +8,7 @@ import javax.persistence.AttributeConverter
 @Repository
 interface TransactionsRepositorySql : JpaRepository <Transaction, String> {
     fun findByAccountInternalId(accountInternalId: String): List<Transaction>
+    fun findByAccountInternalIdIn(accountInternalIds: List<String>): List<Transaction>
 }
 
 class VentilationConverterJson : AttributeConverter<Ventilations, String> {

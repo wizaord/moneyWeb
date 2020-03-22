@@ -39,6 +39,16 @@ class FamilyBankAccountPersistenceImpl(
         return transactions.map { it.toDomain() }
     }
 
+    @Transactional(readOnly = true)
+    override fun loadTransactionsFromAccounts(accountInternalIds: List<String>): Map<String, List<Transaction>> {
+        val transactions = transactionsRespositorySql.findByAccountInternalIdIn(accountInternalIds)
+        val groupedTransactions = transactions.groupBy { transaction -> transaction.accountInternalId }
+
+        val result: MutableMap<String, List<Transaction>> = mutableMapOf()
+        groupedTransactions.forEach { (accountName, transactions) -> result[accountName!!] = transactions.map { it.toDomain() } }
+        return result
+    }
+
     override fun initFamily(familyBankAccountsImpl: FamilyBankAccountsImpl): FamilyBankAccountsImpl {
         val family = Family(familyBankAccountsImpl.familyName, FamilyBankAccount.fromDomain(familyBankAccountsImpl))
         val familyPersisted = familyBankAccountsRepositorySql.save(family)

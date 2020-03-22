@@ -32,10 +32,16 @@ class FamilyBankAccountsService(
     fun loadTransactionsFromPersistence() {
         domainNotificationDeActivation()
         // load transactions from accounts
-        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
-            val transactionsLoaded = familyBankAccountPersistence.loadTransactionsFromAccount(bankAccountOwner.bankAccount.getInternalId())
-            transactionsLoaded.forEach { transaction -> bankAccountOwner.bankAccount.addTransaction(transaction) }
-        }
+        val accountsIds = familyBankAccounts.bankAccountsOwners.map { it.bankAccount.getInternalId() }
+        familyBankAccountPersistence.loadTransactionsFromAccounts(accountsIds)
+                .forEach { (accountId, transactions) ->
+                    val bankAccount = this.familyBankAccounts.accessToAccountByInternalId(accountId)?.bankAccount
+                    transactions.forEach { bankAccount?.addTransaction(it) }
+                }
+//        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
+//            val transactionsLoaded = familyBankAccountPersistence.loadTransactionsFromAccount(bankAccountOwner.bankAccount.getInternalId())
+//            transactionsLoaded.forEach { transaction -> bankAccountOwner.bankAccount.addTransaction(transaction) }
+//        }
         domainNotificationActivation()
     }
 

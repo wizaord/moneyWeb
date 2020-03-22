@@ -16,6 +16,7 @@
              [resultTemplate]="rt"
              [inputFormatter]="typeaheadFormatter"
              (selectItem)="updateTransactionWithTypeAHead($event)"
+             (ngModelChange)="traceUserSelection($event)"
              placeholder="Please set your libelle" />
       <small *ngIf="isLoadingResult" class="form-text text-muted">searching...</small>
   </div>

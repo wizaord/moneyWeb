@@ -10,6 +10,14 @@ fun LocalDate.toDate(): Date {
             .toInstant());
 }
 
+fun LocalDate.toLocalDateMonth(): LocalDate {
+    return LocalDate.of(this.year, this.month, 1)
+}
+
+fun LocalDate.toMonthString(): String {
+    return "${this.year}-${this.monthValue}"
+}
+
 
 fun Date.toLocalDate(): LocalDate {
     return this.toInstant()

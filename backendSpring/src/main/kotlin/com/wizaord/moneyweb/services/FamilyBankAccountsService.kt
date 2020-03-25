@@ -38,10 +38,6 @@ class FamilyBankAccountsService(
                     val bankAccount = this.familyBankAccounts.accessToAccountByInternalId(accountId)?.bankAccount
                     transactions.forEach { bankAccount?.addTransaction(it) }
                 }
-//        familyBankAccounts.bankAccountsOwners.forEach { bankAccountOwner ->
-//            val transactionsLoaded = familyBankAccountPersistence.loadTransactionsFromAccount(bankAccountOwner.bankAccount.getInternalId())
-//            transactionsLoaded.forEach { transaction -> bankAccountOwner.bankAccount.addTransaction(transaction) }
-//        }
         domainNotificationActivation()
     }
 
@@ -92,6 +88,7 @@ class FamilyBankAccountsService(
     fun accountDelete(accountName: String) = familyBankAccounts.removeAccount(accountName)
 
     fun bankAccounts(): List<BankAccountOwners> = this.familyBankAccounts.accessToAccounts()
+    fun bankAccountsName(): List<String> = this.bankAccounts().map { it.bankAccount.getName() }
     fun bankAccountsSortByLastTransactions(): List<BankAccountOwners> = this.familyBankAccounts.accessToAccountsSortedByLastTransaction()
 
     fun owners() = familyBankAccounts.getFamily()
@@ -151,6 +148,18 @@ class FamilyBankAccountsService(
                 ?: emptyList()
     }
 
+    fun transactionsNotInternal(accountName: String): List<Transaction> {
+        val category = categoryService.getAll()
+        return this.transactions(accountName)
+                .filter { t -> t.ventilations
+                        .filter { ventilationId -> category
+                                .find { categoryFamily ->  categoryFamily.isContainCategory(ventilationId.categoryId?:"")}
+                                ?.isVirementCategory()
+                                ?:false }
+                        .count() == 0}
+
+    }
+
     fun transactionUpdate(accountName: String, transactionId: String, transaction: Transaction) {
         if (transactionId != transaction.id) return
         if (!transaction.isValid()) return
@@ -198,5 +207,7 @@ class FamilyBankAccountsService(
     fun accountUpdateDateCreation(accountName: String, newAccountDate: LocalDate) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.updateBankAccountDateCreate(newAccountDate)
     fun accountUpdateOwners(accountName: String, newOwners: List<FamilyMember>) = this.familyBankAccounts.changeBankAccountOwners(accountName, newOwners)
     fun bankAccount(accountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)
+    fun bankAccountOwners(accountName: String) = this.bankAccount(accountName)?.getOwners()?.map { it.username }?: listOf()
     fun refreshSolde(accountName: String) = this.familyBankAccounts.accessToAccountByAccountName(accountName)?.bankAccount?.soldeRefresh()
+
 }

@@ -1,41 +1,49 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-6">
-
+      <ngx-charts-bar-vertical-2d
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [animations]="true"
+        [results]="chartDatas"
+      >
+      </ngx-charts-bar-vertical-2d>
     </div>
     <div class="col-6">
       <table class="table">
         <thead>
         <tr>
           <th scope="col"></th>
-          <th scope="col">{{previousMonth | dateCurrentMonthExtract}}</th>
-          <th scope="col">{{currentMonth | dateCurrentMonthExtract}}</th>
+          <th scope="col">{{(previousMonthStat$| async).month}}</th>
+          <th scope="col">{{(currentMonthStat$ | async).month}}</th>
         </tr>
         </thead>
         <tbody>
         <tr>
           <th scope="row">Total des revenus</th>
-          <td>{{previousMonthTotalRevenus$ | async | number}}</td>
-          <td>{{currentMonthTotalRevenus | number}}</td>
+          <td>{{(previousMonthStat$ | async).revenus| number}}</td>
+          <td>{{(currentMonthStat$ | async).revenus| number}}</td>
         </tr>
         <tr>
           <th scope="row">Total des dépenses</th>
-          <td>{{previousMonthTotalDepenses$ | async | number}}</td>
-          <td>{{currentMonthTotalDepenses$ | async | number}}</td>
+          <td>{{(previousMonthStat$ | async).depenses | number}}</td>
+          <td>{{(currentMonthStat$ | async).depenses | number}}</td>
         </tr>
         <tr>
           <th scope="row">Epargne éventuelle</th>
-          <td>{{previousMonthEpargne$ | async | number}}</td>
-          <td>{{currentMonthEpargne$ | async | number}}</td>
+          <td>{{epargnePreviousMonth$ | async | number}}</td>
+          <td>{{epargneCurrentMonth$ | async | number}}</td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
   <div class="row">
-    <p>Ablablablabla</p>
-  </div>
-  <div class="row">
-    <p>Ablablablabla</p>
+    <ul>
+      <li>En {{(currentMonthStat$ | async).getMonthAsLanguage()}}, vous avez épargné {{epargneCurrentMonth$ | async | number}}€ par rapport à {{(previousMonthStat$ | async).getMonthAsLanguage()}}</li>
+      <li>Le total de vos revenus ce mois ci s'élevait à {{(currentMonthStat$ | async).revenus | number}}€. Cela représente un différence de {{(currentMonthStat$ | async).revenus - (previousMonthStat$ | async).revenus | number}}€ par rapport a {{(previousMonthStat$ | async).getMonthAsLanguage()}}</li>
+    </ul>
   </div>
 </div>

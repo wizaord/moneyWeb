@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
-import { Transaction } from '../../../../../domain/account/Transaction';
-import { filter, flatMap } from 'rxjs/operators';
-import { TransactionsService } from '../../../../../services/transactions.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AccountMonthStatistiques } from '../../../../../domain/statistiques/AccountStatistiques';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-revenu-depenses',
@@ -11,61 +10,52 @@ import { TransactionsService } from '../../../../../services/transactions.servic
 })
 export class RevenuDepensesComponent implements OnInit {
 
-  @Input() transactions: Observable<Transaction[]> = EMPTY;
-  @Input() currentMonth: Date;
-  previousMonth: Date;
+  @Input() currentMonthStat$: Observable<AccountMonthStatistiques>;
+  @Input() previousMonthStat$: Observable<AccountMonthStatistiques>;
+  @Output() previousMonthRequested = new EventEmitter();
 
-  private currentMonthBegin: number;
-  private currentMonthEnd: number;
-  private previousMonthBegin: number;
-  private previousMonthEnd: number;
+  chartDatas: any[];
+  chartDatasPrevious =
+    {
+      name: 'PreviousMonth',
+      series: [{name: 'Revenus', value: 0}, {name: 'Depenses', value: 0}]
+    };
 
-  currentMonthTotalRevenus: number;
-  currentMonthTotalDepenses$: Observable<number>;
-  currentMonthEpargne$: Observable<number>;
+  chartDatasCurrent =
+    {
+      name: 'CurrentMonth',
+      series: [{name: 'Revenus', value: 0}, {name: 'Depenses', value: 0}]
+    };
 
-  previousMonthTotalRevenus$: Observable<number>;
-  previousMonthTotalDepenses$: Observable<number>;
-  previousMonthEpargne$: Observable<number>;
+  epargneCurrentMonth$: Observable<number>;
+  epargnePreviousMonth$: Observable<number>;
 
-
-  constructor(private transactionsService: TransactionsService) { }
+  constructor() {
+  }
 
   ngOnInit() {
-    this.previousMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1);
-
-    this.currentMonthBegin = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1).getTime();
-    this.currentMonthEnd = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 0, 23).getTime();
-
-    this.previousMonthBegin = new Date(this.previousMonth.getFullYear(), this.previousMonth.getMonth(), 1).getTime();
-    this.previousMonthEnd = new Date(this.previousMonth.getFullYear(), this.previousMonth.getMonth() + 1, 0, 23).getTime();
-
-    this.transactionsService.getAllTransactions().pipe(
-      // filter(t => t.amount >= 0),
-      // tap(x => console.log('plop2 =>' + x)),
-      // map(t => t.amount),
-      // toArray()
-    ).subscribe(results => {
-      // ref
-      // console.log('Subscribe');
-      // const total = results.reduce((previousValue, currentValue) => previousValue1, 0);
-      // console.log('total => ' + total);
-      this.currentMonthTotalRevenus = 12;
-    });
-  }
-
-  private getCurrentMonthObservableTransactions(): Observable<Transaction> {
-    return this.transactions.pipe(
-      flatMap(t => t),
-      filter(t => t.dateCreation.getTime() > this.currentMonthBegin && t.dateCreation.getTime() < this.currentMonthEnd),
+    this.currentMonthStat$.subscribe(
+      result => {
+        this.chartDatasCurrent = {
+          name: result.month,
+          series: [{name: 'Revenus', value: result.revenus}
+            , {name: 'Depenses', value: result.depenses}]
+        };
+        this.chartDatas = [...[], this.chartDatasPrevious, this.chartDatasCurrent];
+      }
     );
-  }
-
-  private getPreviousMonthObservableTransactions(): Observable<Transaction> {
-    return this.transactions.pipe(
-      flatMap(t => t),
-      filter(t => t.dateCreation.getTime() > this.previousMonthBegin && t.dateCreation.getTime() < this.previousMonthEnd),
+    this.previousMonthStat$.subscribe(
+      result => {
+        this.chartDatasPrevious = {
+          name: result.month,
+          series: [{name: 'Revenus', value: result.revenus}
+            , {name: 'Depenses', value: result.depenses}]
+        };
+        this.chartDatas = [...[], this.chartDatasPrevious, this.chartDatasCurrent];
+      }
     );
-  }
 
+    this.epargneCurrentMonth$ = this.currentMonthStat$.pipe(map(x => x.revenus - x.depenses));
+    this.epargnePreviousMonth$ = this.previousMonthStat$.pipe(map(x => x.revenus - x.depenses));
+  }
 }

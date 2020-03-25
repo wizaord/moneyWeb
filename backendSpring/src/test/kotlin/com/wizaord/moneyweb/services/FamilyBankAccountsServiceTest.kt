@@ -2,9 +2,11 @@ package com.wizaord.moneyweb.services
 
 import com.nhaarman.mockitokotlin2.*
 import com.wizaord.moneyweb.domain.*
+import com.wizaord.moneyweb.domain.categories.CategoryFamily
 import com.wizaord.moneyweb.domain.transactions.Credit
 import com.wizaord.moneyweb.domain.transactions.Debit
 import com.wizaord.moneyweb.domain.transactions.TransactionMatch
+import com.wizaord.moneyweb.domain.transactions.ventilations.CreditVentilation
 import com.wizaord.moneyweb.domain.transactions.ventilations.DebitVentilation
 import com.wizaord.moneyweb.infrastructure.FamilyBankAccountPersistence
 import org.assertj.core.api.Assertions.assertThat
@@ -285,5 +287,37 @@ internal class FamilyBankAccountsServiceTest {
 
         // then
         verify(categoryService).renameCategoryVirement(anyOrNull(), anyOrNull())
+    }
+
+    @Test
+    internal fun `transactionsNotInteral - return only non internal transaction`() {
+        // given
+        val familyBank = FamilyBankAccountsImpl("family")
+        familyBank.registerFamilyMember(FamilyMember("Me"))
+
+        given(familyBankAccountPersistence.loadFamilyBankAccountByFamilyName(anyOrNull())).willReturn(familyBank)
+        given(bankAccount.getName()).willReturn("accountName")
+        familyBank.registerAccount(bankAccount)
+        familyBankAccountsService.loadFamilyBankFromPersistence("family")
+
+        val creditInterne = Credit("ko", "", "", 10.0)
+        creditInterne.addVentilation(CreditVentilation(10.0, CategoryFamily.VIREMENT_INTERNE_ID))
+
+        val creditNonInterne = Credit("ok", "", "", 10.0)
+        creditNonInterne.addVentilation(CreditVentilation(10.0, "2"))
+
+        given(bankAccount.getTransactions()).willReturn(listOf(creditInterne, creditNonInterne))
+        given(categoryService.getAll()).willReturn(listOf(
+                CategoryFamily("family", "1"),
+                CategoryFamily("family", "2")
+        ))
+
+        // when
+        val transactionsNotInternal = familyBankAccountsService.transactionsNotInternal("accountName")
+
+        // then
+        assertThat(transactionsNotInternal).hasSize(1)
+        assertThat(transactionsNotInternal[0].userLibelle).isEqualTo("ok")
+
     }
 }

@@ -27,4 +27,7 @@ data class CategoryFamily(
         if (name == categoryName) return this
         return this.categories.firstOrNull { it.name == categoryName }
     }
+
+    fun isVirementCategory() = (id == VIREMENT_INTERNE_ID)
+    fun isContainCategory(categoryId: String) = (this.findById(categoryId) != null)
 }

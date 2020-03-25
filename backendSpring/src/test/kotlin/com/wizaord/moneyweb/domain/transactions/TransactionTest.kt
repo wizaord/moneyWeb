@@ -265,4 +265,5 @@ internal class TransactionTest {
         assertThat(reverseTransaction.ventilations[0].amount).isEqualTo(-10.0)
         assertThat(reverseTransaction.ventilations[0].categoryId).isEqualTo("10")
     }
+
 }

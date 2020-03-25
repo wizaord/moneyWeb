@@ -51,6 +51,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { EvolutionRevenusDepensesComponent } from './components/statistiques/components/evolution-revenus-depenses/evolution-revenus-depenses.component';
 import { EtatMensuelComponent } from './components/statistiques/components/etat-mensuel/etat-mensuel.component';
 import { RevenuDepensesComponent } from './components/statistiques/components/etat-mensuel/revenu-depenses/revenu-depenses.component';
+import { SituationPatrimonialeComponent } from './components/statistiques/components/etat-mensuel/situation-patrimoniale/situation-patrimoniale.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { RevenuDepensesComponent } from './components/statistiques/components/et
     HistoriqueSoldesComptesComponent,
     EvolutionRevenusDepensesComponent,
     EtatMensuelComponent,
-    RevenuDepensesComponent
+    RevenuDepensesComponent,
+    SituationPatrimonialeComponent
 
   ],
     imports: [

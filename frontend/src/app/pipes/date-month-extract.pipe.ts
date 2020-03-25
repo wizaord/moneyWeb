@@ -1,7 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'];
+import { MONTH_NAMES } from '../domain/EMonth';
 
 
 @Pipe({
@@ -11,7 +9,7 @@ export class DateNextMonthExtractPipe implements PipeTransform {
 
   transform(date: Date): string {
     const transformedDate = new Date(date.getFullYear(), date.getMonth() + 1);
-    return `${transformedDate.getFullYear()} - ${monthNames[transformedDate.getMonth()]}`;
+    return `${transformedDate.getFullYear()} - ${MONTH_NAMES[transformedDate.getMonth()]}`;
   }
 }
 
@@ -22,7 +20,7 @@ export class DatePreviousMonthExtractPipe implements PipeTransform {
 
   transform(date: Date): string {
     const transformedDate = new Date(date.getFullYear(), date.getMonth() - 1);
-    return `${transformedDate.getFullYear()} - ${monthNames[transformedDate.getMonth()]}`;
+    return `${transformedDate.getFullYear()} - ${MONTH_NAMES[transformedDate.getMonth()]}`;
   }
 }
 
@@ -32,6 +30,6 @@ export class DatePreviousMonthExtractPipe implements PipeTransform {
 export class DateCurrentMonthExtractPipe implements PipeTransform {
 
   transform(date: Date): string {
-    return `${date.getFullYear()} - ${monthNames[date.getMonth()]}`;
+    return `${date.getFullYear()} - ${MONTH_NAMES[date.getMonth()]}`;
   }
 }

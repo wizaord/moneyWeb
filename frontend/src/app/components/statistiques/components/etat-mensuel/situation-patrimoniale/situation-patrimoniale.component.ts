@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AccountMonthStatistiques } from '../../../../../domain/statistiques/AccountStatistiques';
 
 @Component({
@@ -9,13 +9,12 @@ import { AccountMonthStatistiques } from '../../../../../domain/statistiques/Acc
 })
 export class SituationPatrimonialeComponent implements OnInit {
 
-  @Input() lastYearStats: Observable<AccountMonthStatistiques[]> = EMPTY;
+  @Input() lastYearStats: Observable<AccountMonthStatistiques[]>;
   chartDatas: any[];
 
   constructor() { }
 
   ngOnInit() {
-
   }
 
 }

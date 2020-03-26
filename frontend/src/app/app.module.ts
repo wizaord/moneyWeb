@@ -46,12 +46,12 @@ import { EtatsMensuelsComponent } from './components/statistiques/etats-mensuels
 import { RevenusEtDepensesComponent } from './components/statistiques/revenus-et-depenses/revenus-et-depenses.component';
 import { ActifsEtPassifsComponent } from './components/statistiques/actifs-et-passifs/actifs-et-passifs.component';
 import { EtatsDeComparaisonComponent } from './components/statistiques/etats-de-comparaison/etats-de-comparaison.component';
-import { HistoriqueSoldesComptesComponent } from './components/statistiques/components/historique-soldes-comptes/historique-soldes-comptes.component';
+import { HistoriqueSoldesComptesComponent } from './components/statistiques/actifs-et-passifs/historique-soldes-comptes/historique-soldes-comptes.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { EvolutionRevenusDepensesComponent } from './components/statistiques/components/evolution-revenus-depenses/evolution-revenus-depenses.component';
 import { EtatMensuelComponent } from './components/statistiques/components/etat-mensuel/etat-mensuel.component';
 import { RevenuDepensesComponent } from './components/statistiques/components/etat-mensuel/revenu-depenses/revenu-depenses.component';
 import { SituationPatrimonialeComponent } from './components/statistiques/components/etat-mensuel/situation-patrimoniale/situation-patrimoniale.component';
+import { EvolutionRevenusDepensesComponent } from './components/statistiques/actifs-et-passifs/evolution-revenus-depenses/evolution-revenus-depenses.component';
 
 @NgModule({
   declarations: [
@@ -83,8 +83,8 @@ import { SituationPatrimonialeComponent } from './components/statistiques/compon
     ActifsEtPassifsComponent,
     EtatsDeComparaisonComponent,
     HistoriqueSoldesComptesComponent,
-    EvolutionRevenusDepensesComponent,
     EtatMensuelComponent,
+    EvolutionRevenusDepensesComponent,
     RevenuDepensesComponent,
     SituationPatrimonialeComponent
 

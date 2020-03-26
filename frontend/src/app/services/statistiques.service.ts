@@ -3,8 +3,8 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from './authentification/authentication.service';
 import { HttpClient } from '@angular/common/http';
-import { AccountStatistiques } from '../domain/statistiques/AccountStatistiques';
-import { map } from 'rxjs/operators';
+import { AccountMonthStatistiques, AccountStatistiques } from '../domain/statistiques/AccountStatistiques';
+import { flatMap, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +18,55 @@ export class StatistiquesService {
   ) {
   }
 
-  getStatistiquesAccounts(): Observable<AccountStatistiques[]> {
+  getStatistiquesAccounts(owner?: string): Observable<AccountStatistiques[]> {
     const familyName = this.authenticationService.currentUserValue.username;
     const apiUrl = `${this.API_URL}/${familyName}/statistiques/accounts`;
     return this.http.get<AccountStatistiques[]>(apiUrl).pipe(
-      map(accountsStat => accountsStat.map(it => new AccountStatistiques(it)))
+      map(accountsStat => accountsStat.map(it => new AccountStatistiques(it))),
+      map(accounts => accounts.filter(acc => owner === undefined || acc.owners.find(o => o === owner) !== undefined)),
+      tap(x => console.log('LOL => ' + JSON.stringify(x)))
     );
+  }
+
+  getFlattenAccountMonthStatistiques(owner?: string): Observable<AccountMonthStatistiques[]> {
+    return this.getStatistiquesAccounts(owner).pipe(
+      flatMap(t => t),
+      map(x => x.monthStatistiques),
+    );
+  }
+
+  /**
+   * Regroupe une liste de AccountMonthStatistiques en 1 seul AccountMonthStatistiques.
+   * Les depenses et les revenus sont additionnés
+   */
+  aggregateAccountMonthStatistiques() {
+    return (acc: AccountMonthStatistiques, elt: AccountMonthStatistiques): AccountMonthStatistiques => {
+      acc.depenses += elt.depenses;
+      acc.revenus += elt.revenus;
+      acc.month = elt.month;
+      return acc;
+    };
+  }
+
+
+  /**
+   * Recoit une liste de AccountMonthStatistiques.
+   *
+   * Permet de retourner une liste de AccountMonthStatistiques dont :
+   *  - chaque AccountMonthStatistiques est unique pour un mois donnée
+   *  - tous elements du même mois sont aggregés
+   *
+   */
+  groupByAndAggregateByMonth = (acc: AccountMonthStatistiques[], elt: AccountMonthStatistiques): AccountMonthStatistiques[] => {
+    const isExist = acc.find(x => x.month === elt.month) !== undefined;
+    const eltIn = acc.find(x => x.month === elt.month) || elt;
+    eltIn.month = elt.month;
+    eltIn.revenus += elt.revenus;
+    eltIn.depenses += elt.depenses;
+    if (!isExist) {
+      acc.push(eltIn);
+    }
+    console.log('ACC => ' + JSON.stringify(acc));
+    return acc;
   }
 }

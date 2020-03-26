@@ -20,9 +20,6 @@ export class EtatMensuelComponent implements OnInit {
     private previousMonthStatBehavior = new BehaviorSubject<AccountMonthStatistiques>(AccountMonthStatistiques.Empty());
     previousMonthStats$ = this.previousMonthStatBehavior.asObservable();
 
-    private lastYearStatBehavior = new BehaviorSubject<AccountMonthStatistiques[]>([]);
-    lastYearStats$ = this.lastYearStatBehavior.asObservable();
-
     constructor(
         private route: ActivatedRoute,
         private statistiquesService: StatistiquesService) {
@@ -49,36 +46,17 @@ export class EtatMensuelComponent implements OnInit {
 
         this.currentMonthStatBehavior.next(this.getFlattenAccountMonthStatistiques()
             .filter(value => value.month === currentMonthStr)
-            .reduce((acc, elt) => {
-                acc.depenses += elt.depenses;
-                acc.revenus += elt.revenus;
-                return acc;
-            }, new AccountMonthStatistiques(currentMonthStr, 0, 0)));
+            .reduce(this.statistiquesService.aggregateAccountMonthStatistiques(), AccountMonthStatistiques.Empty(currentMonthStr)));
 
         this.previousMonthStatBehavior.next(this.getFlattenAccountMonthStatistiques()
             .filter(value => value.month === previousMonthStr)
-            .reduce((acc, elt) => {
-                acc.depenses += elt.depenses;
-                acc.revenus += elt.revenus;
-                return acc;
-            }, new AccountMonthStatistiques(previousMonthStr, 0, 0)));
+          .reduce(this.statistiquesService.aggregateAccountMonthStatistiques(), AccountMonthStatistiques.Empty(previousMonthStr)));
 
-        const statGroupByMonth = this.getFlattenAccountMonthStatistiques()
-            .filter(value => value.isInPreviousYear(this.currentMonth))
-            .reduce((acc, elt) => {
-                    const isExist = acc.find(x => x.month === elt.month) !== undefined;
-                    const eltIn = acc.find(x => x.month === elt.month) || elt;
-                    eltIn.month = elt.month;
-                    eltIn.revenus += elt.revenus;
-                    eltIn.depenses += elt.depenses;
-                    if (! isExist) { acc.push(eltIn); }
-                    return acc;
-                }
-                , []);
-        this.lastYearStatBehavior.next(Array.from(statGroupByMonth.values()));
+
     }
 
-    private convertDateAsString(date: Date) {
+
+  private convertDateAsString(date: Date) {
         const year = date.getFullYear();
         const month = date.getMonth() + 1;
         return `${year}-${month}`;

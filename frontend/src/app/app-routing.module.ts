@@ -13,8 +13,9 @@ import { UploadComponent } from './components/upload/upload.component';
 import { StatistiquesComponent } from './components/statistiques/statistiques.component';
 import { AccountModifyComponent } from './components/account/manage/account-modify/account-modify.component';
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
-import { HistoriqueSoldesComptesComponent } from './components/statistiques/components/historique-soldes-comptes/historique-soldes-comptes.component';
+import { HistoriqueSoldesComptesComponent } from './components/statistiques/actifs-et-passifs/historique-soldes-comptes/historique-soldes-comptes.component';
 import { EtatMensuelComponent } from './components/statistiques/components/etat-mensuel/etat-mensuel.component';
+import { EvolutionRevenusDepensesComponent } from './components/statistiques/actifs-et-passifs/evolution-revenus-depenses/evolution-revenus-depenses.component';
 
 const routes: Routes = [
   { path: '', component: UserHomepageComponent, canActivate: [AuthGuard] },
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'statistiques', component: StatistiquesComponent, canActivate: [AuthGuard] },
   { path: 'statistiques/historiques-soldes-comptes', component: HistoriqueSoldesComptesComponent, canActivate: [AuthGuard] },
   { path: 'statistiques/etats-mensuel', component: EtatMensuelComponent, canActivate: [AuthGuard] },
+  { path: 'statistiques/evolution-revenus-depenses', component: EvolutionRevenusDepensesComponent, canActivate: [AuthGuard] },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }];

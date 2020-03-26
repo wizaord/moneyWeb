@@ -1,0 +1,47 @@
+<div class="container-fluid h-100">
+  <div class="row justify-content-md-center">
+    <h1>EVOLUTION DES DEPENSES ET DES REVENUS</h1>
+  </div>
+  <div class="form-row align-items-center">
+    <div class="col-6 ">
+      <label for="inlineFormCustomSelectPref" class="my-1 mr-2">Période</label>
+      <ng-select id="inlineFormCustomSelectPref" class="my-1 mr-sm-2" [multiple]="false"
+                 [items]="filters"
+                 bindLabel="desc"
+                 bindValue="id"
+                 name="selectFilter"
+                 [(ngModel)]="filterSelected"
+                 (change)="refreshStatsObservable()">
+      </ng-select>
+    </div>
+    <div class="col-6 my-3">
+      <label for="inlineFormSlectOwner" class="my-1 mr-2">Filtrer sur Owners</label>
+      <ng-select id="inlineFormSlectOwner" [items]="filterFamilyMember$ | async"
+                 [multiple]="false"
+                 [hideSelected]="true"
+                 bindLabel="name"
+                 autofocus
+                 bindValue="name"
+                 name="ownerSelected"
+                 [(ngModel)]="filterFamilyMemberSelected"
+                 (change)="refreshStatsObservable()">
+      </ng-select>
+    </div>
+  </div>
+  <div class="row stretchy-wrapper justify-content-md-center">
+    <div class="col-lg-auto" *ngIf="this.loading">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div *ngIf="!this.loading" class="card col-12">
+      <ngx-charts-bar-vertical-2d
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [animations]="true"
+        [results]="chartDatas"
+      >
+      </ngx-charts-bar-vertical-2d>
+    </div>
+  </div>
+</div>

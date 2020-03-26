@@ -18,8 +18,8 @@ export class AccountMonthStatistiques {
   revenus: number;
   depenses: number;
 
-  static Empty(): AccountMonthStatistiques {
-    return new AccountMonthStatistiques('', 0, 0);
+  static Empty(month: string = ''): AccountMonthStatistiques {
+    return new AccountMonthStatistiques(month, 0, 0);
   }
 
   static fromAccountMonthStatistiques(t: any) {
@@ -44,14 +44,17 @@ export class AccountMonthStatistiques {
     return MONTH_NAMES[this.getMonth() - 1];
   }
 
-  isInPreviousYear(currentMonth: Date) {
-    const lastYearDate = new Date(currentMonth.getFullYear() - 1, currentMonth.getMonth(), 1);
-    const lastYearTime = lastYearDate.getTime();
-    const currentMonthTime = currentMonth.getTime();
-
+  getMonthTime(): number {
     const eltDate = new Date(this.getYear(), this.getMonth(), 1);
-    const result = (eltDate.getTime() >= lastYearTime && eltDate.getTime() <= currentMonthTime);
-    return result;
+    return eltDate.getTime();
+  }
+
+  isBetween(previousDate: Date, afterDate: Date) {
+    const previousDateTime = previousDate.getTime();
+    const afterDateTime = afterDate.getTime();
+    const eltDateTime = this.getMonthTime();
+    return (eltDateTime >= previousDateTime && eltDateTime <= afterDateTime);
+
   }
 }
 

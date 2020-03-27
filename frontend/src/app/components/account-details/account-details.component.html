@@ -65,7 +65,7 @@
               </button>
             </div>
           </div>
-          <app-transactions-show [transactions$]="this.transactionsFiltered$"
+          <app-transactions-show [transactions$]="accountTransactions$"
                                  [accountsName]="this.accountSelected"
                                  (transactionUpdate)="transactionUpdated($event)"
                                  (transactionRemove)="transactionRemove($event)"

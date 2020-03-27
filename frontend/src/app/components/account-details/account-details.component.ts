@@ -21,6 +21,7 @@ export class AccountDetailsComponent implements OnInit {
   FilteringMode = FilteringMode;
   filteringMode: FilteringMode = FilteringMode.DATE;
   private accountTransactionsBehavior = new BehaviorSubject<Transaction[]>([]);
+  private accountTransactions$ = this.accountTransactionsBehavior.asObservable();
 
   openedAccounts$: Observable<Account[]> = EMPTY;
   accountSelected: string[] = [];
@@ -67,10 +68,6 @@ export class AccountDetailsComponent implements OnInit {
   goNextMonth() {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, this.currentMonth.getDate());
     this.extractTransactionsBasedOnFilteringModeSelected();
-  }
-
-  get transactionsFiltered$(): Observable<Transaction[]> {
-    return this.accountTransactionsBehavior.asObservable();
   }
 
   private extractTransactionsBasedOnFilteringModeSelected() {

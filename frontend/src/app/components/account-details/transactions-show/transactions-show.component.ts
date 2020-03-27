@@ -4,7 +4,7 @@ import { TransactionEditComponent } from './transaction-edit/transaction-edit.co
 import { Transaction } from '../../../domain/account/Transaction';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoriesService } from '../../../services/categories.service';
-import { flatMap } from 'rxjs/operators';
+import { filter, first, flatMap, map, reduce } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 import { SubCategoryFamily } from '../../../domain/categories/SubCategoryFamily';
@@ -22,17 +22,30 @@ export class TransactionsShowComponent implements OnInit {
   @Output() transactionRemove = new EventEmitter<Transaction>();
   @Output() transactionCreate = new EventEmitter<Transaction>();
 
+  totalDepenses: number;
+  totalRevenus: number;
+
   private categoriesMap: Map<string, SubCategoryFamily> = new Map<string, SubCategoryFamily>();
 
   constructor(private modalService: NgbModal,
               private categoriesService: CategoriesService,
               public dialog: MatDialog) {
-  }
-
-  ngOnInit(): void {
     this.categoriesService.getCategoriesFlatMapAsSubCategories().pipe(
       flatMap(x => x),
     ).subscribe(subCate => this.categoriesMap.set(subCate.id, subCate));
+  }
+
+  ngOnInit(): void {
+    this.transactions$.pipe(
+      first(),
+      flatMap(t => t),
+      filter(t => !this.isInternalVirement(t)),
+      filter(t => t.amount <= 0),
+      map(t => t.amount),
+      reduce((acc, value) => acc += value, 0),
+    ).subscribe(result => this.totalDepenses = result);
+
+
   }
 
 
@@ -74,7 +87,11 @@ export class TransactionsShowComponent implements OnInit {
   }
 
   isInternalVirement(transaction: Transaction) {
-    return this.categoriesMap.get(transaction.ventilations[0].categoryId).isInternalVirement;
+    const subCategoryFamily = this.categoriesMap.get(transaction.ventilations[0].categoryId);
+    if (subCategoryFamily === undefined) {
+      return false;
+    }
+    return subCategoryFamily.isInternalVirement;
   }
 
   pointTransaction(transaction: Transaction) {
@@ -93,5 +110,27 @@ export class TransactionsShowComponent implements OnInit {
           this.transactionCreate.emit(transactionResult);
         }
       });
+  }
+
+  getTotalRevenus(transactions$: Observable<Transaction[]>): Observable<number> {
+   return transactions$.pipe(
+      first(),
+      flatMap(t => t),
+      filter(t => !this.isInternalVirement(t)),
+      filter(t => t.amount > 0),
+      map(t => t.amount),
+      reduce((acc, value) => acc += value, 0),
+    );
+  }
+
+  getTotalDepenses(transactions$: Observable<Transaction[]>): Observable<number> {
+    return transactions$.pipe(
+      first(),
+      flatMap(t => t),
+      filter(t => !this.isInternalVirement(t)),
+      filter(t => t.amount <= 0),
+      map(t => t.amount),
+      reduce((acc, value) => acc += value, 0),
+    );
   }
 }

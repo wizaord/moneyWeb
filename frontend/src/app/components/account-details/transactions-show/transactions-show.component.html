@@ -26,9 +26,10 @@
       <td>{{getCategoryName(transaction)}}</td>
       <td *ngIf="accountsName.length > 1">{{transaction.accountName}}</td>
       <td>{{transaction.amount}}</td>
-      <td *ngIf="!accountsName.length <= 1">{{transaction.currentSolde | number}}</td>
+      <td *ngIf="!accountsName.length <= 1">{{transaction.currentSolde | number}}</td>
       <td>
-        <button *ngIf="!transaction.isPointe"><i class="fa fa-check-circle" (click)="pointTransaction(transaction)"></i></button>
+        <button *ngIf="!transaction.isPointe"><i class="fa fa-check-circle" (click)="pointTransaction(transaction)"></i>
+        </button>
         <button><i class="fa fa-trash-o" (click)="deleteTransaction(transaction)"></i></button>
       </td>
     </tr>
@@ -36,6 +37,26 @@
   </table>
 </div>
 
-<div class="container" *ngIf="accountsName.length === 1">
-  <button type="button" class="btn btn-primary pull-right" (click)="createNewTransaction()">Add</button>
+<div class="container">
+  <div class="row" *ngIf="accountsName.length === 1">
+    <div class="col-12">
+      <button type="button" class="btn btn-primary pull-right" (click)="createNewTransaction()">Add</button>
+    </div>
+  </div>
+  <div class="row my-5">
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header">Somme des rentrées</div>
+        <div class="card-body">{{getTotalRevenus(transactions$) | async | number}}</div>
+      </div>
+    </div>
+    <div class="col-4">
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header">Somme des dépenses</div>
+        <div class="card-body">{{getTotalDepenses(transactions$) | async | number}}</div>
+      </div>
+    </div>
+  </div>
 </div>

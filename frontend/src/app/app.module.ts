@@ -52,6 +52,8 @@ import { EtatMensuelComponent } from './components/statistiques/components/etat-
 import { RevenuDepensesComponent } from './components/statistiques/components/etat-mensuel/revenu-depenses/revenu-depenses.component';
 import { SituationPatrimonialeComponent } from './components/statistiques/components/etat-mensuel/situation-patrimoniale/situation-patrimoniale.component';
 import { EvolutionRevenusDepensesComponent } from './components/statistiques/actifs-et-passifs/evolution-revenus-depenses/evolution-revenus-depenses.component';
+import { AlertComponent } from './components/shared/alert/alert.component';
+import { AlertService } from './components/shared/alert/alert.service';
 
 @NgModule({
   declarations: [
@@ -86,7 +88,8 @@ import { EvolutionRevenusDepensesComponent } from './components/statistiques/act
     EtatMensuelComponent,
     EvolutionRevenusDepensesComponent,
     RevenuDepensesComponent,
-    SituationPatrimonialeComponent
+    SituationPatrimonialeComponent,
+    AlertComponent
 
   ],
     imports: [
@@ -119,6 +122,7 @@ import { EvolutionRevenusDepensesComponent } from './components/statistiques/act
 
     // provider used to create fake backend
     // fakeBackendProvider
+    AlertService,
   ],
   bootstrap: [AppComponent]
 })

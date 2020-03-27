@@ -2,8 +2,10 @@
 
 
 # Next
+Voir comment marche les catégories
+Je veux voir la date de dernière transaction sur la liste de compte
+Je veux que l'autocompletion se fasse à partir de tous les comptes
 En tant que user, je veux pouvoir filter sur des critères dans la vue transaction
-En tant que user, je veux pouvoir créer moi même une transaction sur un compte
 
 # A voir
 Dans le choix des categories, je ne veux pas voir les virements vers les comptes fermés

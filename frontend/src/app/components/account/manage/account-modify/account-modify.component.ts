@@ -26,12 +26,12 @@ export class AccountModifyComponent implements OnInit {
     private familyService: FamilyService,
     private dateService: DateService) {
     this.accountToEdit = {
-      accountName : '',
-      dateCreate : new Date(),
-      owners : [],
-      bankName : '',
-      solde : 0,
-      isOpened : true
+      accountName: '',
+      dateCreate: new Date(),
+      owners: [],
+      bankName: '',
+      solde: 0,
+      isOpened: true
     };
   }
 

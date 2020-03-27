@@ -17,8 +17,7 @@ export class AccountShowComponent implements OnInit {
   private accounts: AccountShowList[] = [];
   private accountsToShow: AccountShowList[] = [];
 
-  filterFamilyMemberSelected: string[] = [];
-  filterFamilyMember$: Observable<AccountOwner[]>;
+  familyMembers$: Observable<AccountOwner[]>;
 
   constructor(private accountService: AccountService,
               private transactionsService: TransactionsService,
@@ -27,7 +26,7 @@ export class AccountShowComponent implements OnInit {
 
   ngOnInit() {
 
-    this.filterFamilyMember$ = this.familyService.getOwners();
+    this.familyMembers$ = this.familyService.getOwners();
 
     this.accountService.getOpenedAccounts()
       .pipe(
@@ -46,19 +45,10 @@ export class AccountShowComponent implements OnInit {
     );
   }
 
-  get accountsSortedByName() {
-    return this.accountsToShow.sort((a, b) => a.accountName.localeCompare(b.accountName));
-  }
-
-  filterFamilyMemberChange() {
-    console.log('User selected => ' + this.filterFamilyMemberSelected);
-    if (this.filterFamilyMemberSelected.length === 0) {
-      this.accountsToShow = this.accounts;
-    } else {
-      this.accountsToShow = this.accounts.filter(
-        account => account.owners.find(
-          owner => this.filterFamilyMemberSelected.indexOf(owner) !== -1) !== undefined);
-    }
+  getMemberAccountsSortedByName(owner: AccountOwner) {
+    return this.accountsToShow
+      .filter(account => account.owners.find(o => o === owner.name))
+      .sort((a, b) => a.accountName.localeCompare(b.accountName));
   }
 }
 

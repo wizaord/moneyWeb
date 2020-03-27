@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, HostListener, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Transaction } from '../../../../domain/account/Transaction';
 import { NgbActiveModal, NgbDateStruct, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Ventilation } from '../../../../domain/account/Ventilation';
@@ -41,6 +41,12 @@ export class TransactionEditComponent implements OnInit {
     );
   }
 
+  @HostListener('window:keyup', ['$event']) keyUp(e: KeyboardEvent) {
+    console.log(e);
+    if (e.key === 'Enter' && e.shiftKey === true) {
+      this.updateTransaction();
+    }
+  }
 
   updateTransaction() {
     this.transaction.dateCreation = this.dateService.convertToDate(this.accountDate);

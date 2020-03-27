@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { TransactionsService } from '../../services/transactions.service';
 import { Transaction } from '../../domain/account/Transaction';
 import { DateService } from '../../services/date.service';
 import { AccountService } from '../../services/account.service';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, toArray } from 'rxjs/operators';
+import { Account } from '../../domain/account/Account';
+import { AlertService } from '../shared/alert/alert.service';
 
 @Component({
   selector: 'app-account-details',
@@ -13,7 +15,6 @@ import { flatMap } from 'rxjs/operators';
   styleUrls: ['./account-details.component.css']
 })
 export class AccountDetailsComponent implements OnInit {
-  accountNameTitle: string;
   currentMonth: Date = new Date();
   accountTransactions: Transaction[] = [];
   loading = true;
@@ -21,29 +22,41 @@ export class AccountDetailsComponent implements OnInit {
   filteringMode: FilteringMode = FilteringMode.DATE;
   private accountTransactionsBehavior = new BehaviorSubject<Transaction[]>([]);
 
+  openedAccounts$: Observable<Account[]> = EMPTY;
+  accountSelected: string[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private transactionsService: TransactionsService,
     private dateService: DateService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private alertService: AlertService
   ) {
   }
 
   ngOnInit() {
+    this.openedAccounts$ = this.accountService.getOpenedAccounts().pipe(toArray());
+
     this.route.paramMap.subscribe(params => {
-      this.accountNameTitle = params.get('accountName');
-      this.accountService.getAccountByName(this.accountNameTitle).pipe(
-        flatMap(account => this.transactionsService.getTransactionsByAccount(account))
-      ).subscribe(
-        transactions => {
-          transactions.forEach(transaction => this.accountTransactions.push(transaction));
-          this.refreshTransactionSoldes();
-          this.calculateCurrentMonth();
-          this.extractTransactionsBasedOnFilteringModeSelected();
-          this.loading = false;
-        }
-      );
+      this.accountSelected.push(params.get('accountName'));
+      this.refreshAccountSelection();
     });
+  }
+
+  private refreshAccountSelection() {
+    this.loading = true;
+    this.accountTransactions = [...[]];
+    this.accountService.getAccountsByName(this.accountSelected).pipe(
+      flatMap(account => this.transactionsService.getTransactionsByAccount(account))
+    ).subscribe(
+      transactions => {
+        transactions.forEach(transaction => this.accountTransactions.push(transaction));
+        this.refreshTransactionSoldes();
+        this.calculateCurrentMonth();
+        this.extractTransactionsBasedOnFilteringModeSelected();
+        this.loading = false;
+      }
+    );
   }
 
   goPreviousMonth() {
@@ -131,7 +144,11 @@ export class AccountDetailsComponent implements OnInit {
   }
 
   transactionCreate(transaction: Transaction) {
-    transaction.accountName = this.accountNameTitle;
+    if (this.accountSelected.length !== 1) {
+      this.alertService.error('Merci de selectionner un seul compte', true, false);
+      return;
+    }
+    transaction.accountName = this.accountSelected[0];
     this.transactionsService.createTransaction(transaction).subscribe(
       result => {
         this.accountTransactions.push(result);

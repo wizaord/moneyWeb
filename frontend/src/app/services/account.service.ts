@@ -54,6 +54,15 @@ export class AccountService {
       );
   }
 
+
+  getAccountsByName(accountsName: string[]): Observable<Account> {
+    return this.getAccounts()
+      .pipe(
+        flatMap(account => account),
+        filter(account => accountsName.includes(account.accountName))
+      );
+  }
+
   closAccount(account: Account): Observable<any> {
     const familyName = this.authenticationService.currentUserValue.username;
     const apiUrl = `${this.API_URL}/${familyName}/accounts/${account.accountName}/close`;

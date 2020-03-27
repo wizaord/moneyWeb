@@ -1,5 +1,16 @@
 <div class="container">
   <div class="row">
+    <mat-form-field>
+      <mat-label>Please select the account</mat-label>
+      <mat-select [(ngModel)]="accountSelected" name="ownersSelected"
+                  (selectionChange)="refreshAccountSelection()"
+                  multiple>
+        <mat-option *ngFor="let account of openedAccounts$ | async" [value]="account.accountName">
+          {{account.accountName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <ul class="nav nav-pills nav-tabs">
       <li class="nav-item">
         <a class="nav-link" [ngClass]="{active : filteringMode === FilteringMode.ALL}"
@@ -22,30 +33,44 @@
   </div>
 </div>
 <div class="container-fluid">
-  <div class="spinner-container" *ngIf="this.loading">
-    <mat-spinner></mat-spinner>
+  <div class="row">
+    <div class="col-12">
+      <div class="spinner-container" *ngIf="this.loading">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
   </div>
-  <div *ngIf="!this.loading" class="card">
-    <div class="card-body">
-      <div class="row" *ngIf="filteringMode === FilteringMode.DATE">
-        <div class="col-2 text-center">
-          <button type="button" class="btn btn-info" (click)="goPreviousMonth()">
-            << {{currentMonth | datePreviousMonthExtract}}</button>
-        </div>
-        <div class="col-8 text-center">
-          <h5 class="card-title">{{currentMonth | dateCurrentMonthExtract}}</h5>
-        </div>
-        <div class="col-2 text-center">
-          <button type="button" class="btn btn-info" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}}
-            >>
-          </button>
+  <div class="row" *ngIf="filteringMode === FilteringMode.CRITERIA">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">Critères de recherche</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div *ngIf="!this.loading" class="card">
+        <div class="card-body">
+          <div class="row" *ngIf="filteringMode === FilteringMode.DATE">
+            <div class="col-2 text-center">
+              <button type="button" class="btn btn-info" (click)="goPreviousMonth()">
+                << {{currentMonth | datePreviousMonthExtract}}</button>
+            </div>
+            <div class="col-8 text-center">
+              <h5 class="card-title">{{currentMonth | dateCurrentMonthExtract}}</h5>
+            </div>
+            <div class="col-2 text-center">
+              <button type="button" class="btn btn-info" (click)="goNextMonth()">{{currentMonth | dateNextMonthExtract}}
+                >>
+              </button>
+            </div>
+          </div>
+          <app-transactions-show [transactions$]="this.transactionsFiltered$"
+                                 (transactionUpdate)="transactionUpdated($event)"
+                                 (transactionRemove)="transactionRemove($event)"
+                                 (transactionCreate)="transactionCreate($event)"></app-transactions-show>
         </div>
       </div>
-      <app-transactions-show [transactions$]="this.transactionsFiltered$"
-                             (transactionUpdate)="transactionUpdated($event)"
-                             (transactionRemove)="transactionRemove($event)"
-                             (transactionCreate)="transactionCreate($event)"></app-transactions-show>
     </div>
-
   </div>
 </div>

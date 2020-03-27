@@ -16,6 +16,7 @@ import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/co
 export class TransactionsShowComponent implements OnInit {
 
   @Input() transactions$: Observable<Transaction[]>;
+  @Input() accountsName: string[];
   @Output() transactionUpdate = new EventEmitter<Transaction>();
   @Output() transactionRemove = new EventEmitter<Transaction>();
   @Output() transactionCreate = new EventEmitter<Transaction>();
@@ -79,7 +80,7 @@ export class TransactionsShowComponent implements OnInit {
   createNewTransaction() {
     const modalRef = this.modalService.open(TransactionEditComponent,
       {backdropClass: 'light-blue-backdrop', size: 'lg'});
-    modalRef.componentInstance.transaction = new Transaction(null, 0, '', '', '', false, new Date(), '', []);
+    modalRef.componentInstance.transaction = new Transaction(null, 0, '', '', '', false, new Date(), this.accountsName[0], []);
 
     from(modalRef.result).subscribe(
       transactionResult => {

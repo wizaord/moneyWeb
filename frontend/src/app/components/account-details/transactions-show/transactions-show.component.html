@@ -7,8 +7,9 @@
       <th scope="col">Bank Libelle</th>
       <th scope="col">Bank Detail</th>
       <th scope="col">Category</th>
+      <th scope="col" *ngIf="accountsName.length > 1">Account</th>
       <th scope="col">Montant</th>
-      <th scope="col">Solde</th>
+      <th scope="col" *ngIf="!accountsName.length <= 1">Solde</th>
       <th scope="col">Actions</th>
     </tr>
     </thead>
@@ -20,8 +21,9 @@
       <td>{{transaction.bankLibelle}}</td>
       <td>{{transaction.bankDetail}}</td>
       <td>{{getCategoryName(transaction)}}</td>
+      <td *ngIf="accountsName.length > 1">{{transaction.accountName}}</td>
       <td>{{transaction.amount}}</td>
-      <td>{{transaction.currentSolde | number}}</td>
+      <td *ngIf="!accountsName.length <= 1">{{transaction.currentSolde | number}}</td>
       <td>
         <button *ngIf="!transaction.isPointe"><i class="fa fa-check-circle" (click)="pointTransaction(transaction)"></i></button>
         <button><i class="fa fa-trash-o" (click)="deleteTransaction(transaction)"></i></button>
@@ -31,6 +33,6 @@
   </table>
 </div>
 
-<div class="container">
+<div class="container" *ngIf="accountsName.length === 1">
   <button type="button" class="btn btn-primary pull-right" (click)="createNewTransaction()">Add</button>
 </div>

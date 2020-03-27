@@ -32,9 +32,10 @@ export class CategoriesService {
 
   private extractCategoryNameValue(categoryFamily: CategoryFamily): SubCategoryFamily[] {
     const subCategories: SubCategoryFamily[] = [];
-    subCategories.push(new SubCategoryFamily(categoryFamily.name, categoryFamily.id, categoryFamily.name));
+    const isInternalVirement = categoryFamily.id === '1';
+    subCategories.push(new SubCategoryFamily(categoryFamily.name, categoryFamily.id, categoryFamily.name, isInternalVirement));
     categoryFamily.subCategories
-      .forEach(subCat => subCategories.push(new SubCategoryFamily(subCat.name, subCat.id, categoryFamily.name)));
+      .forEach(subCat => subCategories.push(new SubCategoryFamily(subCat.name, subCat.id, categoryFamily.name, isInternalVirement)));
     return subCategories;
   }
 }

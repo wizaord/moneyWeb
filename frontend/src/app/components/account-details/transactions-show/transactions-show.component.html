@@ -14,7 +14,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr [class.table-success]="transaction.amount > 0" [class.table-warning]="!transaction.isPointe"  (dblclick)="openTransactionEditDialog(transaction)"
+    <tr [class.table-success]="transaction.amount > 0"
+        [class.table-warning]="!transaction.isPointe"
+        [class.table-info]="isInternalVirement(transaction)"
+        (dblclick)="openTransactionEditDialog(transaction)"
         *ngFor="let transaction of transactions$ | async | sortTransactionByDate">
       <td>{{transaction.dateCreation | date}}</td>
       <td>{{transaction.userLibelle}}</td>

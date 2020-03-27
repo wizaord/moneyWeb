@@ -7,6 +7,7 @@ import { CategoriesService } from '../../../services/categories.service';
 import { flatMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
+import { SubCategoryFamily } from '../../../domain/categories/SubCategoryFamily';
 
 @Component({
   selector: 'app-transactions-show',
@@ -21,7 +22,7 @@ export class TransactionsShowComponent implements OnInit {
   @Output() transactionRemove = new EventEmitter<Transaction>();
   @Output() transactionCreate = new EventEmitter<Transaction>();
 
-  private categoriesMap: Map<string, string> = new Map<string, string>();
+  private categoriesMap: Map<string, SubCategoryFamily> = new Map<string, SubCategoryFamily>();
 
   constructor(private modalService: NgbModal,
               private categoriesService: CategoriesService,
@@ -31,7 +32,7 @@ export class TransactionsShowComponent implements OnInit {
   ngOnInit(): void {
     this.categoriesService.getCategoriesFlatMapAsSubCategories().pipe(
       flatMap(x => x),
-    ).subscribe(subCate => this.categoriesMap.set(subCate.id, subCate.name));
+    ).subscribe(subCate => this.categoriesMap.set(subCate.id, subCate));
   }
 
 
@@ -69,7 +70,11 @@ export class TransactionsShowComponent implements OnInit {
     if (transaction.ventilations.length > 1) {
       return 'Ventilation';
     }
-    return this.categoriesMap.get(transaction.ventilations[0].categoryId);
+    return this.categoriesMap.get(transaction.ventilations[0].categoryId).name;
+  }
+
+  isInternalVirement(transaction: Transaction) {
+    return this.categoriesMap.get(transaction.ventilations[0].categoryId).isInternalVirement;
   }
 
   pointTransaction(transaction: Transaction) {

@@ -25,7 +25,7 @@ export class TransactionEditComponent implements OnInit {
   transactionTypeAHead: Transaction;
 
   private account: Account;
-  private userLabelSelected: string = '';
+  private userLabelSelected = '';
 
   constructor(private dateService: DateService,
               public activeModal: NgbActiveModal,

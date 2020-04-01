@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthenticationService } from './authentification/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { AccountMonthStatistiques, AccountStatistiques } from '../domain/statistiques/AccountStatistiques';
-import { flatMap, map } from 'rxjs/operators';
+import { flatMap, groupBy, map, mergeMap, reduce, toArray } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,18 @@ export class StatistiquesService {
     return this.getStatistiquesAccounts(includeInternal, owner).pipe(
       flatMap(t => t),
       map(x => x.monthStatistiques),
+    );
+  }
+
+  getMonthStatsAggregateByMonth(includeInternal: boolean = false, owner?: string): Observable<AccountMonthStatistiques[]> {
+    return this.getFlattenAccountMonthStatistiques(includeInternal, owner).pipe(
+      flatMap(t => t),
+      groupBy(x => x.month),
+      mergeMap(group => group.pipe(
+        reduce(this.aggregateAccountMonthStatistiques(), AccountMonthStatistiques.Empty()))
+      ),
+      toArray(),
+      map(accounts => accounts.sort((a, b) => (a.getMonthTime() < b.getMonthTime()) ? -1 : 1)),
     );
   }
 

@@ -1,21 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { StatistiquesService } from '../../../../services/statistiques.service';
 import { AccountMonthStatistiques, AccountStatistiques } from '../../../../domain/statistiques/AccountStatistiques';
 import { SituationPatrimonialeComponent } from './situation-patrimoniale/situation-patrimoniale.component';
+import { PrevisionTresorerieComponent } from './prevision-tresorerie/prevision-tresorerie.component';
 
 @Component({
   selector: 'app-etat-mensuel',
   templateUrl: './etat-mensuel.component.html',
   styleUrls: ['./etat-mensuel.component.css']
 })
-export class EtatMensuelComponent implements OnInit {
+export class EtatMensuelComponent implements OnInit, AfterViewInit {
 
   currentMonth: Date = new Date();
   loading = false;
 
   @ViewChild(SituationPatrimonialeComponent, {static: false}) situationPatrimonialComponent;
+  @ViewChild(PrevisionTresorerieComponent, {static: false}) previsionTresorerieComponent;
 
 
   allStatistiquesWithoutInternalTransactions: AccountStatistiques[] = [];
@@ -36,6 +38,9 @@ export class EtatMensuelComponent implements OnInit {
       const dateTime = params.get('date');
       this.currentMonth.setTime(Number(dateTime));
     });
+  }
+
+  ngAfterViewInit() {
     this.statistiquesService.getStatistiquesAccounts()
       .subscribe(
         result => {
@@ -58,9 +63,8 @@ export class EtatMensuelComponent implements OnInit {
       .filter(value => value.month === previousMonthStr)
       .reduce(this.statistiquesService.aggregateAccountMonthStatistiques(), AccountMonthStatistiques.Empty(previousMonthStr)));
 
-    if (this.situationPatrimonialComponent !== undefined) {
-      this.situationPatrimonialComponent.refreshDatas();
-    }
+    if (this.situationPatrimonialComponent !== undefined) { this.situationPatrimonialComponent.refreshDatas(); }
+    if (this.previsionTresorerieComponent !== undefined) { this.previsionTresorerieComponent.refreshDatas(); }
   }
 
 

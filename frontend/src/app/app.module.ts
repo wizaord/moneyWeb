@@ -55,6 +55,7 @@ import { EvolutionRevenusDepensesComponent } from './components/statistiques/act
 import { AlertComponent } from './components/shared/alert/alert.component';
 import { AlertService } from './components/shared/alert/alert.service';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { PrevisionTresorerieComponent } from './components/statistiques/etats-mensuels/etat-mensuel/prevision-tresorerie/prevision-tresorerie.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     EvolutionRevenusDepensesComponent,
     RevenuDepensesComponent,
     SituationPatrimonialeComponent,
-    AlertComponent
+    AlertComponent,
+    PrevisionTresorerieComponent
 
   ],
     imports: [

@@ -1,19 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { filter, flatMap, map, toArray } from 'rxjs/operators';
 import { StatistiquesService } from '../../../../../services/statistiques.service';
+import { filter, flatMap, map, toArray } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-situation-patrimoniale',
-  templateUrl: './situation-patrimoniale.component.html',
-  styleUrls: ['./situation-patrimoniale.component.css']
+  selector: 'app-prevision-tresorerie',
+  templateUrl: './prevision-tresorerie.component.html',
+  styleUrls: ['./prevision-tresorerie.component.css']
 })
-export class SituationPatrimonialeComponent implements OnInit {
-
+export class PrevisionTresorerieComponent implements OnInit {
   @Input() currentDate: Date;
   chartDatas: any[];
   colorScheme = {domain: ['#9CD27D']  };
 
   constructor(private statistiquesService: StatistiquesService) {
+
   }
 
   ngOnInit() {
@@ -25,7 +25,6 @@ export class SituationPatrimonialeComponent implements OnInit {
     const lastYear = new Date(this.currentDate.getFullYear() - 1, this.currentDate.getMonth(), 1);
     const lastYearTime = lastYear.getTime();
     const currentYearTime = this.currentDate.getTime();
-
     this.statistiquesService.getMonthStatsAggregateByMonth(true).pipe(
       flatMap(t => t),
       map(account => {
@@ -36,12 +35,34 @@ export class SituationPatrimonialeComponent implements OnInit {
       filter(account => account.monthTime <= currentYearTime),
       toArray()
     ).subscribe(
-      accountMonthStats => {
+      result => {
+        const previousYearStats: SoldeMonth[] = result;
+        const lastSolde = previousYearStats[previousYearStats.length - 1];
+        let currentSolde = lastSolde.solde;
+        let currentDate = new Date(lastSolde.monthTime);
+        let lastYearSolde = 0;
+
         this.chartDatas = [...[]];
-        accountMonthStats.forEach(accountMonthStat => {
+        this.chartDatas = [...[{
+          name: currentDate,
+          value: currentSolde,
+        }]];
+
+        lastYearSolde = previousYearStats.shift().solde;
+        previousYearStats.forEach(soldeMonth => {
+          const date = new Date(currentDate.getTime());
+          date.setMonth(date.getMonth() + 1);
+          currentDate = date;
+
+          const evolSolde = soldeMonth.solde - lastYearSolde;
+          lastYearSolde = soldeMonth.solde;
+          console.log('Evol de ' + evolSolde);
+          currentSolde += evolSolde;
+          console.log('new current solde ' + currentSolde);
+
           const chartDatasCurrent = {
-            name: new Date(accountMonthStat.monthTime),
-            value: accountMonthStat.solde,
+            name: date,
+            value: currentSolde,
           };
           this.chartDatas = [...this.chartDatas, chartDatasCurrent];
         });

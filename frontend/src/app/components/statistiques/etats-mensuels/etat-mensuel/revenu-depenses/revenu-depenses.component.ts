@@ -29,6 +29,7 @@ export class RevenuDepensesComponent implements OnInit {
 
   epargneCurrentMonth$: Observable<number>;
   epargnePreviousMonth$: Observable<number>;
+  colorScheme = {domain: ['green', 'red']};
 
   constructor() {
   }

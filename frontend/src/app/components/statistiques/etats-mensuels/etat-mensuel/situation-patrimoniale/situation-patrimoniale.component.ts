@@ -13,6 +13,7 @@ export class SituationPatrimonialeComponent implements OnInit {
   @Input() currentDate: Date;
   chartDatas: any[];
   loading = true;
+  colorScheme = {domain: ['#9CD27D']  };
 
   constructor(private statistiquesService: StatistiquesService) {
   }

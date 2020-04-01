@@ -25,6 +25,7 @@ export class EvolutionRevenusDepensesComponent implements OnInit {
   loading: boolean;
 
   chartDatas: any[];
+  colorScheme = {domain: ['green', 'red']};
 
   constructor(
     private statistiquesService: StatistiquesService,

@@ -30,12 +30,12 @@ internal class StatistiquesServiceTest {
         given(familyBankAccountServiceFactory.getFamilyServiceWithTransactions("family")).willReturn(familyBankAccountsService)
         given(familyBankAccountsService.bankAccountsName()).willReturn(listOf("account1", "account2"))
         given(familyBankAccountsService.bankAccountOwners(anyOrNull())).willReturn(listOf("family"))
-        given(familyBankAccountsService.transactionsNotInternal("account1")).willReturn(listOf(
+        given(familyBankAccountsService.transactions("account1")).willReturn(listOf(
                 Debit("debit", "", "", 10.0, dateCreation = LocalDate.of(2020, 10, 10)),
                 Debit("debit2", "", "", 10.0, dateCreation = LocalDate.of(2020, 10, 12)),
                 Credit("credit", "", "", 5.0, dateCreation = LocalDate.of(2020, 10, 13))
         ))
-        given(familyBankAccountsService.transactionsNotInternal("account2")).willReturn(listOf(
+        given(familyBankAccountsService.transactions("account2")).willReturn(listOf(
                 Debit("debit", "", "", 11.0, dateCreation = LocalDate.of(2020, 11, 10)),
                 Debit("debit", "", "", 9.0, dateCreation = LocalDate.of(2020, 9, 10)),
                 Debit("debit", "", "", 8.0, dateCreation = LocalDate.of(2020, 8, 10))

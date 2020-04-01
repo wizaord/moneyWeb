@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12 myClass">
-      <ngx-charts-bar-vertical
+      <ngx-charts-area-chart
         [showXAxisLabel]="true"
         [showYAxisLabel]="true"
         [xAxis]="true"
@@ -9,9 +9,15 @@
         [animations]="true"
         [results]="chartDatas"
         [scheme]="colorScheme"
-        [showDataLabel]="true"
       >
-      </ngx-charts-bar-vertical>
+      </ngx-charts-area-chart>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-auto">
+      En se basant sur l épargne moyenne de l année précédente, en 2021 Fevrier votre situation patrimoniale sera de
+      {{nextYearSolde | number}}€. Votre actif aura augmenté de {{nextYearEvol | number}}€.
     </div>
   </div>
 </div>
+

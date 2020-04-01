@@ -63,8 +63,8 @@ export class EtatMensuelComponent implements OnInit, AfterViewInit {
       .filter(value => value.month === previousMonthStr)
       .reduce(this.statistiquesService.aggregateAccountMonthStatistiques(), AccountMonthStatistiques.Empty(previousMonthStr)));
 
-    if (this.situationPatrimonialComponent !== undefined) { this.situationPatrimonialComponent.refreshDatas(); }
-    if (this.previsionTresorerieComponent !== undefined) { this.previsionTresorerieComponent.refreshDatas(); }
+    if (this.situationPatrimonialComponent !== undefined) { this.situationPatrimonialComponent.refreshDatas(this.currentMonth); }
+    if (this.previsionTresorerieComponent !== undefined) { this.previsionTresorerieComponent.refreshDatas(this.currentMonth); }
   }
 
 

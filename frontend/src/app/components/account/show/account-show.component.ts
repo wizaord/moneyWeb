@@ -50,6 +50,19 @@ export class AccountShowComponent implements OnInit {
       .filter(account => account.owners.find(o => o === owner.name))
       .sort((a, b) => a.accountName.localeCompare(b.accountName));
   }
+
+  getMemberAccountSolde(owner: AccountOwner) {
+    return this.accountsToShow
+      .filter(account => account.owners.find(o => o === owner.name))
+      .map(account => account.solde)
+      .reduce((acc, elt) => acc += elt, 0);
+  }
+
+  getTotalSolde() {
+    return this.accountsToShow
+      .map(account => account.solde)
+      .reduce((acc, elt) => acc += elt, 0);
+  }
 }
 
 

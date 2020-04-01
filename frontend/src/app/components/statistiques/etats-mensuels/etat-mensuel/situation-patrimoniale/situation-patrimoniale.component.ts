@@ -13,18 +13,22 @@ export class SituationPatrimonialeComponent implements OnInit {
   chartDatas: any[];
   colorScheme = {domain: ['#9CD27D']  };
 
+  soldeTotal = 0;
+  lastEvol = 0;
+  lastYearSolde = 0;
+
   constructor(private statistiquesService: StatistiquesService) {
   }
 
   ngOnInit() {
-    this.refreshDatas();
+    this.refreshDatas(this.currentDate);
   }
 
-  refreshDatas() {
+  refreshDatas(limitDate: Date) {
     let solde = 0;
-    const lastYear = new Date(this.currentDate.getFullYear() - 1, this.currentDate.getMonth(), 1);
+    const lastYear = new Date(limitDate.getFullYear() - 1, limitDate.getMonth(), 1);
     const lastYearTime = lastYear.getTime();
-    const currentYearTime = this.currentDate.getTime();
+    const currentYearTime = limitDate.getTime();
 
     this.statistiquesService.getMonthStatsAggregateByMonth(true).pipe(
       flatMap(t => t),
@@ -38,6 +42,12 @@ export class SituationPatrimonialeComponent implements OnInit {
     ).subscribe(
       accountMonthStats => {
         this.chartDatas = [...[]];
+        if (accountMonthStats.length > 2) {
+          this.soldeTotal = accountMonthStats[accountMonthStats.length - 1].solde;
+          this.lastEvol = accountMonthStats[accountMonthStats.length - 1].solde - accountMonthStats[accountMonthStats.length - 2].solde;
+          this.lastYearSolde = accountMonthStats[0].solde;
+        }
+
         accountMonthStats.forEach(accountMonthStat => {
           const chartDatasCurrent = {
             name: new Date(accountMonthStat.monthTime),

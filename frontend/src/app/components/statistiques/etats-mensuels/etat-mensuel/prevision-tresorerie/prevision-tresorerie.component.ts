@@ -9,22 +9,25 @@ import { filter, flatMap, map, toArray } from 'rxjs/operators';
 })
 export class PrevisionTresorerieComponent implements OnInit {
   @Input() currentDate: Date;
-  chartDatas: any[];
-  colorScheme = {domain: ['#9CD27D']  };
+  chartDatas: any[] = [];
+  colorScheme = {domain: ['#9CD27D']};
+
+  nextYearEvol = 0;
+  nextYearSolde = 0;
 
   constructor(private statistiquesService: StatistiquesService) {
 
   }
 
   ngOnInit() {
-    this.refreshDatas();
+    this.refreshDatas(this.currentDate);
   }
 
-  refreshDatas() {
+  refreshDatas(limitDate: Date) {
     let solde = 0;
-    const lastYear = new Date(this.currentDate.getFullYear() - 1, this.currentDate.getMonth(), 1);
+    const lastYear = new Date(limitDate.getFullYear() - 1, limitDate.getMonth(), 1);
     const lastYearTime = lastYear.getTime();
-    const currentYearTime = this.currentDate.getTime();
+    const currentYearTime = limitDate.getTime();
     this.statistiquesService.getMonthStatsAggregateByMonth(true).pipe(
       flatMap(t => t),
       map(account => {
@@ -42,11 +45,10 @@ export class PrevisionTresorerieComponent implements OnInit {
         let currentDate = new Date(lastSolde.monthTime);
         let lastYearSolde = 0;
 
-        this.chartDatas = [...[]];
-        this.chartDatas = [...[{
+        const seriesElts = [{
           name: currentDate,
           value: currentSolde,
-        }]];
+        }];
 
         lastYearSolde = previousYearStats.shift().solde;
         previousYearStats.forEach(soldeMonth => {
@@ -56,16 +58,20 @@ export class PrevisionTresorerieComponent implements OnInit {
 
           const evolSolde = soldeMonth.solde - lastYearSolde;
           lastYearSolde = soldeMonth.solde;
-          console.log('Evol de ' + evolSolde);
           currentSolde += evolSolde;
-          console.log('new current solde ' + currentSolde);
-
+          this.nextYearSolde = currentSolde;
           const chartDatasCurrent = {
             name: date,
             value: currentSolde,
           };
-          this.chartDatas = [...this.chartDatas, chartDatasCurrent];
+          seriesElts.push(chartDatasCurrent);
         });
+        const chartElt = {
+          name: 'Trésorerie',
+          series: seriesElts
+        };
+        this.chartDatas = [...[], chartElt];
+        this.nextYearEvol = this.nextYearSolde - previousYearStats[previousYearStats.length - 1].solde;
       }
     );
   }

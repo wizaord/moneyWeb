@@ -54,7 +54,6 @@ export class AccountMonthStatistiques {
     const afterDateTime = afterDate.getTime();
     const eltDateTime = this.getMonthTime();
     return (eltDateTime >= previousDateTime && eltDateTime <= afterDateTime);
-
   }
 }
 

@@ -1,9 +1,11 @@
 <div class="container">
-  <div class="row my-2" *ngFor="let owner of familyMembers$ | async">
-    <div class="col-12">
-      <div class="card">
-        <h5 class="card-header">{{owner.name}}</h5>
-        <div class="card-body">
+  <mat-accordion [multi]="true">
+    <mat-expansion-panel *ngFor="let owner of familyMembers$ | async; index as iPanel" [expanded]="iPanel === 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{owner.name}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
           <table class="table table-striped">
             <thead>
             <tr>
@@ -28,8 +30,8 @@
             </tr>
             </tbody>
           </table>
-        </div>
-      </div>
-    </div>
-  </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
 </div>
+

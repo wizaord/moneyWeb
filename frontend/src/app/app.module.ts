@@ -48,12 +48,13 @@ import { ActifsEtPassifsComponent } from './components/statistiques/actifs-et-pa
 import { EtatsDeComparaisonComponent } from './components/statistiques/etats-de-comparaison/etats-de-comparaison.component';
 import { HistoriqueSoldesComptesComponent } from './components/statistiques/actifs-et-passifs/historique-soldes-comptes/historique-soldes-comptes.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { EtatMensuelComponent } from './components/statistiques/components/etat-mensuel/etat-mensuel.component';
-import { RevenuDepensesComponent } from './components/statistiques/components/etat-mensuel/revenu-depenses/revenu-depenses.component';
-import { SituationPatrimonialeComponent } from './components/statistiques/components/etat-mensuel/situation-patrimoniale/situation-patrimoniale.component';
+import { EtatMensuelComponent } from './components/statistiques/etats-mensuels/etat-mensuel/etat-mensuel.component';
+import { RevenuDepensesComponent } from './components/statistiques/etats-mensuels/etat-mensuel/revenu-depenses/revenu-depenses.component';
+import { SituationPatrimonialeComponent } from './components/statistiques/etats-mensuels/etat-mensuel/situation-patrimoniale/situation-patrimoniale.component';
 import { EvolutionRevenusDepensesComponent } from './components/statistiques/actifs-et-passifs/evolution-revenus-depenses/evolution-revenus-depenses.component';
 import { AlertComponent } from './components/shared/alert/alert.component';
 import { AlertService } from './components/shared/alert/alert.service';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { AlertService } from './components/shared/alert/alert.service';
         MatButtonModule,
         MatInputModule,
         NgSelectModule,
-        NgxChartsModule
+        NgxChartsModule,
+        MatExpansionModule
     ],
   entryComponents: [
     TransactionEditComponent,

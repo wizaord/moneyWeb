@@ -14,7 +14,7 @@ import { StatistiquesComponent } from './components/statistiques/statistiques.co
 import { AccountModifyComponent } from './components/account/manage/account-modify/account-modify.component';
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
 import { HistoriqueSoldesComptesComponent } from './components/statistiques/actifs-et-passifs/historique-soldes-comptes/historique-soldes-comptes.component';
-import { EtatMensuelComponent } from './components/statistiques/components/etat-mensuel/etat-mensuel.component';
+import { EtatMensuelComponent } from './components/statistiques/etats-mensuels/etat-mensuel/etat-mensuel.component';
 import { EvolutionRevenusDepensesComponent } from './components/statistiques/actifs-et-passifs/evolution-revenus-depenses/evolution-revenus-depenses.component';
 
 const routes: Routes = [

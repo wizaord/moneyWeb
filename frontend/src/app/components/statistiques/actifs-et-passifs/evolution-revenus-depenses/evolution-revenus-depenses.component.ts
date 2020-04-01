@@ -58,7 +58,7 @@ export class EvolutionRevenusDepensesComponent implements OnInit {
     if (userSelected === 'all' ) userSelected = undefined;
 
     this.chartDatas = [...[]];
-    this.statistiquesService.getFlattenAccountMonthStatistiques(userSelected)
+    this.statistiquesService.getFlattenAccountMonthStatistiques(false, userSelected)
       .pipe(
         flatMap(t => t),
         filter(x => x.isBetween(selectedDate, currentDate)),

@@ -19,6 +19,13 @@ class StatistiquesController(
         return statistiquesService.getAccountSoldeByMonth(familyName)
                 .map { AccountStatistiquesC.fromDomain(it) }
     }
+
+    @GetMapping("/accounts/notinternal")
+    @ResponseBody
+    fun accountsSoldeStatisquesNotInternal(@PathVariable familyName: String): List<AccountStatistiquesC> {
+        return statistiquesService.getAccountSoldeByMonth(familyName, false)
+                .map { AccountStatistiquesC.fromDomain(it) }
+    }
 }
 
 data class AccountStatistiquesC(

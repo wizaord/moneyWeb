@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthenticationService } from './authentification/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { AccountMonthStatistiques, AccountStatistiques } from '../domain/statistiques/AccountStatistiques';
-import { flatMap, map, tap } from 'rxjs/operators';
+import { flatMap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,18 +18,20 @@ export class StatistiquesService {
   ) {
   }
 
-  getStatistiquesAccounts(owner?: string): Observable<AccountStatistiques[]> {
+  getStatistiquesAccounts(includeInternal: boolean = false, owner?: string): Observable<AccountStatistiques[]> {
     const familyName = this.authenticationService.currentUserValue.username;
-    const apiUrl = `${this.API_URL}/${familyName}/statistiques/accounts`;
+    let apiUrl = `${this.API_URL}/${familyName}/statistiques/accounts/notinternal`;
+    if (includeInternal) {
+      apiUrl = `${this.API_URL}/${familyName}/statistiques/accounts`;
+    }
     return this.http.get<AccountStatistiques[]>(apiUrl).pipe(
       map(accountsStat => accountsStat.map(it => new AccountStatistiques(it))),
       map(accounts => accounts.filter(acc => owner === undefined || acc.owners.find(o => o === owner) !== undefined)),
-      tap(x => console.log('LOL => ' + JSON.stringify(x)))
     );
   }
 
-  getFlattenAccountMonthStatistiques(owner?: string): Observable<AccountMonthStatistiques[]> {
-    return this.getStatistiquesAccounts(owner).pipe(
+  getFlattenAccountMonthStatistiques(includeInternal: boolean = false, owner?: string): Observable<AccountMonthStatistiques[]> {
+    return this.getStatistiquesAccounts(includeInternal, owner).pipe(
       flatMap(t => t),
       map(x => x.monthStatistiques),
     );

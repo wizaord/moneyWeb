@@ -4,7 +4,10 @@ import { Observable } from 'rxjs';
 import { AuthenticationService } from './authentification/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { AccountMonthStatistiques, AccountStatistiques } from '../domain/statistiques/AccountStatistiques';
-import { flatMap, groupBy, map, mergeMap, reduce, toArray } from 'rxjs/operators';
+import { filter, flatMap, groupBy, map, mergeMap, reduce, toArray } from 'rxjs/operators';
+import { AccountService } from './account.service';
+import { TransactionsService } from './transactions.service';
+import { TransactionReduceByDay } from '../domain/statistiques/TransactionReduceByDay';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +17,9 @@ export class StatistiquesService {
 
   constructor(
     private http: HttpClient,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private accountService: AccountService,
+    private transactionsService: TransactionsService
   ) {
   }
 
@@ -82,5 +87,24 @@ export class StatistiquesService {
     }
     console.log('ACC => ' + JSON.stringify(acc));
     return acc;
+  }
+
+  getTransactionsGroupByDay(filteredFamilyMember: string = null): Observable<TransactionReduceByDay[]> {
+    return this.accountService.getAccounts().pipe(
+      flatMap(a => a),
+      filter(account => filteredFamilyMember === null || account.owners.includes(filteredFamilyMember)),
+      mergeMap(account => this.transactionsService.getFlattenTransaction(account)),
+      groupBy(transaction => transaction.dateCreation.getTime()),
+      mergeMap(group => group.pipe(
+        map(transaction => new TransactionReduceByDay(transaction.dateCreation, transaction.amount)),
+        reduce((acc, val) => {
+          acc.amount += val.amount;
+          acc.nbTransaction += 1;
+          return acc;
+        }))
+      ),
+      toArray(),
+      map( t => t.sort((a, b) => (a.date.getTime() < b.date.getTime()) ? -1 : 1))
+    );
   }
 }

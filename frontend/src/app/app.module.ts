@@ -56,6 +56,9 @@ import { AlertComponent } from './components/shared/alert/alert.component';
 import { AlertService } from './components/shared/alert/alert.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { PrevisionTresorerieComponent } from './components/statistiques/etats-mensuels/etat-mensuel/prevision-tresorerie/prevision-tresorerie.component';
+import { ComboChartComponent } from './components/shared/charts/combo-bar-line-chart/combo-chart.component';
+import { ComboSeriesVerticalComponent } from './components/shared/charts/combo-bar-line-chart/combo-series-vertical.component';
+import { EvolutionDepensesMoisComponent } from './components/statistiques/revenus-et-depenses/evolution-depenses-mois/evolution-depenses-mois.component';
 
 @NgModule({
   declarations: [
@@ -92,8 +95,10 @@ import { PrevisionTresorerieComponent } from './components/statistiques/etats-me
     RevenuDepensesComponent,
     SituationPatrimonialeComponent,
     AlertComponent,
-    PrevisionTresorerieComponent
-
+    PrevisionTresorerieComponent,
+    ComboChartComponent,
+    ComboSeriesVerticalComponent,
+    EvolutionDepensesMoisComponent
   ],
     imports: [
         NgbModule,

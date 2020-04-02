@@ -16,6 +16,7 @@ import { AccountDetailsComponent } from './components/account-details/account-de
 import { HistoriqueSoldesComptesComponent } from './components/statistiques/actifs-et-passifs/historique-soldes-comptes/historique-soldes-comptes.component';
 import { EtatMensuelComponent } from './components/statistiques/etats-mensuels/etat-mensuel/etat-mensuel.component';
 import { EvolutionRevenusDepensesComponent } from './components/statistiques/actifs-et-passifs/evolution-revenus-depenses/evolution-revenus-depenses.component';
+import { EvolutionDepensesMoisComponent } from './components/statistiques/revenus-et-depenses/evolution-depenses-mois/evolution-depenses-mois.component';
 
 const routes: Routes = [
   { path: '', component: UserHomepageComponent, canActivate: [AuthGuard] },
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'statistiques/historiques-soldes-comptes', component: HistoriqueSoldesComptesComponent, canActivate: [AuthGuard] },
   { path: 'statistiques/etats-mensuel', component: EtatMensuelComponent, canActivate: [AuthGuard] },
   { path: 'statistiques/evolution-revenus-depenses', component: EvolutionRevenusDepensesComponent, canActivate: [AuthGuard] },
+  { path: 'statistiques/evolution-depenses-mois', component: EvolutionDepensesMoisComponent, canActivate: [AuthGuard] },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }];

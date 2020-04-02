@@ -2,7 +2,6 @@
 
 
 # Next
-Voir comment marche les catégories
 Je veux voir la date de dernière transaction sur la liste de compte
 Je veux que l'autocompletion se fasse à partir de tous les comptes
 En tant que user, je veux pouvoir filter sur des critères dans la vue transaction

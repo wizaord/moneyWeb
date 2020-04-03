@@ -11,6 +11,7 @@ import com.wizaord.moneyweb.services.FamilyBankAccountServiceFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import javax.websocket.server.PathParam
 
 @RestController
 @RequestMapping("/moneyapi/family/{familyName}/accounts/{accountName}/transactions")
@@ -21,9 +22,13 @@ class TransactionController(
     @GetMapping("")
     @ResponseBody
     fun getTransactions(@PathVariable familyName: String,
-                        @PathVariable accountName: String): List<com.wizaord.moneyweb.controllers.Transaction> {
+                        @PathVariable accountName: String,
+                        @PathParam("skipInternal") skipInternal: Boolean?): List<com.wizaord.moneyweb.controllers.Transaction> {
         val familyService = familyBankAccountServiceFactory.getFamilyServiceForAccountWithTransactions(familyName, accountName)
-        val transactions = familyService.transactions(accountName);
+        val transactions = when (skipInternal) {
+            true -> familyService.transactionsNotInternal(accountName)
+            else -> familyService.transactions(accountName)
+        }
         return transactions.map { com.wizaord.moneyweb.controllers.Transaction.fromDomain(it) }
     }
 
@@ -63,11 +68,11 @@ data class Transaction(var id: String?,
                        var isPointe: Boolean,
                        var dateCreation: Date,
                        var ventilations: List<Ventilation>
-                       ) {
+) {
 
     fun toDomain(): Transaction {
-        val transactionId = id?: UUID.randomUUID().toString()
-        val transaction =  when (amount > 0) {
+        val transactionId = id ?: UUID.randomUUID().toString()
+        val transaction = when (amount > 0) {
             true -> Credit(userLibelle, bankLibelle, bankDetail, amount, isPointe, transactionId, dateCreation.toLocalDate())
             false -> Debit(userLibelle, bankLibelle, bankDetail, amount, isPointe, transactionId, dateCreation.toLocalDate())
         }

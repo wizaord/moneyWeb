@@ -4,9 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentification/authentication.service';
 import { EMPTY, Observable } from 'rxjs';
 import { Transaction } from '../domain/account/Transaction';
-import { distinct, filter, flatMap, map, toArray } from 'rxjs/operators';
+import { distinct, filter, flatMap, map, mergeAll, mergeMap, toArray } from 'rxjs/operators';
 import { Account } from '../domain/account/Account';
 import { AccountService } from './account.service';
+import { CategoriesService } from './categories.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,17 @@ export class TransactionsService {
 
   constructor(private http: HttpClient,
               private authenticationService: AuthenticationService,
-              private accountService: AccountService) {
+              private accountService: AccountService,
+              private categoriesService: CategoriesService) {
   }
 
-  getTransactionsByAccount(account: Account): Observable<Transaction[]> {
+  getTransactionsByAccount(account: Account, skipInternal: boolean = false): Observable<Transaction[]> {
     if (account === undefined) { return EMPTY; }
     const familyName = this.authenticationService.currentUserValue.username;
-    const apiUrl = `${this.API_URL}/${familyName}/accounts/${account.accountName}/transactions`;
+    let apiUrl = `${this.API_URL}/${familyName}/accounts/${account.accountName}/transactions`;
+    if (skipInternal) {
+      apiUrl = `${this.API_URL}/${familyName}/accounts/${account.accountName}/transactions?skipInternal=true`;
+    }
     return this.http.get<Transaction[]>(apiUrl).pipe(
       flatMap(transactions => transactions),
       map(transaction => Transaction.fromTransaction(transaction)),
@@ -35,8 +40,8 @@ export class TransactionsService {
     );
   }
 
-  getFlattenTransaction(account: Account): Observable<Transaction> {
-    return this.getTransactionsByAccount(account).pipe(
+  getFlattenTransaction(account: Account, skipInternal: boolean = false): Observable<Transaction> {
+    return this.getTransactionsByAccount(account, skipInternal).pipe(
       flatMap(value => value)
     );
   }
@@ -80,7 +85,15 @@ export class TransactionsService {
   getAllTransactions(): Observable<Transaction[]> {
     return this.accountService.getAccounts().pipe(
       flatMap(a => a),
-      flatMap(account => this.getFlattenTransaction(account)),
+      mergeMap(account => this.getFlattenTransaction(account)),
+      toArray()
+    );
+  }
+
+  getAllTransactionsNonInternal(): Observable<Transaction[]> {
+    return this.accountService.getAccounts().pipe(
+      mergeAll(),
+      mergeMap(account => this.getFlattenTransaction(account, true)),
       toArray()
     );
   }

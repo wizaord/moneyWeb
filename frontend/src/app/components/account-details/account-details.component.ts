@@ -101,6 +101,7 @@ export class AccountDetailsComponent implements OnInit {
     const transactionForMonth = this.accountTransactions.filter(
       transaction => this.dateService.isDateBetweenMonth(transaction.dateCreation, beginDateTime, endDateTime));
     this.accountTransactionsBehavior.next(transactionForMonth);
+    console.log(transactionForMonth);
   }
 
   private calculateCurrentMonth() {

@@ -83,7 +83,10 @@ export class TransactionsShowComponent implements OnInit {
     if (transaction.ventilations.length > 1) {
       return 'Ventilation';
     }
-    return this.categoriesMap.get(transaction.ventilations[0].categoryId).name;
+    if (this.categoriesMap.get(transaction.ventilations[0].categoryId)) {
+      return this.categoriesMap.get(transaction.ventilations[0].categoryId).name;
+    }
+    return null;
   }
 
   isInternalVirement(transaction: Transaction) {

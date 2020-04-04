@@ -1,1 +1,12 @@
-<p>component-user-main works!</p>
+<div class="container-fluid h-100">
+  <div class="row h-50" >
+    <div class="col-12">
+      <div class="card h-100">
+        <h5 class="card-header">Evolution dans le mois</h5>
+        <div class="card-body">
+          <app-evolution-depense-graph [currentMonth]="currentDate"></app-evolution-depense-graph>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

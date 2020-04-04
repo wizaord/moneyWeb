@@ -59,6 +59,7 @@ import { PrevisionTresorerieComponent } from './components/statistiques/etats-me
 import { ComboChartComponent } from './components/shared/charts/combo-bar-line-chart/combo-chart.component';
 import { ComboSeriesVerticalComponent } from './components/shared/charts/combo-bar-line-chart/combo-series-vertical.component';
 import { EvolutionDepensesMoisComponent } from './components/statistiques/revenus-et-depenses/evolution-depenses-mois/evolution-depenses-mois.component';
+import { EvolutionDepenseGraphComponent } from './components/statistiques/revenus-et-depenses/evolution-depenses-mois/evolution-depense-graph/evolution-depense-graph.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { EvolutionDepensesMoisComponent } from './components/statistiques/revenu
     PrevisionTresorerieComponent,
     ComboChartComponent,
     ComboSeriesVerticalComponent,
-    EvolutionDepensesMoisComponent
+    EvolutionDepensesMoisComponent,
+    EvolutionDepenseGraphComponent
   ],
     imports: [
         NgbModule,

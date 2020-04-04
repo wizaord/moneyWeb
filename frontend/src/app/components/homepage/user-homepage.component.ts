@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserHomepageComponent implements OnInit {
 
+  currentDate = new Date();
+
   constructor() { }
 
   ngOnInit() {

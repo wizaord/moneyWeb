@@ -1,0 +1,27 @@
+<div class="container h-100">
+  <div class="row h-100">
+    <div class="col-12">
+      <combo-chart-component
+        [scheme]="comboBarScheme"
+        [colorSchemeLine]="lineChartScheme"
+        [results]="barChart"
+        [lineChart]="lineChartSeries"
+        [animations]="true"
+        [gradient]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="true"
+        [showGridLines]="true"
+        [autoScale]="false"
+        [yLeftAxisScaleFactor]="false"
+        [yRightAxisScaleFactor]="false"
+        [showXAxisLabel]="true"
+        [xAxisLabel]="'Country'"
+        [showYAxisLabel]="true"
+        [yAxisLabel]="'Dépenses'"
+        [showRightYAxisLabel]="false"
+        [maxYValue]="maxAmount">
+      </combo-chart-component>
+    </div>
+  </div>
+</div>

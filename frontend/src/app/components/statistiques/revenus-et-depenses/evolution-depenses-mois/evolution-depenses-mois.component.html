@@ -14,29 +14,10 @@
   </div>
   <div class="row stretchy-wrapper justify-content-md-center">
     <div class="card col-12">
-      <combo-chart-component
-        [scheme]="comboBarScheme"
-        [colorSchemeLine]="lineChartScheme"
-        [results]="barChart"
-        [lineChart]="lineChartSeries"
-        [animations]="true"
-        [gradient]="false"
-        [xAxis]="true"
-        [yAxis]="true"
-        [legend]="false"
-        [showGridLines]="true"
-        [autoScale]="false"
-        [yLeftAxisScaleFactor]="false"
-        [yRightAxisScaleFactor]="false"
-        [showXAxisLabel]="true"
-        [xAxisLabel]="'Country'"
-        [showYAxisLabel]="true"
-        [yAxisLabel]="'Dépenses'"
-        [showRightYAxisLabel]="true"
-        [maxYValue]="maxAmount"
-        [yAxisLabelRight]="'Utilization'">
-      </combo-chart-component>
+      <div class="h-100">
+        <app-evolution-depense-graph [currentMonth]="currentMonth" #appEvolutionDepenses></app-evolution-depense-graph>
+      </div>
     </div>
   </div>
-</div>
 
+</div>

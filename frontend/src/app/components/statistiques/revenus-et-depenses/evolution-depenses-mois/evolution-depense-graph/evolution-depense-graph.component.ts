@@ -50,13 +50,14 @@ export class EvolutionDepenseGraphComponent implements OnInit {
       this.transactionsService.getAllTransactionsNonInternal().subscribe(
         transactions => {
           this.transactions = transactions;
-          this.refreshData();
+          this.refreshData(this.currentMonth);
         });
     });
   }
 
-  public refreshData() {
+  public refreshData(currentMonth: Date) {
     // init charts
+    this.currentMonth = currentMonth;
     this.lineChartSeries = [...[]];
     this.barChart = [...[]];
     this.setMaxAmount();

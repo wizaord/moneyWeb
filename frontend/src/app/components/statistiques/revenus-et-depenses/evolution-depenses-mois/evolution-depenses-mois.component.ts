@@ -23,12 +23,12 @@ export class EvolutionDepensesMoisComponent implements OnInit {
 
   goPreviousMonth() {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, this.currentMonth.getDate());
-    this.evolutionDepensesGraph.refreshData();
+    this.evolutionDepensesGraph.refreshData(this.currentMonth);
   }
 
   goNextMonth() {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, this.currentMonth.getDate());
-    this.evolutionDepensesGraph.refreshData();
+    this.evolutionDepensesGraph.refreshData(this.currentMonth);
   }
 
 

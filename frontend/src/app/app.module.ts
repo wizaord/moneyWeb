@@ -60,6 +60,7 @@ import { ComboChartComponent } from './components/shared/charts/combo-bar-line-c
 import { ComboSeriesVerticalComponent } from './components/shared/charts/combo-bar-line-chart/combo-series-vertical.component';
 import { EvolutionDepensesMoisComponent } from './components/statistiques/revenus-et-depenses/evolution-depenses-mois/evolution-depenses-mois.component';
 import { EvolutionDepenseGraphComponent } from './components/statistiques/revenus-et-depenses/evolution-depenses-mois/evolution-depense-graph/evolution-depense-graph.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -102,27 +103,28 @@ import { EvolutionDepenseGraphComponent } from './components/statistiques/revenu
     EvolutionDepensesMoisComponent,
     EvolutionDepenseGraphComponent
   ],
-    imports: [
-        NgbModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        ReactiveFormsModule,
-        FormsModule,
-        MatToolbarModule,
-        MatCardModule,
-        AngularFontAwesomeModule,
-        HttpClientModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatProgressSpinnerModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatInputModule,
-        NgSelectModule,
-        NgxChartsModule,
-        MatExpansionModule
-    ],
+  imports: [
+    NgbModule,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatToolbarModule,
+    MatCardModule,
+    AngularFontAwesomeModule,
+    HttpClientModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule,
+    NgSelectModule,
+    NgxChartsModule,
+    MatExpansionModule,
+    MatCheckboxModule
+  ],
   entryComponents: [
     TransactionEditComponent,
     ConfirmationDialogComponent

@@ -25,7 +25,10 @@ export class EvolutionRevenusDepensesComponent implements OnInit {
   loading: boolean;
 
   chartDatas: any[];
-  colorScheme = {domain: ['green', 'red']};
+  colorScheme = {domain: ['green', 'red', 'blue']};
+
+  showDetails = false;
+  showLabels = false;
 
   constructor(
     private statistiquesService: StatistiquesService,
@@ -53,10 +56,11 @@ export class EvolutionRevenusDepensesComponent implements OnInit {
 
   refreshStatsObservable() {
     this.loading = true;
+    this.showLabels = !this.showDetails;
     const currentDate = new Date();
     const selectedDate = this.getSelectedDate();
     let userSelected = this.filterFamilyMemberSelected;
-    if (userSelected === 'all' ) userSelected = undefined;
+    if (userSelected === 'all' ) { userSelected = undefined; }
 
     this.chartDatas = [...[]];
     this.statistiquesService.getFlattenAccountMonthStatistiques(false, userSelected)
@@ -69,11 +73,20 @@ export class EvolutionRevenusDepensesComponent implements OnInit {
         toArray()
       ).subscribe(
       result => result.forEach(accountMonthStatistiques => {
-        const chartElt = {
-          name: accountMonthStatistiques.month,
-          series: [{name: 'Revenus', value: accountMonthStatistiques.revenus}
-            , {name: 'Depenses', value: accountMonthStatistiques.depenses}]
-        };
+        let chartElt;
+        if (this.showDetails) {
+          chartElt = {
+            name: accountMonthStatistiques.month,
+            series: [{name: 'Revenus', value: accountMonthStatistiques.revenus}
+              , {name: 'Depenses', value: accountMonthStatistiques.depenses}
+              , {name: 'Solde', value: (accountMonthStatistiques.revenus - accountMonthStatistiques.depenses)}]
+          };
+        } else {
+          chartElt = {
+            name: accountMonthStatistiques.month,
+            series: [{name: 'Solde', value: (accountMonthStatistiques.revenus - accountMonthStatistiques.depenses)}]
+          };
+        }
         this.chartDatas = [...this.chartDatas, chartElt];
         this.loading = false;
       }));

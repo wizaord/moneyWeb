@@ -3,7 +3,7 @@
     <h1>EVOLUTION DES DEPENSES ET DES REVENUS</h1>
   </div>
   <div class="form-row align-items-center">
-    <div class="col-6 ">
+    <div class="col-4 ">
       <label for="inlineFormCustomSelectPref" class="my-1 mr-2">Période</label>
       <ng-select id="inlineFormCustomSelectPref" class="my-1 mr-sm-2" [multiple]="false"
                  [items]="filters"
@@ -14,7 +14,10 @@
                  (change)="refreshStatsObservable()">
       </ng-select>
     </div>
-    <div class="col-6 my-3">
+    <div class="col-4 my-3">
+      <mat-checkbox [(ngModel)]="showDetails" (click)="refreshStatsObservable()">Show Details ?</mat-checkbox>
+    </div>
+    <div class="col-4 my-3">
       <label for="inlineFormSlectOwner" class="my-1 mr-2">Filtrer sur Owners</label>
       <ng-select id="inlineFormSlectOwner" [items]="filterFamilyMember$ | async"
                  [multiple]="false"
@@ -39,8 +42,13 @@
         [xAxis]="true"
         [yAxis]="true"
         [animations]="true"
+        [showGridLines]="true"
         [results]="chartDatas"
+        [showDataLabel]="showLabels"
         [scheme]="colorScheme"
+        [barPadding]="1"
+        [groupPadding]="10"
+        [legend]="true"
       >
       </ngx-charts-bar-vertical-2d>
     </div>

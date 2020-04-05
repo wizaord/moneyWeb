@@ -62,6 +62,21 @@ export class TransactionsShowComponent implements OnInit {
       });
   }
 
+  copyTransaction(transaction: Transaction) {
+    const modalRef = this.modalService.open(TransactionEditComponent,
+      {backdropClass: 'light-blue-backdrop', size: 'lg'});
+    const newTransaction = Object.assign({}, transaction);
+    newTransaction.id = null;
+    modalRef.componentInstance.transaction = newTransaction;
+
+    from(modalRef.result)
+      .subscribe(transactionResult => {
+        if (transactionResult != null) {
+          this.transactionCreate.emit(transactionResult);
+        }
+      });
+  }
+
   deleteTransaction(transaction: Transaction) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
@@ -136,4 +151,5 @@ export class TransactionsShowComponent implements OnInit {
       reduce((acc, value) => acc += value, 0),
     );
   }
+
 }

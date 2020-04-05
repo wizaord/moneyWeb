@@ -30,6 +30,7 @@
       <td>
         <button *ngIf="!transaction.isPointe"><i class="fa fa-check-circle" (click)="pointTransaction(transaction)"></i>
         </button>
+        <button><i class="fa fa-copy" (click)="copyTransaction(transaction)"></i></button>
         <button><i class="fa fa-trash-o" (click)="deleteTransaction(transaction)"></i></button>
       </td>
     </tr>

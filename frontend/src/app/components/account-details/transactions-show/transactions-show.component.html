@@ -9,7 +9,7 @@
       <th scope="col">Category</th>
       <th scope="col" *ngIf="accountsName.length > 1">Account</th>
       <th scope="col">Montant</th>
-      <th scope="col" *ngIf="!accountsName.length <= 1">Solde</th>
+      <th scope="col" *ngIf="!(accountsName.length > 1)">Solde</th>
       <th scope="col">Actions</th>
     </tr>
     </thead>
@@ -26,7 +26,7 @@
       <td>{{getCategoryName(transaction)}}</td>
       <td *ngIf="accountsName.length > 1">{{transaction.accountName}}</td>
       <td>{{transaction.amount}}</td>
-      <td *ngIf="!accountsName.length <= 1">{{transaction.currentSolde | number}}</td>
+      <td *ngIf="!(accountsName.length > 1)">{{transaction.currentSolde | number}}</td>
       <td>
         <button *ngIf="!transaction.isPointe"><i class="fa fa-check-circle" (click)="pointTransaction(transaction)"></i>
         </button>

@@ -9,7 +9,7 @@ import { EvolutionDepenseGraphComponent } from './evolution-depense-graph/evolut
 export class EvolutionDepensesMoisComponent implements OnInit {
 
   private loading: boolean;
-  private currentMonth: Date;
+  currentMonth: Date;
 
   @ViewChild('appEvolutionDepenses', {static: false}) evolutionDepensesGraph: EvolutionDepenseGraphComponent;
 

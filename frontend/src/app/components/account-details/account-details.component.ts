@@ -21,7 +21,7 @@ export class AccountDetailsComponent implements OnInit {
   FilteringMode = FilteringMode;
   filteringMode: FilteringMode = FilteringMode.DATE;
   private accountTransactionsBehavior = new BehaviorSubject<Transaction[]>([]);
-  private accountTransactions$ = this.accountTransactionsBehavior.asObservable();
+  accountTransactions$ = this.accountTransactionsBehavior.asObservable();
 
   openedAccounts$: Observable<Account[]> = EMPTY;
   accountSelected: string[] = [];
@@ -44,7 +44,7 @@ export class AccountDetailsComponent implements OnInit {
     });
   }
 
-  private refreshAccountSelection() {
+  refreshAccountSelection() {
     this.loading = true;
     this.accountTransactions = [...[]];
     this.accountService.getAccountsByName(this.accountSelected).pipe(

@@ -14,6 +14,7 @@ export class PrevisionTresorerieComponent implements OnInit {
 
   nextYearEvol = 0;
   nextYearSolde = 0;
+  nextYearDate;
 
   constructor(private statistiquesService: StatistiquesService) {
 
@@ -55,6 +56,8 @@ export class PrevisionTresorerieComponent implements OnInit {
           const date = new Date(currentDate.getTime());
           date.setMonth(date.getMonth() + 1);
           currentDate = date;
+
+          this.nextYearDate = new Date(currentDate.getFullYear() + 1, currentDate.getMonth() + 1, 0);
 
           const evolSolde = soldeMonth.solde - lastYearSolde;
           lastYearSolde = soldeMonth.solde;

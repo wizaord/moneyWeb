@@ -57,7 +57,7 @@ export class PrevisionTresorerieComponent implements OnInit {
           date.setMonth(date.getMonth() + 1);
           currentDate = date;
 
-          this.nextYearDate = new Date(currentDate.getFullYear() + 1, currentDate.getMonth() + 1, 0);
+          this.nextYearDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
           const evolSolde = soldeMonth.solde - lastYearSolde;
           lastYearSolde = soldeMonth.solde;

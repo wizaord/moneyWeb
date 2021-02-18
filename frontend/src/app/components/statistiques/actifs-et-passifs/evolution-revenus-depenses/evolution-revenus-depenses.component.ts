@@ -29,6 +29,7 @@ export class EvolutionRevenusDepensesComponent implements OnInit {
 
   showDetails = false;
   showLabels = false;
+  soldeOnPeriod: number;
 
   constructor(
     private statistiquesService: StatistiquesService,
@@ -63,6 +64,7 @@ export class EvolutionRevenusDepensesComponent implements OnInit {
     if (userSelected === 'all' ) { userSelected = undefined; }
 
     this.chartDatas = [...[]];
+    this.soldeOnPeriod = 0;
     this.statistiquesService.getFlattenAccountMonthStatistiques(false, userSelected)
       .pipe(
         flatMap(t => t),
@@ -74,17 +76,19 @@ export class EvolutionRevenusDepensesComponent implements OnInit {
       ).subscribe(
       result => result.forEach(accountMonthStatistiques => {
         let chartElt;
+        const solde = (accountMonthStatistiques.revenus - accountMonthStatistiques.depenses);
+        this.soldeOnPeriod += solde;
         if (this.showDetails) {
           chartElt = {
             name: accountMonthStatistiques.month,
             series: [{name: 'Revenus', value: accountMonthStatistiques.revenus}
               , {name: 'Depenses', value: accountMonthStatistiques.depenses}
-              , {name: 'Solde', value: (accountMonthStatistiques.revenus - accountMonthStatistiques.depenses)}]
+              , {name: 'Solde', value: solde}]
           };
         } else {
           chartElt = {
             name: accountMonthStatistiques.month,
-            series: [{name: 'Solde', value: (accountMonthStatistiques.revenus - accountMonthStatistiques.depenses)}]
+            series: [{name: 'Solde', value: solde}]
           };
         }
         this.chartDatas = [...this.chartDatas, chartElt];

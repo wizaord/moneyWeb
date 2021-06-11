@@ -5,7 +5,9 @@
       <mat-select [(ngModel)]="accountSelected" name="ownersSelected"
                   (selectionChange)="refreshAccountSelection()"
                   multiple>
-        <mat-option *ngFor="let account of openedAccounts$ | async" [value]="account.accountName">
+        <!--        <mat-optgroup *ngFor="let owner of owners$ | async" [label]="owner.name">-->
+        <mat-option [value]="'all'">All</mat-option>
+        <mat-option *ngFor="let account of openedAccounts$ | async" [value]="account.accountName">
           {{account.accountName}}
         </mat-option>
       </mat-select>

@@ -47,7 +47,14 @@ export class AccountDetailsComponent implements OnInit {
   refreshAccountSelection() {
     this.loading = true;
     this.accountTransactions = [...[]];
-    this.accountService.getAccountsByName(this.accountSelected).pipe(
+    let accounts$ = this.accountService.getAccountsByName(this.accountSelected);
+
+    if (this.accountSelected[0] === 'all') {
+      console.log('All selected');
+      accounts$ = this.accountService.getOpenedAccounts();
+    }
+
+    accounts$.pipe(
       flatMap(account => this.transactionsService.getTransactionsByAccount(account))
     ).subscribe(
       transactions => {

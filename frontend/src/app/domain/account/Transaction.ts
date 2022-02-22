@@ -1,4 +1,4 @@
-import { Ventilation } from './Ventilation';
+import {Ventilation} from './Ventilation';
 
 
 export class Transaction {
@@ -40,4 +40,10 @@ export class Transaction {
     return this.ventilations.filter(v => v.categoryId === null || v.categoryId.length === 0).length === 0;
   }
 
+  isBetween(previousDate: Date, afterDate: Date) {
+    const previousDateTime = previousDate.getTime();
+    const afterDateTime = afterDate.getTime();
+    const eltDateTime = this.dateCreation.getTime();
+    return (eltDateTime >= previousDateTime && eltDateTime <= afterDateTime);
+  }
 }

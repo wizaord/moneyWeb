@@ -1,22 +1,31 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { HomepageComponent } from './components/visitor/homepage/homepage.component';
-import { AuthGuard } from './services/authentification/auth.guard';
-import { UserAccountCreateComponent } from './components/visitor/user-account-create/user-account-create.component';
-import { AccountManageComponent } from './components/account/manage/account-manage.component';
-import { AccountShowComponent } from './components/account/show/account-show.component';
-import { UserHomepageComponent } from './components/homepage/user-homepage.component';
-import { AccountCreateComponent } from './components/account/manage/account-create/account-create.component';
-import { FamilyComponent } from './components/family/family/family.component';
-import { FamilyCreateComponent } from './components/family/family-create/family-create.component';
-import { UploadComponent } from './components/upload/upload.component';
-import { StatistiquesComponent } from './components/statistiques/statistiques.component';
-import { AccountModifyComponent } from './components/account/manage/account-modify/account-modify.component';
-import { AccountDetailsComponent } from './components/account-details/account-details.component';
-import { HistoriqueSoldesComptesComponent } from './components/statistiques/actifs-et-passifs/historique-soldes-comptes/historique-soldes-comptes.component';
-import { EtatMensuelComponent } from './components/statistiques/etats-mensuels/etat-mensuel/etat-mensuel.component';
-import { EvolutionRevenusDepensesComponent } from './components/statistiques/actifs-et-passifs/evolution-revenus-depenses/evolution-revenus-depenses.component';
-import { EvolutionDepensesMoisComponent } from './components/statistiques/revenus-et-depenses/evolution-depenses-mois/evolution-depenses-mois.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {HomepageComponent} from './components/visitor/homepage/homepage.component';
+import {AuthGuard} from './services/authentification/auth.guard';
+import {UserAccountCreateComponent} from './components/visitor/user-account-create/user-account-create.component';
+import {AccountManageComponent} from './components/account/manage/account-manage.component';
+import {AccountShowComponent} from './components/account/show/account-show.component';
+import {UserHomepageComponent} from './components/homepage/user-homepage.component';
+import {AccountCreateComponent} from './components/account/manage/account-create/account-create.component';
+import {FamilyComponent} from './components/family/family/family.component';
+import {FamilyCreateComponent} from './components/family/family-create/family-create.component';
+import {UploadComponent} from './components/upload/upload.component';
+import {StatistiquesComponent} from './components/statistiques/statistiques.component';
+import {AccountModifyComponent} from './components/account/manage/account-modify/account-modify.component';
+import {AccountDetailsComponent} from './components/account-details/account-details.component';
+import {
+  HistoriqueSoldesComptesComponent
+} from './components/statistiques/actifs-et-passifs/historique-soldes-comptes/historique-soldes-comptes.component';
+import {EtatMensuelComponent} from './components/statistiques/etats-mensuels/etat-mensuel/etat-mensuel.component';
+import {
+  EvolutionRevenusDepensesComponent
+} from './components/statistiques/actifs-et-passifs/evolution-revenus-depenses/evolution-revenus-depenses.component';
+import {
+  EvolutionDepensesMoisComponent
+} from './components/statistiques/revenus-et-depenses/evolution-depenses-mois/evolution-depenses-mois.component';
+import {
+  EvolutionDepensesCategorieComponent
+} from './components/statistiques/revenus-et-depenses/evolution-depenses-categorie/evolution-depenses-categorie.component';
 
 const routes: Routes = [
   { path: '', component: UserHomepageComponent, canActivate: [AuthGuard] },
@@ -35,6 +44,7 @@ const routes: Routes = [
   { path: 'statistiques/etats-mensuel', component: EtatMensuelComponent, canActivate: [AuthGuard] },
   { path: 'statistiques/evolution-revenus-depenses', component: EvolutionRevenusDepensesComponent, canActivate: [AuthGuard] },
   { path: 'statistiques/evolution-depenses-mois', component: EvolutionDepensesMoisComponent, canActivate: [AuthGuard] },
+  { path: 'statistiques/evolution-depenses-categorie', component: EvolutionDepensesCategorieComponent, canActivate: [AuthGuard] },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }];

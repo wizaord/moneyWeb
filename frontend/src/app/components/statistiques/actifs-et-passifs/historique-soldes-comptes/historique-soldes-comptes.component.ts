@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { TransactionsService } from '../../../../services/transactions.service';
-import { AccountService } from '../../../../services/account.service';
-import { Observable } from 'rxjs';
-import { AccountOwner } from '../../../../domain/user/AccountOwner';
-import { FamilyService } from '../../../../services/family.service';
+import {Component, OnInit} from '@angular/core';
+import {TransactionsService} from '../../../../services/transactions.service';
+import {AccountService} from '../../../../services/account.service';
+import {Observable} from 'rxjs';
+import {AccountOwner} from '../../../../domain/user/AccountOwner';
+import {FamilyService} from '../../../../services/family.service';
 import * as shape from 'd3-shape';
-import { TransactionReduceByDay } from '../../../../domain/statistiques/TransactionReduceByDay';
-import { StatistiquesService } from '../../../../services/statistiques.service';
+import {TransactionReduceByDay} from '../../../../domain/statistiques/TransactionReduceByDay';
+import {StatistiquesService} from '../../../../services/statistiques.service';
 
 @Component({
   selector: 'app-historique-soldes-comptes',
@@ -31,7 +31,7 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
     new Filter(2, 'Les 2 années précédentes'),
     new Filter(3, 'Toutes les dates')];
 
-  filterFamilyMemberSelected: string = null;
+  filterFamilyMemberSelected: string[] = null;
   filterFamilyMember$: Observable<AccountOwner[]>;
   loading: boolean;
 
@@ -59,6 +59,7 @@ export class HistoriqueSoldesComptesComponent implements OnInit {
 
   refreshData() {
     this.loading = true;
+    console.log(JSON.stringify(this.filterFamilyMemberSelected));
     this.statistiquesService.getTransactionsGroupByDay(this.filterFamilyMemberSelected).subscribe(transactionsGrouped => {
       let currentSolde = 0;
       this.allGroupedTransactions = transactionsGrouped

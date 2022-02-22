@@ -17,7 +17,7 @@
     <div class="col-6 my-3">
       <label for="inlineFormSlectOwner" class="my-1 mr-2">Filtrer sur Owners</label>
       <ng-select id="inlineFormSlectOwner" [items]="filterFamilyMember$ | async"
-                 [multiple]="false"
+                 [multiple]="true"
                  [hideSelected]="true"
                  bindLabel="name"
                  autofocus

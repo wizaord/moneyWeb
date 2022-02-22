@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
-import { AuthenticationService } from './authentification/authentication.service';
-import { HttpClient } from '@angular/common/http';
-import { AccountMonthStatistiques, AccountStatistiques } from '../domain/statistiques/AccountStatistiques';
-import { filter, flatMap, groupBy, map, mergeMap, reduce, toArray } from 'rxjs/operators';
-import { AccountService } from './account.service';
-import { TransactionsService } from './transactions.service';
-import { TransactionReduceByDay } from '../domain/statistiques/TransactionReduceByDay';
+import {Injectable} from '@angular/core';
+import {environment} from '../../environments/environment';
+import {Observable} from 'rxjs';
+import {AuthenticationService} from './authentification/authentication.service';
+import {HttpClient} from '@angular/common/http';
+import {AccountMonthStatistiques, AccountStatistiques} from '../domain/statistiques/AccountStatistiques';
+import {filter, flatMap, groupBy, map, mergeMap, reduce, toArray} from 'rxjs/operators';
+import {AccountService} from './account.service';
+import {TransactionsService} from './transactions.service';
+import {TransactionReduceByDay} from '../domain/statistiques/TransactionReduceByDay';
 
 @Injectable({
   providedIn: 'root'
@@ -89,10 +89,10 @@ export class StatistiquesService {
     return acc;
   }
 
-  getTransactionsGroupByDay(filteredFamilyMember: string = null): Observable<TransactionReduceByDay[]> {
+  getTransactionsGroupByDay(filteredFamilyMember: string[] = null): Observable<TransactionReduceByDay[]> {
     return this.accountService.getAccounts().pipe(
       flatMap(a => a),
-      filter(account => filteredFamilyMember === null || account.owners.includes(filteredFamilyMember)),
+      filter(account => filteredFamilyMember === null || this.transactionCheckOwner(account.owners, filteredFamilyMember)),
       mergeMap(account => this.transactionsService.getFlattenTransaction(account)),
       groupBy(transaction => transaction.dateCreation.getTime()),
       mergeMap(group => group.pipe(
@@ -106,5 +106,16 @@ export class StatistiquesService {
       toArray(),
       map( t => t.sort((a, b) => (a.date.getTime() < b.date.getTime()) ? -1 : 1))
     );
+  }
+
+  private transactionCheckOwner(transactionOwners: string[], membersToCheck: string[]): boolean {
+    let isPresent = false;
+    transactionOwners.forEach(owner => {
+      if (membersToCheck.includes(owner)) {
+        isPresent = true;
+        return true;
+      }
+    });
+    return isPresent;
   }
 }

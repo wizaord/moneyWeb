@@ -1,14 +1,14 @@
-import { Component, HostListener, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { Transaction } from '../../../../domain/account/Transaction';
-import { NgbActiveModal, NgbDateStruct, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
-import { Ventilation } from '../../../../domain/account/Ventilation';
-import { DateService } from '../../../../services/date.service';
-import { TransactionsService } from '../../../../services/transactions.service';
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
-import { VentilationEditComponent } from './ventilation-edit/ventilation-edit.component';
-import { AccountService } from '../../../../services/account.service';
-import { Account } from '../../../../domain/account/Account';
+import {Component, HostListener, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Transaction} from '../../../../domain/account/Transaction';
+import {NgbActiveModal, NgbDateStruct, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Ventilation} from '../../../../domain/account/Ventilation';
+import {DateService} from '../../../../services/date.service';
+import {TransactionsService} from '../../../../services/transactions.service';
+import {Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
+import {VentilationEditComponent} from './ventilation-edit/ventilation-edit.component';
+import {AccountService} from '../../../../services/account.service';
+import {Account} from '../../../../domain/account/Account';
 
 @Component({
   selector: 'app-transaction-edit',
@@ -101,6 +101,10 @@ export class TransactionEditComponent implements OnInit {
 
   traceUserSelection($event: any) {
     this.userLabelSelected = $event;
+  }
+
+  ventilationSelected(ventilation: Ventilation) {
+    this.transaction.isPointe = true;
   }
 }
 

@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Ventilation } from '../../../../../domain/account/Ventilation';
-import { CategoriesService } from '../../../../../services/categories.service';
-import { SubCategoryFamily } from '../../../../../domain/categories/SubCategoryFamily';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Ventilation} from '../../../../../domain/account/Ventilation';
+import {CategoriesService} from '../../../../../services/categories.service';
+import {SubCategoryFamily} from '../../../../../domain/categories/SubCategoryFamily';
 
 @Component({
   selector: 'app-ventilation-edit',
@@ -13,6 +13,7 @@ export class VentilationEditComponent implements OnInit {
   categories: SubCategoryFamily[];
   @Input() ventilation: Ventilation;
   @Output() ventilationRemoveEvent = new EventEmitter<Ventilation>();
+  @Output() ventilationSelectEvent = new EventEmitter<Ventilation>();
 
   constructor(private categoriesService: CategoriesService
   ) { }
@@ -30,6 +31,7 @@ export class VentilationEditComponent implements OnInit {
   categorySelectedChange(categoryId: number) {
     console.log('Selection de la category avec l id ' + categoryId);
     this.ventilation.categoryId = categoryId.toString();
+    this.ventilationSelectEvent.emit(this.ventilation);
   }
 
   refreshCategoryName() {

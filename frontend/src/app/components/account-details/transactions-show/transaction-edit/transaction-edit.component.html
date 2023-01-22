@@ -59,7 +59,7 @@
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item" *ngFor="let ventilation of transaction.ventilations">
-            <app-ventilation-edit [ventilation]="ventilation" (ventilationRemoveEvent)="removeVentilation(ventilation)"></app-ventilation-edit>
+            <app-ventilation-edit [ventilation]="ventilation" (ventilationSelectEvent)="ventilationSelected(ventilation)" (ventilationRemoveEvent)="removeVentilation(ventilation)"></app-ventilation-edit>
           </li>
         </ul>
       </div>
